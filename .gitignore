@@ -1,7 +1,8 @@
 /dist/*
+/temp/*
 /.idea/*
 /node_modules/*
 /bower_components/*
-
+/src/bundle.js
 npm-debug.log
 DS_Store*
