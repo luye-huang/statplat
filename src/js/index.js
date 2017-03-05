@@ -1,30 +1,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+import ComponentHeader from './components/header';
 
-// ReactDOM.render(
-//   <h1>Hello Worttld!</h1>,
-//   document.getElementById('example')
-// );
-
-
-var ExampleApplication = React.createClass({
-  render: function() {
-    var elapsed = Math.round(this.props.elapsed  / 100);
-    var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
-    var message =
-      'React has been successfully running for ' + seconds + ' seconds.';
-
-    return React.DOM.p(null, message);
+class Index extends React.Component{
+  render(){
+    return(   //return only one dom
+      <ComponentHeader/>
+    )
   }
-});
+}
 
-// Call React.createFactory instead of directly call ExampleApplication({...}) in React.render
-var ExampleApplicationFactory = React.createFactory(ExampleApplication);
-
-var start = new Date().getTime();
-setInterval(function() {
-  ReactDOM.render(
-    ExampleApplicationFactory({elapsed: new Date().getTime() - start}),
-    document.getElementById('example')
-  );
-}, 50);
+ReactDOM.render(<Index/>, document.getElementById('example'));
