@@ -1,14 +1,11 @@
-// var React = require('react');
-// var ReactDOM = require('react-dom');
-//
+var React = require('react');
+var ReactDOM = require('react-dom');
+
 // ReactDOM.render(
 //   <h1>Hello Worttld!</h1>,
 //   document.getElementById('example')
 // );
 
-
-var React = require('react');
-var ReactDOM = require('react-dom');
 
 var ExampleApplication = React.createClass({
   render: function() {

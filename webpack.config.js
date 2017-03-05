@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
-    filename: "./src/bundle.js"
+    filename: "temp/bundle.js"
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),
