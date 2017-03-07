@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router';
+
 export default class ComponentHeader extends React.Component {
     constructor() {
         super();
@@ -22,6 +24,11 @@ export default class ComponentHeader extends React.Component {
           <header style={styleHeader.header} onClick={this.hoverHeaderColor.bind(this)}>
             <h1>this is header123333</h1>
             <p>{this.props.username}</p>
+            <ul>
+              <li><Link to={`/`}>首页</Link></li>
+              <li><Link to={`/detail`}>嵌套的详情页面</Link></li>
+              <li><Link to={`/list`}>列表页面</Link></li>
+            </ul>
           </header>
         )
     }
