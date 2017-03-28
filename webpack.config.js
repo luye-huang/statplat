@@ -1,11 +1,24 @@
-var debug = process.env.NODE_ENV !== "production";
+// {
+//   test: /\.js?$/,
+//     exclude: /(node_modules)/,
+//   loader: 'babel-loader',
+//   query: {
+//   presets: ['react', 'es2015'],
+//     plugins: ['react-html-attrs'], //添加组件的插件配置
+// }
+// },
+
+
+var htmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-  context: path.join(__dirname),
-  devtool: debug ? "inline-sourcemap" : null,
   entry: "./src/js/root.js",
+  output: {
+    path: './dist',
+    filename: 'bundle.js'
+  },
   module: {
     loaders: [
       {
@@ -17,58 +30,46 @@ module.exports = {
           plugins: ['react-html-attrs'], //添加组件的插件配置
         }
       },
-      //下面是添加的 css 的 loader，也即是 css 模块化的配置方法，大家可以拷贝过去直接使用
-      // {
-      //   test: /\.css$/,
-      //   loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
-      // }
-      // ,
-      //下面是使用 ant-design 的配置文件
-      { test: /\.css$/, loader: 'style-loader!css-loader' }
+      {
+        test: /\.css$/,
+        // include: path.resolve(__dirname, 'src'),
+        loader: "style!css?importLoaders=1!postcss",
+      },
+      {
+        test: /\.less$/,
+        //include: path.resolve(__dirname, 'src'),
+        loader: "style!css!postcss!less",
+      },
+      {
+        test: /\.html$/,
+        loader:'html-loader'
+      },
+      {
+        test: /\.ejs/,
+        loader:'ejs-loader'
+      },
+      { test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=50000&name=[path][name].[ext]'}
     ]
   },
-  output: {
-    path: __dirname,
-    filename: "./temp/bundle.js"
-  },
-  plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+  postcss: [
+    require('autoprefixer')({
+      broswers:['last 5 versions']
+    })
   ],
-};
-
-
-// var debug = process.env.NODE_ENV !== "production";
-// var webpack = require('webpack');
-// var path = require('path');
-//
-// module.exports = {
-//   context: path.join(__dirname),
-//   devtool: debug ? "inline-sourcemap" : null,
-//   entry: "./src/js/root.js",
-//   module: {
-//     loaders: [
-//       {
-//         test: /\.js?$/,
-//         exclude: /(node_modules)/,
-//         loader: 'babel-loader',
-//         query: {
-//           presets: ['react', 'es2015'],
-//           plugins: ['react-html-attrs'], //添加组件的插件配置
-//         }
-//       },
-//       //下面是使用 ant-design 的配置文件
-//       { test: /\.css$/, loader: 'style-loader!css-loader' }
-//     ]
-//   },
-//   output: {
-//     path: __dirname,
-//     filename: "./temp/bundle.js"
-//   },
-//   plugins: debug ? [] : [
-//     new webpack.optimize.DedupePlugin(),
-//     new webpack.optimize.OccurenceOrderPlugin(),
-//     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-//   ],
-// };
+  plugins: [
+    new htmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      inject: 'body'
+      //minify:{
+      //    removeComments: true,
+      //    //collapseWhitespace: true
+      //}
+    })
+    // ,
+    // new webpack.ProvidePlugin({
+    //   $: "jquery",
+    //   jQuery: "jquery"
+    // })
+  ]
+}
