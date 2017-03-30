@@ -14,16 +14,18 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-  entry: "./src/js/root.js",
+  entry: "./src/js/main.js",
   output: {
-    path: './dist',
+    // path: './dist',
+    path:path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   module: {
     loaders: [
       {
         test: /\.js?$/,
-        exclude: /(node_modules)/,
+        exclude: path.resolve(__dirname, 'node_modules'),
+        include: path.resolve(__dirname, 'src'),
         loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015'],
@@ -33,7 +35,9 @@ module.exports = {
       {
         test: /\.css$/,
         // include: path.resolve(__dirname, 'src'),
-        loader: "style!css?importLoaders=1!postcss",
+        // loader: 'style-loader!css-loader?modules'
+        loader: 'style!css?modules&localIdentName=[name]__[local]___[hash:base64:5]'
+        // loader: "style!css?importLoaders=1!postcss",
       },
       {
         test: /\.less$/,
@@ -43,10 +47,6 @@ module.exports = {
       {
         test: /\.html$/,
         loader:'html-loader'
-      },
-      {
-        test: /\.ejs/,
-        loader:'ejs-loader'
       },
       { test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=50000&name=[path][name].[ext]'}
     ]
@@ -66,10 +66,5 @@ module.exports = {
       //    //collapseWhitespace: true
       //}
     })
-    // ,
-    // new webpack.ProvidePlugin({
-    //   $: "jquery",
-    //   jQuery: "jquery"
-    // })
   ]
 }

@@ -28,7 +28,7 @@ export default class BodyIndex extends React.Component {
     return(
       <div>
         <h2>This is body</h2>
-        <p>{this.state.username},{this.props.id},{this.state.age}</p>
+        <p>bodyIndex:{this.state.username},{this.props.id},{this.state.age}</p>
         <input type='button' ref='sb' value='submit' onClick={this.changeUserAge.bind(this,21)}/>
         <BodyChild {...this.props} changeParentAge={this.changeParentAge.bind(this)}/>
       </div>

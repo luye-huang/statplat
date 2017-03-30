@@ -5,7 +5,7 @@ export default class BodyChild extends React.Component{
     return(
       <div>
         <input type='text' onChange={this.props.changeParentAge}/>
-        <p>{this.props.id},{this.props.name}</p>
+        <p>bodychild: prop-{this.props.id},{this.props.name}</p>
       </div>
     )
   }

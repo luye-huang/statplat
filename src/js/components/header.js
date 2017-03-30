@@ -27,7 +27,7 @@ export default class ComponentHeader extends React.Component {
             <ul>
               <li><Link to={`/`}>首页</Link></li>
               <li><Link to={`/detail`}>嵌套的详情页面</Link></li>
-              <li><Link to={`/list`}>列表页面</Link></li>
+              <li><Link to={`/list/${this.state.isGreen}`}>列表页面</Link></li>
             </ul>
           </header>
         )

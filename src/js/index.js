@@ -11,8 +11,8 @@ export default class Index extends React.Component{
 
     return(   //return only one dom
       <div>
-        <ComponentHeader/>
-        <BodyIndex id={250} />
+        <ComponentHeader username='headerName'/>
+        <BodyIndex id={250} name='pass to childIndex'/>
         <div>
 					{this.props.children}
 				</div>
