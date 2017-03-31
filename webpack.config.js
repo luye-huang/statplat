@@ -1,14 +1,3 @@
-// {
-//   test: /\.js?$/,
-//     exclude: /(node_modules)/,
-//   loader: 'babel-loader',
-//   query: {
-//   presets: ['react', 'es2015'],
-//     plugins: ['react-html-attrs'], //添加组件的插件配置
-// }
-// },
-
-
 var htmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
@@ -17,7 +6,7 @@ module.exports = {
   entry: "./src/js/main.js",
   output: {
     // path: './dist',
-    path:path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
   module: {
@@ -29,34 +18,32 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015'],
-          plugins: ['react-html-attrs'], //添加组件的插件配置
+          plugins: ['react-html-attrs', ['import', {'libraryName': 'antd', 'style': true}]], //添加组件的插件配置
         }
       },
       {
         test: /\.css$/,
-        // include: path.resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, 'src'),
         // loader: 'style-loader!css-loader?modules'
-        loader: 'style!css?modules&localIdentName=[name]__[local]___[hash:base64:5]'
-        // loader: "style!css?importLoaders=1!postcss",
+        // loader: 'style!css?modules&localIdentName=[name]__[local]___[hash:base64:5]'
+        loader: "style!css?importLoaders=1!postcss",
       },
       {
         test: /\.less$/,
-        //include: path.resolve(__dirname, 'src'),
+        // include: path.resolve(__dirname, 'src'),
         loader: "style!css!postcss!less",
       },
-      {
-        test: /\.html$/,
-        loader:'html-loader'
-      },
-      { test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=50000&name=[path][name].[ext]'}
+      {test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=50000&name=[path][name].[ext]'}
     ]
   },
   postcss: [
     require('autoprefixer')({
-      broswers:['last 5 versions']
+      broswers: ['last 5 versions']
     })
   ],
   plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
     new htmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',

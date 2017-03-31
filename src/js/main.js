@@ -8,13 +8,13 @@ import Essence from './components/essence';
 import Essence1 from './components/essence1';
 import Template from './tpl';
 
-export default class Main extends React.Component{
-  render(){
-    return(
+export default class Main extends React.Component {
+  render() {
+    return (
       <Router history={hashHistory}>
         <Route component={Template} path="/">
-          <Route component = {Essence} path="essence"></Route>
-          <Route component = {Essence1} path="essence1"></Route>
+          <Route component={Essence} path="essence"></Route>
+          <Route component={Essence1} path="essence1"></Route>
         </Route>
       </Router>
     );
