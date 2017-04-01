@@ -27,7 +27,7 @@ export default class Template extends React.Component {
               defaultOpenKeys={['sub1']}
               style={{height: '100%'}}
             >
-              <SubMenu key="sub1" title={<span><Icon type="user"/>subnav 1</span>}>
+              <SubMenu key="sub1" title={<span><Icon type="user"/>subnav分标签ß 1</span>}>
                 <Menu.Item key="1">option1<Link to={`/essence`}/></Menu.Item>
                 <Menu.Item key="2">option2<Link to={`/essence1`}/></Menu.Item>
                 <Menu.Item key="3">option3</Menu.Item>
