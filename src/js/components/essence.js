@@ -31,7 +31,6 @@ export default class Essence extends React.Component {
         </Row>
         <div id="tb-div"></div>
       </div>
-
     )
   }
 }
