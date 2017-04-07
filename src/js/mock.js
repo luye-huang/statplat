@@ -4,7 +4,7 @@
 var Mock = require('mockjs');
 export let domain ={};
 
-export let MockApi = {
+export const MockApi = {
   getListMock(){
     console.log(domain);
     return Mock.mock({

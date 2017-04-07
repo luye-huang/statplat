@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory} from 'react-router';
 import Essence from './components/essence';
 import Essence1 from './components/essence1';
+import Settings from './components/settings';
 import Template from './tpl';
 
 import Option3 from "./components/option3.js";
@@ -14,6 +15,7 @@ import Test2 from "./components/test2.js";
 
 export default class Main extends React.Component {
   render() {
+    document.title = 'zrzc';
     return (
       <Router history={hashHistory}>
         <Route component={Template} path="/">
@@ -21,6 +23,7 @@ export default class Main extends React.Component {
           <Route component={Essence1} path="essence1"></Route>
             <Route component={Option3} path="option3"></Route>
             <Route component={Test2} path="test2"></Route>
+          <Route component={Settings} path="settings"></Route>
         </Route>
       </Router>
     );
