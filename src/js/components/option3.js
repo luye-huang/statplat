@@ -18,17 +18,25 @@ import {
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
+//下拉列表-事件处理
+const menuOnclick = function ({ key }) {
+
+
+    console.log(`${key}`);
+}
+
 //下拉菜单
+let dropData = ["列表项1","列表项2","列表项3"];
 const dropMenu = (
-    <Menu>
-        <Menu.Item>
-            <p>列表项1</p>
+    <Menu onClick={menuOnclick}>
+        <Menu.Item key={dropData[0]}>
+            <p>{dropData[0]}</p>
         </Menu.Item>
-        <Menu.Item>
-            <p>列表项2</p>
+        <Menu.Item key={dropData[1]}>
+            <p>{dropData[1]}</p>
         </Menu.Item>
-        <Menu.Item>
-            <p>列表项3</p>
+        <Menu.Item key={dropData[2]}>
+            <p>{dropData[2]}</p>
         </Menu.Item>
     </Menu>
 );
@@ -104,6 +112,7 @@ const rowSelection = {
 
 
 class test1 extends Component {
+
     //下拉列表-事件处理
     menuOnclick (event){
         let ev = event.target;
@@ -147,7 +156,7 @@ class test1 extends Component {
             <div>
                 <Row>
                     <Col span={8}>
-                        <Dropdown onClick={this.menuOnclick.bind(this)} overlay={dropMenu} trigger={["click"]}>
+                        <Dropdown overlay={dropMenu} trigger={["click"]}>
                             <a className="ant-dropdown-link" href="#">
                                 下拉列表 <Icon type="down" />
                             </a>
