@@ -41,6 +41,9 @@ module.exports = {
       broswers: ['last 5 versions']
     })
   ],
+  node: {
+    fs: "empty"
+  },
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),

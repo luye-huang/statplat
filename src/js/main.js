@@ -10,6 +10,7 @@ import Template from './tpl';
 
 export default class Main extends React.Component {
   render() {
+    document.title = 'zrzc';
     return (
       <Router history={hashHistory}>
         <Route component={Template} path="/">
