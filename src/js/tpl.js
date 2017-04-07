@@ -30,8 +30,8 @@ export default class Template extends React.Component {
               <SubMenu key="sub1" title={<span><Icon type="user"/>subnav分标签ß 1</span>}>
                 <Menu.Item key="1">option1<Link to={`/essence`}/></Menu.Item>
                 <Menu.Item key="2">option2<Link to={`/essence1`}/></Menu.Item>
-                <Menu.Item key="3">option3</Menu.Item>
-                <Menu.Item key="4">option4</Menu.Item>
+                <Menu.Item key="3">option3<Link to={`/option3`}/></Menu.Item>
+                <Menu.Item key="4">option4<Link to={`/test2`}/></Menu.Item>
               </SubMenu>
               <SubMenu key="sub2" title={<span><Icon type="laptop"/>subnav 2</span>}>
                 <Menu.Item key="5">option5</Menu.Item>
