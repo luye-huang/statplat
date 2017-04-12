@@ -1,16 +1,15 @@
 //dependencies: jq, lodash
-//lodash modules: map, find, filter, each, get, sortBy, ceil， isEmpty, cloneDeep, values, last, trim
 import {data} from './data';
 import './luyeTable.less';
 const saver = require('file-saver');
 const $ = require('jquery');
-const _ = require('lodash');
+const deepClone = require('lodash.clonedeep');
 
 export default class LuyeTable {
   constructor(param) {
     this.initialize(param);
   }
-
+  
   initialize(param) {
     this.param = {
       el: null,
@@ -33,8 +32,8 @@ export default class LuyeTable {
     }
     this.initData();
     this.metadata = {
-      processingData: _.cloneDeep(this.param.data),
-      processingColumns: _.cloneDeep(this.param.columns),
+      processingData: deepClone(this.param.data),
+      processingColumns: deepClone(this.param.columns),
       currentData: null,
       currentPage: 1,
       pageTotal: 0
@@ -47,10 +46,11 @@ export default class LuyeTable {
       alert('no data');
       return;
     }
+    this.interceptValueType();
     this.adjustContainer();
     this.render();
   }
-
+  
   //自执行函数,随LuyeTable在初始化时执行
   // regGlobalClick() {
   //   var store = [];
@@ -81,46 +81,64 @@ export default class LuyeTable {
   // }()
   initData() {
     if (this.param.url) {
-
+    
     }
     else if (this.param.data) {
-
+    
     }
     else {
       this.param.data = data.res;
     }
   }
-
+  
   getCurrentData() {
     const pageStart = (this.metadata.currentPage - 1) * this.param.pageCount;
     const pageEnd = pageStart + this.param.pageCount;
     this.metadata.currentData = this.metadata.processingData.slice(pageStart, pageEnd);
   }
-
+  
   //in case that provided data has more attributes than the table needs
   checkDirtyData(data, columns) {
-    _.map(data, function (item) {
+    data.forEach(item => {
       let obj = {};
-      _.each(columns, function (column) {
+      columns.forEach(column => {
         obj[column] = item[column];
       });
       return obj;
     });
   }
-
+  
   //reset to initial data
   resetData() {
     if (this.param.data) {
       this.metadata.currentPage = 1;
-      this.metadata.processingData = _.cloneDeep(this.param.data);
+      this.metadata.processingData = deepClone(this.param.data);
     }
   }
-
+  
+  interceptValueType(integerAttrs = ['currentPage', 'pageCount']) {
+    const integerProtectorHandler = {
+      set: function (obj, prop, value) {
+        if (integerAttrs.includes(prop)) {
+          if (typeof value !== 'number') {
+            value = Number.parseInt(value);
+          }
+        }
+        // without returning true it will cause a 'trap returned falsish'
+        Reflect.set(obj, prop, value);
+        return true;
+      }
+    };
+    this.param = new Proxy(this.param, integerProtectorHandler);
+    this.metadata = new Proxy(this.metadata, integerProtectorHandler);
+  }
+  
   //create room for a set of controls like export button, cross-table query input
   adjustContainer() {
+    console.log(this.param);
     this.param.el.css({"position": "relative", "padding-top": "20px"});
   }
-
+  
   render() {
     // const variables that cannot be reevaluated but can do dom manipulation
     this.wdtb = $('<table id="LuyeTable"></table>');
@@ -131,11 +149,11 @@ export default class LuyeTable {
     this.param.managePageSize && this.renderLeftBoard();
     this.renderRightBoard();
   }
-
+  
   renderHead() {
     this.wdtb.find('thead').remove();
     const tpl = String.raw`<thead><tr>
-      ${this.metadata.processingColumns.map(column=>`
+      ${this.metadata.processingColumns.map(column => `
          <th class="${column.style == "hide" ? "hide" : ""}">${column.cname}<input type="checkbox" class="hide" ${column.style == "hide" ? "value='off'" : "checked='checked'"}/><div><div class="tangle-up arrows"></div><div class="tangle-down arrows"></div></div></th>`)
       }
     </tr></thead>`;
@@ -143,17 +161,17 @@ export default class LuyeTable {
     this.attachSortingEvents();
     this.attachColumnCheckedEvents();
   }
-
+  
   renderLeftBoard() {
     const tpl = `<div class="left-board"><label>每页数: </label><select>
-      ${[10, 20, 30, 50].map(option=>`
+      ${[10, 20, 30, 50].map(option => `
         <option value=${option} ${this.param.pageCount == option ? "selected='selected'" : ""}>${option}</option>
       `)}
     </select></div>`
     this.wdtb.before(tpl);
     this.attachPageSizeEvent();
   }
-
+  
   renderRightBoard() {
     const tpl = `<div class="right-board">
       ${this.param.export ? '<input id="global-search" placeholder="全局关键字查询"/>' : ''}
@@ -165,36 +183,35 @@ export default class LuyeTable {
     this.attachColumnManagementEvents();
     this.attachExportEvent();
   }
-
+  
   renderBody(keywords) {
     this.wdtb.find('tbody').remove();
     const $body = $('<tbody></tbody>');
     const columns = this.metadata.processingColumns;
     console.time('start');
-    _.each(this.metadata.currentData, function (tr) {
+    this.metadata.currentData.forEach(tr => {
       const $tr = $('<tr></tr>');
-      _.each(columns, function (col) {
+      columns.forEach(col => {
         const $td = $('<td></td>');
         if (!col.type) {
-          let tpl_txt = `${_.get(tr, col.cdata)}`;
-          keywords && _.each(keywords, function (keyword) {
+          let tpl_txt = `${tr[col.cdata]}`;
+          keywords && keywords.forEach(keyword => {
             if (tpl_txt.includes(keyword)) {
-              let yellowstr = '<span class="yellowed">' + keyword + '</span>';
+              let yellowstr = `<span class="yellowed">${keyword}</span>`;
               tpl_txt = tpl_txt.replace(keyword, yellowstr);
             }
           });
-          $td.html(tpl_txt);
+          $td.text(tpl_txt)
         }
         else if (col.type == 'a') {
           let rawUrl = col.url.split('@@');
           let href = "";
-          for (let i = 0; i < col.params.length; i++) {
-            href += rawUrl[i];
-            href += tr[col.params[i]];
+          for (let [index, value] of col.params.entries()) {
+            href += rawUrl[index];
+            href += tr[value];
           }
-          href += _.last(rawUrl);
+          href += rawUrl.pop();
           const tpl_a = `<a href="${href}">${col.cname}</a>`;
-          // $('<a></a>').text(col.cname).attr('href', href);
           $td.append(tpl_a);
         }
         if (col.style == 'fakeA') {
@@ -204,12 +221,16 @@ export default class LuyeTable {
           $td.addClass('hide');
         }
         if (col.action) {
-          // tr.columnName = col.cname;
-          $td.on(col.action, tr, col.trigger).attr('columnName', col.cname);
-          // (function (data) {
-          //   console.log(data);
-          //   $td.on(col.action, data, col.trigger);
-          // })(tr);
+          //closure can only keep value from one upper loop , so use tr(two upper loop) tr.columnName = col.cname; can not work
+          // best resolve this problem is to deepclone this value
+          // td.addEventListener(col.action, (function(){
+          //   return function(event){
+          //     col.trigger(tr, col.cname);
+          //   }
+          // })());
+          const param = deepClone(tr);
+          param.columnName = col.cname;
+          $td.on(col.action, param, col.trigger);
         }
         $tr.append($td);
       });
@@ -218,11 +239,11 @@ export default class LuyeTable {
     console.timeEnd('end');
     this.wdtb.append($body);
   }
-
+  
   renderPages() {
-    const {param:params, metadata} = this;
+    const {param: params, metadata} = this;
     const $pagination = $('<ul class="pagination"></ul>');
-    const pageTotal = metadata.pageTotal = _.ceil(metadata.processingData.length / params.pageCount);
+    const pageTotal = metadata.pageTotal = Math.ceil(metadata.processingData.length / params.pageCount);
     const pageFirst = metadata.currentPage - 5 < 1 ? 1 : metadata.currentPage - 5;
     const pageLast = pageFirst + 10 > pageTotal ? pageTotal : pageFirst + 10;
     $('ul.pagination').remove();
@@ -243,11 +264,12 @@ export default class LuyeTable {
     this.attachPagingEvents();
     this.renderPageInfo();
   }
-
+  
   renderPageInfo() {
-    const {param:params, metadata} = this;
+    const {param: params, metadata} = this;
     const $pageInfo = params.el.find('.page-info');
-    if (_.isEmpty($pageInfo)) {
+    if ($pageInfo.length < 1) {
+      console.log($pageInfo);
       const tpl = `<div class="page-info">
         <span>当前第</span><input type="text" class="page-info-current" value="${metadata.currentPage}"/>
         <span>页 &nbsp 共</span><span class="page-info-pages">${metadata.pageTotal}</span>
@@ -264,45 +286,49 @@ export default class LuyeTable {
       $pageInfo.find('.page-info-error').addClass('hide');
     }
   }
-
+  
   attachPageSizeEvent() {
-    const {that = this, param, metadata} = this;
-    $('.left-board select').change(function () {
-      param.pageCount = $(this).val();
-      metadata.pageTotal = _.ceil(metadata.processingData.length / param.pageCount);
+    const {param, metadata} = this;
+    $('.left-board select').change(() => {
+      param.pageCount = $(event.target).val();
+      metadata.pageTotal = Math.ceil(metadata.processingData.length / param.pageCount);
       metadata.currentPage = metadata.currentPage > metadata.pageTotal ? metadata.pageTotal : metadata.currentPage;
-      that.refresh();
+      this.refresh();
     });
   }
-
+  
   attachSortingEvents() {
-    const {metadata, that = this} = this;
-    metadata.app = 1233;
-    _.each(this.wdtb.find('thead .arrows'), function (ele) {
-      $(ele).click(function () {
-        const $this = $(this);
+    const {metadata} = this;
+    //this.wdtb.find('thead .arrows') is not of Array type, cannot forEach
+    Array.from(this.wdtb.find('thead .arrows'), ele => {
+      $(ele).click(() => {
+        const $this = $(event.target);
         if ($this.hasClass('invisible')) {
           return;
         }
         const colTxt = $this.parents('th').text();
-        const sortParam = _.find(that.param.columns, function (item) {
-          return item.cname == colTxt;
-        });
+        const sortParam = this.param.columns.find(item => item.cname == colTxt);
         if ($this.hasClass('tangle-up')) {
-          metadata.processingData = _.sortBy(metadata.processingData, sortParam.cdata);
+          // _.sortBy with attr name
+          metadata.processingData = metadata.processingData.sort(function (a, b) {
+            return a[sortParam.cdata] - b[sortParam.cdata]
+          });
         } else {
-          metadata.processingData = _.sortBy(metadata.processingData, sortParam.cdata).reverse();
+          metadata.processingData = metadata.processingData.sort(function (a, b) {
+            return b[sortParam.cdata] - a[sortParam.cdata]
+          });
         }
         metadata.currentPage = 1;
-        that.refresh();
+        this.refresh();
         $this.toggleClass('invisible');
       })
     });
   }
-
+  
   attachPagingEvents() {
     const {metadata, that = this} = this;
-    _.each($('.pagination>span'), function (ele) {
+    Array.from($('.pagination>span'), function (ele) {
+      // change into arrow function, const $this = $(this) does not work
       $(ele).click(function () {
         const $this = $(this);
         if ($this.hasClass('current-page')) {
@@ -312,50 +338,48 @@ export default class LuyeTable {
         } else if ($this.hasClass('page-next')) {
           metadata.currentPage = metadata.currentPage < metadata.pageTotal ? metadata.currentPage + 1 : metadata.pageTotal;
         } else {
-          metadata.currentPage = parseInt($this.text());
+          metadata.currentPage = $this.text();
         }
         that.refresh();
       });
     });
   }
-
+  
   attachPagingInfoEvents() {
-    const that = this;
-    $('.page-info-current').keydown(function () {
+    $('.page-info-current').keydown(() => {
       if (event.keyCode == 13) {
-        if ($('.page-info-current').val() >= 1 && $('.page-info-current').val() <= that.metadata.pageTotal) {
-          that.metadata.currentPage = $('.page-info-current').val();
-          that.refresh();
+        if ($('.page-info-current').val() >= 1 && $('.page-info-current').val() <= this.metadata.pageTotal) {
+          this.metadata.currentPage = $('.page-info-current').val();
+          this.refresh();
         } else {
-          $('.page-info-current').val(that.metadata.currentPage);
+          $('.page-info-current').val(this.metadata.currentPage);
           $('.page-info-error').removeClass('hide');
         }
       }
     });
   }
-
+  
   attachGlobalSearchEvent() {
-    const that = this;
-    $('.right-board>input').keyup(function () {
-      var keyword = $(this).val();
+    $('.right-board>input').keyup(() => {
+      var keyword = $(event.target).val();
       if (event.keyCode == 13) {
         if (keyword === '') {
-          that.resetData();
-          that.refresh();
+          this.resetData();
+          this.refresh();
         }
         else {
-          that.queryAll(keyword);
+          this.queryAll(keyword);
         }
       }
       else if (event.keyCode == 8) {
         if (keyword === '') {
-          that.resetData();
-          that.refresh();
+          this.resetData();
+          this.refresh();
         }
       }
     });
   }
-
+  
   attachColumnCheckedEvents() {
     this.wdtb.find('thead input').click(function () {
       if ($(this).val() == "on") {
@@ -368,7 +392,7 @@ export default class LuyeTable {
       }
     });
   }
-
+  
   attachColumnManagementEvents() {
     const that = this;
     $('.right-board>button.column-management').click(function () {
@@ -381,13 +405,13 @@ export default class LuyeTable {
         that.resetColumns();
       }
       else if (this.innerText == "确定") {
-        for (let i = 0; i < that.metadata.processingColumns.length; i++) {
-          let val = $($('thead input')[i]).val();
+        for (let [index, value] of that.metadata.processingColumns.entries()) {
+          let val = $($('thead input')[index]).val();
           if (val == 'on') {
-            that.metadata.processingColumns[i].style = "";
+            value.style = "";
           }
           else {
-            that.metadata.processingColumns[i].style = "hide";
+            value.style = "hide";
           }
         }
         $(this).text('列管理').next().text('重置');
@@ -396,70 +420,66 @@ export default class LuyeTable {
       }
     });
   }
-
+  
   // dependencies: bolb FileSaver.js
   // inefficient, consider twice before using this function
   attachExportEvent() {
-    const {metadata:{processingColumns:columns, processingData:data}} = this;
-    $('#export-btn').click(function () {
+    const {metadata: {processingColumns: columns, processingData: data}} = this;
+    $('#export-btn').click(() => {
       const exportedData = [];
-      _.each(data, function (row) {
+      data.forEach(row => {
         let arr = [];
-        for (let i = 0; i < columns.length; i++) {
-          let str = _.get(row, columns[i].cdata) + "";
+        for (let [index, value] of columns.entries()) {
+          let str = row[value.cdata] + "";
           str && str.includes(',') && (str = str.replace(',', '，'));
           arr.push(str);
-          if (i == columns.length - 1) {
+          if (index == columns.length - 1) {
             exportedData.push(arr + '\n')
           }
         }
       })
-      exportedData.unshift(_.map(columns, 'cname') + '\n');
+      exportedData.unshift((columns.map(row => row.cname)) + '\n');
       const blob = new Blob(exportedData, {type: "text/plain;charset=utf-8"});
       saver.saveAs(blob, "download.csv");
     });
   }
-
+  
   resetSortingArrows() {
     this.wdtb.find('thead .arrows.invisible').toggleClass('invisible');
   }
-
+  
   resetColumns() {
-    this.metadata.processingColumns = _.cloneDeep(this.param.columns);
+    this.metadata.processingColumns = deepClone(this.param.columns);
     this.renderHead();
     this.renderBody();
   }
-
+  
   query(queryParams) {
-    let {metadata, yellowed = []} = this;
+    let {metadata, yellowed = new Set()} = this;
     this.resetData();
-    queryParams = _.sortBy(queryParams, 'predicate');
-    _.each(queryParams, function (queryParam) {
+    queryParams = queryParams.sort(function (a, b) {
+      return a.predicate - b.predicate;
+    });
+    queryParams.forEach(queryParam => {
       switch (queryParam.predicate) {
         case "eq":
-          metadata.processingData = _.filter(metadata.processingData, function (item) {
-            yellowed.push(queryParam.arg1);
+          metadata.processingData = metadata.processingData.filter(item => {
+            yellowed.add(queryParam.arg1);
             return item[queryParam.queryCol] == queryParam.arg1;
           });
           break;
         case "gt":
-          metadata.processingData = _.filter(metadata.processingData, function (item) {
-            return item[queryParam.queryCol] >= queryParam.arg1;
-          });
+          metadata.processingData = metadata.processingData.filter(item => item[queryParam.queryCol] >= queryParam.arg1);
           break;
         case "lt":
-          metadata.processingData = _.filter(metadata.processingData, function (item) {
-            return item[queryParam.queryCol] <= queryParam.arg1;
-          });
+          metadata.processingData = metadata.processingData.filter(item => item[queryParam.queryCol] <= queryParam.arg1);
           break;
         case "rg":
-          metadata.processingData = _.filter(metadata.processingData, function (item) {
-            return item[queryParam.queryCol] >= queryParam.arg1 && item[queryParam.queryCol] <= queryParam.arg2;
-          });
+          metadata.processingData = metadata.processingData.filter(item => item[queryParam.queryCol] >= queryParam.arg1 && item[queryParam.queryCol] <= queryParam.arg2);
           break;
         case "zkw":
-          metadata.processingData = _.filter(metadata.processingData, function (item) {
-            yellowed.push(queryParam.arg1);
+          metadata.processingData = metadata.processingData.filter(item => {
+            yellowed.add(queryParam.arg1);
             return item[queryParam.queryCol].includes(queryParam.arg1);
           });
           break;
@@ -467,22 +487,20 @@ export default class LuyeTable {
     });
     this.refresh(yellowed);
   }
-
+  
   queryAll(keyword) {
     this.resetData();
-    this.metadata.processingData = _.filter(this.metadata.processingData, function (item) {
-      return _.values(item).join('Æता').includes(keyword);
-    });
+    this.metadata.processingData = this.metadata.processingData.filter(item => Object.values(item).join('Æता').includes(keyword));
     this.refresh([keyword]);
   }
-
+  
   refresh(keywords) {
     this.getCurrentData();
     this.resetSortingArrows();
     this.renderBody(keywords);
     this.param.pagination && this.renderPages();
   }
-
+  
   destroy() {
     this.param.el.empty();
   }

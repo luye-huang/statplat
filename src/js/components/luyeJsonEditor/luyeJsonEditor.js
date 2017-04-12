@@ -24,6 +24,16 @@ export default class LuyeJsonEditor{
     var $container = $('<div class="editor-container"></div>');
     console.log('metadata: '+this.metadata);
     _.forIn(this.metadata, function(value, key){
+      debugger
+      if(value.constructor == Array){
+      
+      }
+      else if(value.constructor == Object){
+      
+      }
+      else{
+      
+      }
       console.log('value type is '+ value.constructor);
       console.log(value.constructor==Array);
       console.log(value);
