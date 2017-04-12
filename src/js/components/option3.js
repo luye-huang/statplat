@@ -3,9 +3,7 @@
  */
 import React , {Component} from "react";
 import { DatePicker } from 'antd';
-
 import moment from 'moment';
-
 import {
     Layout, Menu,
     Breadcrumb, Icon,
@@ -18,45 +16,19 @@ import {
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
-//下拉列表-事件处理
-const menuOnclick = function ({ key }) {
-
-
-    console.log(`${key}`);
-}
-
-//下拉菜单
-let dropData = ["列表项1","列表项2","列表项3"];
-const dropMenu = (
-    <Menu onClick={menuOnclick}>
-        <Menu.Item key={dropData[0]}>
-            <p>{dropData[0]}</p>
-        </Menu.Item>
-        <Menu.Item key={dropData[1]}>
-            <p>{dropData[1]}</p>
-        </Menu.Item>
-        <Menu.Item key={dropData[2]}>
-            <p>{dropData[2]}</p>
-        </Menu.Item>
-    </Menu>
-);
-
 //时间日期选择
 const { MonthPicker, RangePicker } = DatePicker;
-
 function onChange(date, dateString) {
     console.log(date);
     console.log( dateString);
-
 }
 
-//获取当前时间
+ //获取当前时间
 function getNowTime(date){
     let y, m, d;
     y = date.getFullYear();
     m = date.getMonth() + 1;
     d = date.getDate();
-
     return ( y +"-"+ (m<10?("0"+m):m) + "-" + (d<10?("0"+d):d) );
 }
 
@@ -111,27 +83,26 @@ const rowSelection = {
 };
 
 
-class test1 extends Component {
-
-    //下拉列表-事件处理
-    menuOnclick (event){
-        let ev = event.target;
-        console.log(ev);
-        console.log(ev.nodeName);
-        if(ev.nodeName == "p"){
-            console.log(11111);
-        }
-    }
-
-    //modal对话框 - 初始化
+class option3 extends Component {
+    //modal对话框 - 初始化, 下拉列表 - 显示数据-初始化
     constructor(props){
         super();
         this.state = {
             loading: false,
             visible: false,
+            dropData:"下拉列表",
         }
     }
 
+    //下拉列表-事件处理
+    menuOnclick(e) {
+        console.log('click', e.key);
+        this.setState({
+            dropData:e.key,
+        });
+    }
+
+    //modal对话框
     showModal (){
         this.setState({
             visible: true,
@@ -152,13 +123,30 @@ class test1 extends Component {
         let currDate = new Date();
         let currTime = getNowTime(currDate);
 
+        //下拉菜单 - menu
+        const dropData = ["列表项1","列表项2","列表项3"];
+        const dropMenu = (
+            <Menu onClick={this.menuOnclick.bind(this)} >
+                <Menu.Item key={dropData[0]}>
+                    <p>{dropData[0]}</p>
+                </Menu.Item>
+                <Menu.Item key={dropData[1]}>
+                    <p>{dropData[1]}</p>
+                </Menu.Item>
+                <Menu.Item key={dropData[2]}>
+                    <p>{dropData[2]}</p>
+                </Menu.Item>
+            </Menu>
+        );
+
         return(
             <div>
                 <Row>
                     <Col span={8}>
                         <Dropdown overlay={dropMenu} trigger={["click"]}>
                             <a className="ant-dropdown-link" href="#">
-                                下拉列表 <Icon type="down" />
+                                {this.state.dropData}
+                                <Icon type="down" />
                             </a>
                         </Dropdown>
                     </Col>
@@ -215,5 +203,5 @@ class test1 extends Component {
     }
 }
 
-export default test1;
+export default option3;
 
