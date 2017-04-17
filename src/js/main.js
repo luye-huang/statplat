@@ -11,8 +11,8 @@ import Template from './tpl';
 
 import Option3 from "./components/option3.js";
 import Test2 from "./components/test2.js";
-import ReportList from "./components/reportList.js";
-import MonthlyChart from "./components/monthlyChart.js";
+import ReportList from "./components/report-list";
+import MonthlyChart from "./components/month-stat";
 import NewProject from "./components/newProject.js";
 
 
@@ -26,7 +26,7 @@ export default class Main extends React.Component {
           <Route component={Essence1} path="essence1"></Route>
 
           <Route component={ReportList} path="reportList"></Route>
-          <Route component={MonthlyChart} path="monthlyChart"></Route>
+          <Route component={MonthlyChart} path="monthStat"></Route>
           <Route component={NewProject} path="newProject"></Route>
           <Route component={Option3} path="option3"></Route>
           <Route component={Test2} path="test2"></Route>

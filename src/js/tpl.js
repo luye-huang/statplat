@@ -35,7 +35,7 @@ export default class Template extends React.Component {
               </SubMenu>
 
               <Menu.Item key="5">准入报告列表<Link to={`/reportList`}/></Menu.Item>
-              <Menu.Item key="6">月度统计表<Link to={`/monthlyChart`}/></Menu.Item>
+              <Menu.Item key="6">月度统计表<Link to={`/monthStat`}/></Menu.Item>
               <Menu.Item key="7">新建项目<Link to={`/newProject`}/></Menu.Item>
 
               <SubMenu key="sub2" title={<span><Icon type="laptop"/>sub2</span>}>

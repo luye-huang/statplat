@@ -361,7 +361,7 @@ export default class LuyeTable {
   
   attachGlobalSearchEvent() {
     $('.right-board>input').keyup(() => {
-      var keyword = $(event.target).val();
+      const keyword = $(event.target).val();
       if (event.keyCode == 13) {
         if (keyword === '') {
           this.resetData();

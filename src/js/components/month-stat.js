@@ -2,22 +2,21 @@
  * Created by yang on 17/4/10.
  */
 /*
- 准入报告列表
+ 月度统计表
  */
 import React, {Component} from "react";
-import {Link} from "react-router";
 import {
     Input,
     Select,
     Icon,
     Row, Col,
-    Menu, Dropdown,
+    Menu,
     Button,
     DatePicker,
 
 } from 'antd';
 import moment from 'moment';
-import "../../less/reportList.less";
+import "../../less/monthlyChart.less";
 
 //时间日期选择
 const { MonthPicker, RangePicker } = DatePicker;
@@ -34,7 +33,7 @@ function getNowTime(date){
     return ( y +"-"+ (m<10?("0"+m):m) + "-" + (d<10?("0"+d):d) );
 }
 
-export default class reportList extends Component{
+export default class MonthStat extends Component{
     //状态初始化 -- input输入框 和 下拉列表dropdown
     constructor(props){
         super();
@@ -61,7 +60,7 @@ export default class reportList extends Component{
     handleChange(e) {
         var obj = {};
         obj[e.target.name] = e.target.value;
-        //
+        // 滞后
         this.setState(obj);
         console.log(this.state);
 
@@ -71,25 +70,6 @@ export default class reportList extends Component{
         //当前时间
         let currDate = new Date();
         let currTime = getNowTime(currDate);
-
-        //下拉菜单 - menu
-        const dropData = ["通过","未通过","待审核","自动通过"];
-        const dropMenu = (
-            <Menu onClick={this.menuOnclick.bind(this)} >
-                <Menu.Item key={dropData[0]}>
-                    <p>{dropData[0]}</p>
-                </Menu.Item>
-                <Menu.Item key={dropData[1]}>
-                    <p>{dropData[1]}</p>
-                </Menu.Item>
-                <Menu.Item key={dropData[2]}>
-                    <p>{dropData[2]}</p>
-                </Menu.Item>
-                <Menu.Item key={dropData[3]}>
-                    <p>{dropData[3]}</p>
-                </Menu.Item>
-            </Menu>
-        );
 
         return(
             <div>
@@ -102,21 +82,10 @@ export default class reportList extends Component{
                         <Input addonBefore="报告人姓名" defaultValue={this.state.reporter} name="reporter"
                                onChange={this.handleChange.bind(this)}/>
                     </Col>
-                    <Col span={6}>
-                        <span className="dateSubmit0">提交时间</span>
-                        <div className="divDateSubmit0">
-                            <DatePicker defaultValue={moment(currTime)} onChange={onChange} />
-                        </div>
-                    </Col>
-                    <Col span={6} className="examResult">
-                        <span>审核结果</span>
-                        <div>
-                            <Dropdown overlay={dropMenu} trigger={["click"]}>
-                                <a className="ant-dropdown-link" href="#">
-                                    {this.state.dropData}
-                                    <Icon type="down" />
-                                </a>
-                            </Dropdown>
+                    <Col span={12}>
+                        <span className="dateSubmit">提交时间</span>
+                        <div className="divDateSubmit">
+                            <RangePicker defaultValue={[moment(currTime),null]} onChange={onChange} name="dateSubmit"/>
                         </div>
                     </Col>
                 </Row>
@@ -133,13 +102,9 @@ export default class reportList extends Component{
                         <Input addonBefore="责任人团队" defaultValue={this.state.team} name="team"
                                onChange={this.handleChange.bind(this)}/>
                     </Col>
+                    <Col span={6}><Button style={{ float:"right" }} type="primary">查询</Button></Col>
                 </Row>
-                <Row>
-                    <Col span={6}></Col>
-                    <Col span={6}><Button style={{ marginLeft:4 }} type="primary">新建项目<Link to={`/newProject`}/></Button></Col>
-                    <Col span={6}><Button style={{ marginLeft:8 }} type="primary">查询</Button></Col>
-                </Row>
-
+                
                 <div id="tb-div"></div>
 
             </div>
