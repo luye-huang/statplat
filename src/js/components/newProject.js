@@ -51,7 +51,18 @@ export default class newProject extends Component{
         this.setState({
             visible: false,
         });
-        
+
+        //弹框2
+        let modalEle = document.getElementsByClassName("ant-modal-footer");
+        let btnEle = modalEle[0].childNodes[1];
+        console.log(btnEle);
+        console.log(1111);
+        btnEle.click("click",
+            function () {
+                console.log(2222);
+            }
+        );
+
     }
     handleCancel (e){
         console.log(e);
@@ -138,8 +149,9 @@ export default class newProject extends Component{
                         <Col span={5} ><Button>取消</Button></Col>
                         <Col span={8} >
                             <Button type="primary" onClick={this.showModal.bind(this)}>提交</Button>
-                            <Modal title="提交确认" visible={this.state.visible}
+                            <Modal className="submitModal" title="提交确认" visible={this.state.visible}
                                    onOk={this.handleOk.bind(this)} onCancel={this.handleCancel.bind(this)}
+                                   okText="是" cancelText="否"
                             >
                                 <p>确认提交项目信息?</p>
                             </Modal>
