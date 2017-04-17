@@ -16,7 +16,7 @@ import {
 
 } from 'antd';
 import moment from 'moment';
-import "../../less/monthlyChart.less";
+import "../../less/monthStat.less";
 
 //时间日期选择
 const { MonthPicker, RangePicker } = DatePicker;

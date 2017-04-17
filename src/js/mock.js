@@ -15,7 +15,13 @@ export const MockApi = {
         'regexp3': /\d{5,10}/
       }]
     })
+  },
+  getWorkflowList(){
+    return Mock.mock({
+    })
   }
+
+
 }
 
 // export default MockApi = MockApi; 先实现再赋值的写法要有default

@@ -4,12 +4,13 @@ import './luyeTable.less';
 const saver = require('file-saver');
 const $ = require('jquery');
 const deepClone = require('lodash.clonedeep');
+const sortBy = require('lodash.sortby');
 
 export default class LuyeTable {
   constructor(param) {
     this.initialize(param);
   }
-  
+
   initialize(param) {
     this.param = {
       el: null,
@@ -26,7 +27,7 @@ export default class LuyeTable {
       //initial value lost at first evaluation
       managePageSize: true
     };
-    $.extend(this.param, param);
+    Object.assign(this.param, param);
     if (!(this.param.el instanceof $)) {
       this.param.el = $(this.param.el);
     }
@@ -50,7 +51,7 @@ export default class LuyeTable {
     this.adjustContainer();
     this.render();
   }
-  
+
   //自执行函数,随LuyeTable在初始化时执行
   // regGlobalClick() {
   //   var store = [];
@@ -81,22 +82,22 @@ export default class LuyeTable {
   // }()
   initData() {
     if (this.param.url) {
-    
+
     }
     else if (this.param.data) {
-    
+
     }
     else {
       this.param.data = data.res;
     }
   }
-  
+
   getCurrentData() {
     const pageStart = (this.metadata.currentPage - 1) * this.param.pageCount;
     const pageEnd = pageStart + this.param.pageCount;
     this.metadata.currentData = this.metadata.processingData.slice(pageStart, pageEnd);
   }
-  
+
   //in case that provided data has more attributes than the table needs
   checkDirtyData(data, columns) {
     data.forEach(item => {
@@ -107,7 +108,7 @@ export default class LuyeTable {
       return obj;
     });
   }
-  
+
   //reset to initial data
   resetData() {
     if (this.param.data) {
@@ -115,7 +116,7 @@ export default class LuyeTable {
       this.metadata.processingData = deepClone(this.param.data);
     }
   }
-  
+
   interceptValueType(integerAttrs = ['currentPage', 'pageCount']) {
     const integerProtectorHandler = {
       set: function (obj, prop, value) {
@@ -132,13 +133,12 @@ export default class LuyeTable {
     this.param = new Proxy(this.param, integerProtectorHandler);
     this.metadata = new Proxy(this.metadata, integerProtectorHandler);
   }
-  
+
   //create room for a set of controls like export button, cross-table query input
   adjustContainer() {
-    console.log(this.param);
     this.param.el.css({"position": "relative", "padding-top": "20px"});
   }
-  
+
   render() {
     // const variables that cannot be reevaluated but can do dom manipulation
     this.wdtb = $('<table id="LuyeTable"></table>');
@@ -149,7 +149,7 @@ export default class LuyeTable {
     this.param.managePageSize && this.renderLeftBoard();
     this.renderRightBoard();
   }
-  
+
   renderHead() {
     this.wdtb.find('thead').remove();
     const tpl = String.raw`<thead><tr>
@@ -161,7 +161,7 @@ export default class LuyeTable {
     this.attachSortingEvents();
     this.attachColumnCheckedEvents();
   }
-  
+
   renderLeftBoard() {
     const tpl = `<div class="left-board"><label>每页数: </label><select>
       ${[10, 20, 30, 50].map(option => `
@@ -171,7 +171,7 @@ export default class LuyeTable {
     this.wdtb.before(tpl);
     this.attachPageSizeEvent();
   }
-  
+
   renderRightBoard() {
     const tpl = `<div class="right-board">
       ${this.param.export ? '<input id="global-search" placeholder="全局关键字查询"/>' : ''}
@@ -183,7 +183,7 @@ export default class LuyeTable {
     this.attachColumnManagementEvents();
     this.attachExportEvent();
   }
-  
+
   renderBody(keywords) {
     this.wdtb.find('tbody').remove();
     const $body = $('<tbody></tbody>');
@@ -193,6 +193,7 @@ export default class LuyeTable {
       const $tr = $('<tr></tr>');
       columns.forEach(col => {
         const $td = $('<td></td>');
+        // let td = document.createElement('td');
         if (!col.type) {
           let tpl_txt = `${tr[col.cdata]}`;
           keywords && keywords.forEach(keyword => {
@@ -201,7 +202,7 @@ export default class LuyeTable {
               tpl_txt = tpl_txt.replace(keyword, yellowstr);
             }
           });
-          $td.text(tpl_txt)
+          $td.html(tpl_txt);
         }
         else if (col.type == 'a') {
           let rawUrl = col.url.split('@@');
@@ -232,6 +233,7 @@ export default class LuyeTable {
           param.columnName = col.cname;
           $td.on(col.action, param, col.trigger);
         }
+        col.adjust && col.adjust($td);
         $tr.append($td);
       });
       $body.append($tr);
@@ -239,7 +241,7 @@ export default class LuyeTable {
     console.timeEnd('end');
     this.wdtb.append($body);
   }
-  
+
   renderPages() {
     const {param: params, metadata} = this;
     const $pagination = $('<ul class="pagination"></ul>');
@@ -264,7 +266,7 @@ export default class LuyeTable {
     this.attachPagingEvents();
     this.renderPageInfo();
   }
-  
+
   renderPageInfo() {
     const {param: params, metadata} = this;
     const $pageInfo = params.el.find('.page-info');
@@ -286,7 +288,7 @@ export default class LuyeTable {
       $pageInfo.find('.page-info-error').addClass('hide');
     }
   }
-  
+
   attachPageSizeEvent() {
     const {param, metadata} = this;
     $('.left-board select').change(() => {
@@ -296,7 +298,7 @@ export default class LuyeTable {
       this.refresh();
     });
   }
-  
+
   attachSortingEvents() {
     const {metadata} = this;
     //this.wdtb.find('thead .arrows') is not of Array type, cannot forEach
@@ -310,13 +312,9 @@ export default class LuyeTable {
         const sortParam = this.param.columns.find(item => item.cname == colTxt);
         if ($this.hasClass('tangle-up')) {
           // _.sortBy with attr name
-          metadata.processingData = metadata.processingData.sort(function (a, b) {
-            return a[sortParam.cdata] - b[sortParam.cdata]
-          });
+          metadata.processingData = sortBy(metadata.processingData, sortParam.cdata);
         } else {
-          metadata.processingData = metadata.processingData.sort(function (a, b) {
-            return b[sortParam.cdata] - a[sortParam.cdata]
-          });
+          metadata.processingData = sortBy(metadata.processingData, sortParam.cdata).reverse();
         }
         metadata.currentPage = 1;
         this.refresh();
@@ -324,7 +322,7 @@ export default class LuyeTable {
       })
     });
   }
-  
+
   attachPagingEvents() {
     const {metadata, that = this} = this;
     Array.from($('.pagination>span'), function (ele) {
@@ -344,7 +342,7 @@ export default class LuyeTable {
       });
     });
   }
-  
+
   attachPagingInfoEvents() {
     $('.page-info-current').keydown(() => {
       if (event.keyCode == 13) {
@@ -358,10 +356,10 @@ export default class LuyeTable {
       }
     });
   }
-  
+
   attachGlobalSearchEvent() {
     $('.right-board>input').keyup(() => {
-      const keyword = $(event.target).val();
+      var keyword = $(event.target).val();
       if (event.keyCode == 13) {
         if (keyword === '') {
           this.resetData();
@@ -379,7 +377,7 @@ export default class LuyeTable {
       }
     });
   }
-  
+
   attachColumnCheckedEvents() {
     this.wdtb.find('thead input').click(function () {
       if ($(this).val() == "on") {
@@ -392,7 +390,7 @@ export default class LuyeTable {
       }
     });
   }
-  
+
   attachColumnManagementEvents() {
     const that = this;
     $('.right-board>button.column-management').click(function () {
@@ -420,7 +418,7 @@ export default class LuyeTable {
       }
     });
   }
-  
+
   // dependencies: bolb FileSaver.js
   // inefficient, consider twice before using this function
   attachExportEvent() {
@@ -443,23 +441,21 @@ export default class LuyeTable {
       saver.saveAs(blob, "download.csv");
     });
   }
-  
+
   resetSortingArrows() {
     this.wdtb.find('thead .arrows.invisible').toggleClass('invisible');
   }
-  
+
   resetColumns() {
     this.metadata.processingColumns = deepClone(this.param.columns);
     this.renderHead();
     this.renderBody();
   }
-  
+
   query(queryParams) {
     let {metadata, yellowed = new Set()} = this;
     this.resetData();
-    queryParams = queryParams.sort(function (a, b) {
-      return a.predicate - b.predicate;
-    });
+    queryParams = sortBy(queryParams, 'predicate');
     queryParams.forEach(queryParam => {
       switch (queryParam.predicate) {
         case "eq":
@@ -487,20 +483,20 @@ export default class LuyeTable {
     });
     this.refresh(yellowed);
   }
-  
+
   queryAll(keyword) {
     this.resetData();
     this.metadata.processingData = this.metadata.processingData.filter(item => Object.values(item).join('Æता').includes(keyword));
     this.refresh([keyword]);
   }
-  
+
   refresh(keywords) {
     this.getCurrentData();
     this.resetSortingArrows();
     this.renderBody(keywords);
     this.param.pagination && this.renderPages();
   }
-  
+
   destroy() {
     this.param.el.empty();
   }

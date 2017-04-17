@@ -11,8 +11,8 @@ import Template from './tpl';
 
 import Option3 from "./components/option3.js";
 import Test2 from "./components/test2.js";
-import ReportList from "./components/report-list";
-import MonthlyChart from "./components/month-stat";
+import ReportList from "./components/reportList";
+import MonthlyChart from "./components/monthStat";
 import NewProject from "./components/newProject.js";
 
 
