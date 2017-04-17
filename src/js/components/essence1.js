@@ -11,11 +11,14 @@ export default class Essence1 extends React.Component{
   }
   componentDidMount(){
     console.log('did mount!!');
+    var cb = (e)=>{
+      console.log(e.data);
+    }
     let tb = new LuyeTable({
       el:document.getElementById('tb-div'),
-      columns : [{cname : '团队名称', cdata : 'tname', action:'click'},
+      columns : [{cname : '团队名称', cdata : 'tname', action:'click', trigger:cb},
         {cname : '代码行总数', cdata : 'code_count', style:'hide'},
-        {cname : '提交文件总数', cdata : 'file_count', action:'click'},
+        {cname : '提交文件总数', cdata : 'file_count', action:'click', trigger:cb},
         {cname : '团队总得分', cdata : 'tscore'}]
     })
   }
