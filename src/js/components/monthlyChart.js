@@ -1,6 +1,9 @@
 /**
  * Created by yang on 17/4/10.
  */
+/*
+ 月度统计表
+ */
 import React, {Component} from "react";
 import {
     Input,
@@ -99,11 +102,9 @@ export default class reportList extends Component{
                         <Input addonBefore="责任人团队" defaultValue={this.state.team} name="team"
                                onChange={this.handleChange.bind(this)}/>
                     </Col>
+                    <Col span={6}><Button style={{ float:"right" }} type="primary">查询</Button></Col>
                 </Row>
-                <Row>
-                    <Col span={6}><Button type="primary">查询</Button></Col>
-                </Row>
-
+                
                 <div id="tb-div"></div>
 
             </div>

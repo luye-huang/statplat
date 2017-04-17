@@ -102,7 +102,7 @@ class option3 extends Component {
         });
     }
 
-    //modal对话框
+    //modal对话框 -- 在使用过程中,需要将ant design例子中的箭头函数,改为常规函数,并且在绑定事件时需要bind(this).
     showModal (){
         this.setState({
             visible: true,
