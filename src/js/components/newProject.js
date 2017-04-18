@@ -109,7 +109,7 @@ export default class newProject extends Component{
                 <div>
                     <Row style={{ marginBottom: 20 }}>
                         <Col span={10}></Col>
-                        <Col span={4} className="new-project">新建项目</Col>
+                        <Col span={4} className="title-txt">新建项目</Col>
                     </Row>
                     <Row gutter={16} style={{ marginBottom: 16 }}>
                         <Col span={8}>
@@ -120,7 +120,7 @@ export default class newProject extends Component{
                             <Input addonBefore="需求ID" defaultValue={this.state.requirementID} name="requirementID"
                                    onChange={this.handleChange.bind(this)}/>
                         </Col>
-                        <Col span={8} className="examResult">
+                        <Col span={8} className="exam-result">
                             <span>项目类型</span>
                             <div>
                                 <Dropdown overlay={dropMenu} trigger={["click"]}>
@@ -134,8 +134,8 @@ export default class newProject extends Component{
                     </Row>
                     <Row gutter={16} style={{ marginBottom: 40 }}>
                         <Col span={12}>
-                            <span className="dateSubmit">测试周期</span>
-                            <div className="divDateSubmit">
+                            <span className="date-submit">测试周期</span>
+                            <div className="div-date-submit">
                                 <RangePicker defaultValue={[null,null]} onChange={onChange} name="dateSubmit"/>
                             </div>
                         </Col>

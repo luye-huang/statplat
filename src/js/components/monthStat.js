@@ -83,8 +83,8 @@ export default class MonthStat extends Component{
                                onChange={this.handleChange.bind(this)}/>
                     </Col>
                     <Col span={12}>
-                        <span className="dateSubmit">提交时间</span>
-                        <div className="divDateSubmit">
+                        <span className="date-submit">提交时间</span>
+                        <div className="div-date-submit">
                             <RangePicker defaultValue={[moment(currTime),null]} onChange={onChange} name="dateSubmit"/>
                         </div>
                     </Col>

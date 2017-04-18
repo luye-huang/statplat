@@ -103,12 +103,12 @@ export default class ReportList extends Component {
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6}>
-            <span className="dateSubmit0">提交时间</span>
-            <div className="divDateSubmit0">
+            <span className="date-submit0">提交时间</span>
+            <div className="div-date-submit0">
               <DatePicker defaultValue={moment(currTime)} onChange={onChange}/>
             </div>
           </Col>
-          <Col span={6} className="examResult">
+          <Col span={6} className="exam-result">
             <span>审核结果</span>
             <div>
               <Dropdown overlay={dropMenu} trigger={["click"]}>
