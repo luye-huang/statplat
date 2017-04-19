@@ -36,7 +36,9 @@ export default class Template extends React.Component {
 
               <Menu.Item key="5">准入报告列表<Link to={`/reportList`}/></Menu.Item>
               <Menu.Item key="6">月度统计表<Link to={`/monthStat`}/></Menu.Item>
-              <Menu.Item key="8">新建提测准入报告<Link to={`/newCheckInReport`}/></Menu.Item>
+              <Menu.Item key="7">新建提测准入报告<Link to={`/newCheckInReport`}/></Menu.Item>
+              <Menu.Item key="8">新建上线准入报告<Link to={`/newOnlineReport`}/></Menu.Item>
+              <Menu.Item key="9">新建合版准入报告<Link to={`/newMergeReport`}/></Menu.Item>
 
               <Menu.Item key="1">配置管理<Link to={`/settings`}/></Menu.Item>
             </Menu>
