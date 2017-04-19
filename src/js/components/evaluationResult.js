@@ -74,15 +74,15 @@ export default class EvaluationResult extends Component{
 
                 <div style={{ display: isHide }}>
                     <Row className="jira-css row-btn-css">
-                        <Col span={12} className="submit-btn">
-                            <Button
-                                    onClick={ ()=>{ window.location="index.html#/reportList" } }
-                            >关闭</Button>
-                        </Col>
                         <Col span={12} className="look-result-btn">
                             <Button type="primary"
                                     onClick={ ()=>{ window.location="index.html#/examResult" } }
                             >提交审批结果</Button>
+                        </Col>
+                        <Col span={12} className="submit-btn">
+                            <Button
+                                onClick={ ()=>{ window.location="index.html#/reportList" } }
+                            >关闭</Button>
                         </Col>
                     </Row>
                 </div>

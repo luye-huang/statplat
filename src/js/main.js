@@ -17,6 +17,8 @@ import NewProject from "./components/newProject.js";
 import NewCheckInReport from "./components/newCheckInReport.js";
 import EvaluationResult from "./components/evaluationResult.js";
 import ExamResult from "./components/examResult.js";
+import NewOnlineReport from "./components/newOnlineReport.js";
+import NewMergeReport from "./components/newMergeReport.js";
 
 export default class Main extends React.Component {
   render() {
@@ -33,6 +35,9 @@ export default class Main extends React.Component {
           <Route component={NewCheckInReport} path="newCheckInReport"></Route>
           <Route component={EvaluationResult} path="evaluationResult"></Route>
           <Route component={ExamResult} path="examResult"></Route>
+          
+          <Route component={NewOnlineReport} path="newOnlineReport"></Route>
+          <Route component={NewMergeReport} path="newMergeReport"></Route>
           <Route component={Option3} path="option3"></Route>
           <Route component={Test2} path="test2"></Route>
 
