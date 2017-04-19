@@ -212,7 +212,7 @@ export default class LuyeTable {
             href += tr[value];
           }
           href += rawUrl.pop();
-          const tpl_a = `<a href="${href}">${col.cname}</a>`;
+          const tpl_a = `<a href="${href}">${col.cdata ? tr[col.cdata] : col.cname}</a>`;
           $td.append(tpl_a);
         }
         if (col.style == 'fakeA') {

@@ -13,7 +13,6 @@ import {
   Menu, Dropdown,
   Button,
   DatePicker,
-
 } from 'antd';
 import moment from 'moment';
 import "../../less/reportList.less";
@@ -45,7 +44,6 @@ export default class ReportList extends Component {
       dep1: "dep1",
       team: "team",
       dropData: "未通过",
-
     };
   }
 
@@ -138,13 +136,9 @@ export default class ReportList extends Component {
           <Col span={6}></Col>
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
                                 onClick={()=>window.location = 'index.html#/newProject'}>新建项目</Button></Col>
-          <Col span={6}><Button style={{marginLeft: 8}} type="primary">查询</Button></Col>
         </Row>
-
         <div id="tb-div"></div>
-
       </div>
-
     );
   }
 }
