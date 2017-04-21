@@ -7,6 +7,7 @@
  */
 import React, {Component} from "react";
 import "../../less/newProject.less";
+
 import {
   Input,
   Icon,
@@ -58,6 +59,7 @@ export default class newProject extends Component {
   }
 
   handleOk(e) {
+    console.trace();
     console.log(22);
     console.log(e);
 
@@ -69,9 +71,8 @@ export default class newProject extends Component {
     window.location = 'index.html#/newCheckInReport';
     this.setState({
       visible: false,
-
     });
-
+    
   }
 
   handleCancel(e) {
@@ -144,7 +145,7 @@ export default class newProject extends Component {
             <Col span={12}>
               <span className="date-submit">测试周期</span>
               <div className="div-date-submit">
-                <RangePicker defaultValue={[null, null]} onChange={this.onChange.bind(this)} name="dateSubmit"/>
+                <RangePicker defaultValue={[null, null]} onChange={onChange} name="dateSubmit"/>
               </div>
             </Col>
             <Col span={12}>
