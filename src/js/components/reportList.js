@@ -16,6 +16,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import "../../less/reportList.less";
+import {api} from "../api.js";
 
 //时间日期选择
 const {MonthPicker, RangePicker} = DatePicker;
@@ -44,6 +45,9 @@ export default class ReportList extends Component {
       dep1: "dep1",
       team: "team",
       dropData: "未通过",
+
+      date_begin:"2017-04-18",
+      date_end:"2017-04-22",
     };
   }
 
@@ -140,6 +144,13 @@ export default class ReportList extends Component {
         <div id="tb-div"></div>
       </div>
     );
+  }
+
+  componentDidMount(){
+    console.log(this.state);
+    api.getReportList(this.state).then( data => {
+      console.log(data);
+    } );
   }
 }
 

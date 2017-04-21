@@ -28,6 +28,7 @@ export default class NewOnlineReport extends Component {
       dropData_test: "通过",
       dropData_UAT: "通过",
 
+      work_id:"8"
     };
   }
 
@@ -335,12 +336,12 @@ export default class NewOnlineReport extends Component {
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
               <Button
-                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0" }}
+                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=online" }}
               >查看结果</Button>
             </Col>
             <Col span={12} className="submit-btn">
               <Button type="primary"
-                      onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=1" } }
+                      onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=1&pageTag=online" } }
               >提交</Button>
             </Col>
           </Row>
@@ -349,4 +350,12 @@ export default class NewOnlineReport extends Component {
       </div>
     );
   }
+
+  componentDidMount() {
+    //新建上线报告前,获取上线的jira数据
+    api.getOnlineReport_Jira(this.state.work_id).then(data=> {
+      console.log(data);
+    });
+  }
+
 }

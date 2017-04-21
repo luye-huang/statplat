@@ -24,6 +24,8 @@ export default class NewMergeReport extends Component {
       dropData_merge:"无变更",
       dropData_test: "通过",
       dropData_UAT: "通过",
+
+      work_id:"8"
     };
   }
 
@@ -391,12 +393,12 @@ export default class NewMergeReport extends Component {
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
               <Button
-                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0" }}
+                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=merge" }}
               >查看结果</Button>
             </Col>
             <Col span={12} className="submit-btn">
               <Button type="primary"
-                      onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=1" } }
+                      onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge" } }
               >提交</Button>
             </Col>
           </Row>
@@ -405,4 +407,13 @@ export default class NewMergeReport extends Component {
       </div>
     );
   }
+
+  componentDidMount() {
+    //新建合板报告前,获取合板的jira数据
+    api.getMergeReport_Jira(this.state.work_id).then(data=> {
+      console.log(data);
+    });
+  }
+
+
 }
