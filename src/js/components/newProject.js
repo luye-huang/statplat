@@ -68,6 +68,7 @@ export default class newProject extends Component {
     //   console.log(data);
     // } );
 
+
     window.location = 'index.html#/newCheckInReport';
     this.setState({
       visible: false,
@@ -145,7 +146,7 @@ export default class newProject extends Component {
             <Col span={12}>
               <span className="date-submit">测试周期</span>
               <div className="div-date-submit">
-                <RangePicker defaultValue={[null, null]} onChange={onChange} name="dateSubmit"/>
+                <RangePicker defaultValue={[null, null]} onChange={this.onChange.bind(this)} name="dateSubmit"/>
               </div>
             </Col>
             <Col span={12}>
