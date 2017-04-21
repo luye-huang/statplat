@@ -47,24 +47,13 @@ export default class newProject extends Component {
   }
 
   handleOk(e) {
+    console.trace();
     console.log(22);
     console.log(e);
     window.location = 'index.html#/newCheckInReport';
     this.setState({
       visible: false,
     });
-
-    //弹框2
-    let modalEle = document.getElementsByClassName("ant-modal-footer");
-    let btnEle = modalEle[0].childNodes[1];
-    console.log(btnEle);
-    console.log(1111);
-    btnEle.click("click",
-      function () {
-        console.log(2222);
-      }
-    );
-
   }
 
   handleCancel(e) {
