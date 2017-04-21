@@ -19,6 +19,7 @@ import {
 } from "antd";
 import {api} from "../api.js";
 import {domain} from "../api.js";
+import $ from "jquery";
 
 //时间日期选择
 const {MonthPicker, RangePicker} = DatePicker;
@@ -63,12 +64,12 @@ export default class newProject extends Component {
     console.log(22);
     console.log(e);
 
-    //提交 or 获取 新建项目信息
-    // api.getNewProject(this.state.id).then( (data)=>{
-    //   console.log(data);
-    // } );
-
-
+    //提交 新建项目信息
+    api.postNewProject("app类测试项目1",0,"EE-203","2017-4-20","2017-4-21").then(data=>{
+      console.log(1111);
+      console.log(data);
+    });
+    
     window.location = 'index.html#/newCheckInReport';
     this.setState({
       visible: false,

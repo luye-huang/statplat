@@ -13,6 +13,7 @@ import {
   Input, Button,
   Menu, Dropdown, Icon,
 } from "antd";
+import {api} from "../api.js";
 
 export default class NewMergeReport extends Component {
   //状态初始化 -- 下拉列表dropdown

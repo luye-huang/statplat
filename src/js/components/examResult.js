@@ -13,7 +13,9 @@ import {
     Input,Button,
 } from "antd";
 import "../../less/examResult.less";
+import {api} from "../api.js";
 
+var objData = {};
 export default class ExamResult extends Component{
     //状态初始化 -- 下拉列表dropdown的初始化数据
     constructor(props){
@@ -109,7 +111,19 @@ export default class ExamResult extends Component{
                         </Col>
                         <Col span={12} className="submit-btn">
                             <Button type="primary"
-                                    onClick={ ()=>{ window.location="index.html#/reportList?exam_result=1" } }
+                                    onClick={ ()=>{ window.location="index.html#/reportList?exam_result=1";
+                                    //提交 提交审核结果
+                                    objData.work_id = 12;
+                                    objData.reporter_ctx="huangliang";
+                                    objData.if_pass = 1;
+                                    objData.comment = "提测通过";
+                                    objData.file = "";
+                                    api.postCheckreportForCheckin(objData).then(data=>{
+                                        console.log("CheckreportForCheckin");
+                                        console.log(data);
+                                    });
+
+                                    } }
                             >提交</Button>
                         </Col>
                     </Row>

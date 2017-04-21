@@ -17,6 +17,7 @@ import {
   Menu, Dropdown, Icon,
 } from "antd";
 import "../../less/newOnlineReport.less";
+import {api} from "../api.js";
 
 export default class NewOnlineReport extends Component {
   //状态初始化 -- 下拉列表dropdown

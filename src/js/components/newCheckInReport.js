@@ -25,6 +25,7 @@ import {
 import "../../less/newCheckInReport.less";
 import {api} from "../api.js";
 
+var objData = {};
 export default class NewCheckInReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -232,7 +233,15 @@ export default class NewCheckInReport extends Component {
             </Col>
             <Col span={12} className="submit-btn">
               <Button type="primary"
-                      onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin" } }
+                      onClick={ ()=>{
+                      window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin";
+                      //提交 提交提测报告信息
+                      api.postCheckinReport(objData["data"]).then(data=>{
+                        console.log(333);
+                        console.log(data);
+                      });
+
+                      } }
               >提交</Button>
             </Col>
           </Row>
@@ -245,6 +254,10 @@ export default class NewCheckInReport extends Component {
     //新建提测报告前,获取提测的jira数据
     api.getCheckinReport_Jira(this.state.work_id).then(data=> {
       console.log(data);
+      objData = data;
+      objData["data"].work_id = 12;
+      console.log(111);
+      console.log(objData);
     });
   }
 }
