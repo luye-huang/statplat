@@ -7,7 +7,6 @@
  */
 import React, {Component} from "react";
 import "../../less/newProject.less";
-
 import {
   Input,
   Icon,
@@ -17,13 +16,11 @@ import {
   DatePicker,
   Modal,
 } from "antd";
+import {api} from "../api.js";
+import {domain} from "../api.js";
 
 //时间日期选择
 const {MonthPicker, RangePicker} = DatePicker;
-function onChange(date, dateString) {
-  console.log(date);
-  console.log(dateString);
-}
 
 export default class newProject extends Component {
   //初始化状态
@@ -35,8 +32,21 @@ export default class newProject extends Component {
       requirementID: "requirementID",
       tester: "tester",
       dropData: "APP类",
+      date_begin:"",
+      date_end:"",
 
+      id:"8",
     };
+  }
+
+  //时间日期选择 -- 事件处理
+  onChange(date, dateString) {
+    console.log(date);
+    console.log(dateString);
+    this.setState({
+      date_begin:dateString[0],
+      date_end:dateString[1],
+    });
   }
 
   //对话框
@@ -44,26 +54,23 @@ export default class newProject extends Component {
     this.setState({
       visible: true,
     });
+    console.log(this.state); // 已经获取到新建项目的字段信息
   }
 
   handleOk(e) {
     console.log(22);
     console.log(e);
+
+    //提交 or 获取 新建项目信息
+    // api.getNewProject(this.state.id).then( (data)=>{
+    //   console.log(data);
+    // } );
+
     window.location = 'index.html#/newCheckInReport';
     this.setState({
       visible: false,
-    });
 
-    //弹框2
-    let modalEle = document.getElementsByClassName("ant-modal-footer");
-    let btnEle = modalEle[0].childNodes[1];
-    console.log(btnEle);
-    console.log(1111);
-    btnEle.click("click",
-      function () {
-        console.log(2222);
-      }
-    );
+    });
 
   }
 
@@ -88,12 +95,10 @@ export default class newProject extends Component {
     obj[e.target.name] = e.target.value;
     //更改状态
     this.setState(obj);
-    console.log(this.state);
+    // console.log(this.state);
   }
 
   render() {
-    //
-
     //下拉菜单 - menu
     const dropData = ["APP类", "非APP类"];
     const dropMenu = (
@@ -139,7 +144,7 @@ export default class newProject extends Component {
             <Col span={12}>
               <span className="date-submit">测试周期</span>
               <div className="div-date-submit">
-                <RangePicker defaultValue={[null, null]} onChange={onChange} name="dateSubmit"/>
+                <RangePicker defaultValue={[null, null]} onChange={this.onChange.bind(this)} name="dateSubmit"/>
               </div>
             </Col>
             <Col span={12}>
@@ -164,4 +169,13 @@ export default class newProject extends Component {
       </div>
     );
   }
+
+  componentDidMount(){
+    let id = this.state.id;
+    //获取 新建项目信息
+    api.getNewProject(id).then(data=>{
+      console.log(data);
+    });
+  }
+
 }
