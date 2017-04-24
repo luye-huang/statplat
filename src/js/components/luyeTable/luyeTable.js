@@ -195,7 +195,7 @@ export default class LuyeTable {
         const $td = $('<td></td>');
         // let td = document.createElement('td');
         if (!col.type) {
-          let tpl_txt = `${tr[col.cdata]}`;
+          let tpl_txt = tr[col.cdata] === undefined? '': tr[col.cdata];
           keywords && keywords.forEach(keyword => {
             if (tpl_txt.includes(keyword)) {
               let yellowstr = `<span class="yellowed">${keyword}</span>`;

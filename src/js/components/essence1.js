@@ -23,7 +23,7 @@ export default class Essence1 extends React.Component{
       columns : [{cname : '团队名称', cdata : 'tname', action:'click', trigger:cb},
         {cname : '代码行总数', cdata : 'code_count', style:'hide'},
         {cname : '提交文件总数', cdata : 'file_count'},
-        {cname : '团队总得分', cdata : 'tscore'}]
+        {cname : '团队总得分', cdata : 'tscore', adjust: adjustColor}]
     })
   }
 }
