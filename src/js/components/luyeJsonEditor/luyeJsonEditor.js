@@ -1,7 +1,7 @@
 /**
  * Created by luye on 07/04/2017.
  */
-import {dataSource} from './data';
+// import {dataSource} from './data';
 const $ = require('jquery');
 const _ = require('lodash');
 export default class LuyeJsonEditor{

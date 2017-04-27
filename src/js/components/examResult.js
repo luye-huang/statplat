@@ -15,13 +15,34 @@ import {
 import "../../less/examResult.less";
 import {api} from "../api.js";
 
+//url字符串处理函数
+function dealUrl(url) {
+    //获取第一次出现?的下标
+    let first = url.indexOf("?");
+    let _str = url.substr(first + 1, url.length); //截取问号?之后的内容
+    let _arr = _str.split("&"); //用&分割字符串
+    // console.log(_arr);
+
+    let newObj = {};
+    for (let i = 0; i < _arr.length; i++) {
+        //将_arr数组中的字符串元素,用=分割成字符串数组,并选择第2个元素
+        let eleKey = _arr[i].split("=")[0];
+        let eleValue = _arr[i].split("=")[1];
+        newObj[eleKey] = eleValue;
+    }
+    return newObj;
+}
+
 var objData = {};
+var pageTag; //分辨上上个页面是哪一个页面 : 提测/上线/合板
+var work_id;
 export default class ExamResult extends Component{
     //状态初始化 -- 下拉列表dropdown的初始化数据
     constructor(props){
         super();
         this.state = {
             dropData:"通过",
+            reporter_ctx:"",
         };
     }
 
@@ -33,7 +54,22 @@ export default class ExamResult extends Component{
         });
     }
 
+    //输入框 - onChange事件
+    onChange(e){
+        objData[e.target.name] = e.target.value;
+        this.setState(objData);
+
+        console.log(this.state);
+    }
+
     render(){
+        //解析从评估结果页面跳转过来的url 
+        let url = window.location.href;
+        let obj = dealUrl(url);
+        pageTag = obj["pageTag"];
+        work_id = obj["work_id"];
+        console.log(work_id);
+
         //下拉菜单 - menu - 提测邮件
         const dropData = ["通过", "未通过"];
         const dropMenu = (
@@ -70,10 +106,10 @@ export default class ExamResult extends Component{
                     </Row>
                     <Row>
                         <Col span={4} className="test-link-css border-bottom-css border-right-css">
-                            <Input placeholder="v_chenxiaoer" />
+                            <Input placeholder="v_chenxiaoer" name="reporter_ctx" value={ this.state.reporter_ctx }/>
                         </Col>
                         <Col span={8} className="test-link-css border-bottom-css border-right-css">
-                            <Input placeholder="上线-提测-合板,,," />
+                            <Input placeholder="上线-提测-合板,,," name="comment" onChange={this.onChange.bind(this)}/>
                         </Col>
                         <Col span={6} className="test-link-css border-bottom-css border-right-css dropdown-list-css">
                             <div>
@@ -111,18 +147,27 @@ export default class ExamResult extends Component{
                         </Col>
                         <Col span={12} className="submit-btn">
                             <Button type="primary"
-                                    onClick={ ()=>{ window.location="index.html#/reportList?exam_result=1";
-                                    //提交 提交审核结果
-                                    objData.work_id = 12;
-                                    objData.reporter_ctx="huangliang";
-                                    objData.if_pass = 1;
-                                    objData.comment = "提测通过";
-                                    objData.file = "";
-                                    api.postCheckreportForCheckin(objData).then(data=>{
-                                        console.log("CheckreportForCheckin");
-                                        console.log(data);
-                                    });
+                                    onClick={ ()=>{
+                                        //是否审核通过
+                                        let if_pass = this.state.dropData=="通过" ? 1 : 0;
+                                        objData["if_pass"] = if_pass;
+                                        console.log(objData);
 
+                                        if(pageTag == "checkin"){
+                                            //提交 提交提测报告审核信息
+                                            api.postCheckreportForCheckin(objData).then(data=>{
+                                                console.log("CheckreportForCheckin");
+                                                console.log(data);
+                                            });
+                                        }else if(pageTag == "online"){
+                                            //提交 提交上线报告审核信息
+                                            console.log("CheckreportForOnline");
+                                        }else if(pageTag == "merge"){
+                                            //提交 提交合板报告审核信息
+                                            console.log("CheckreportForMerge");
+                                        }
+
+                                        window.location="index.html#/reportList?exam_result=1";
                                     } }
                             >提交</Button>
                         </Col>
@@ -162,5 +207,21 @@ export default class ExamResult extends Component{
 
             </div>
         );
+    }
+
+    componentDidMount(){
+        //获取项目信息 --  取到测试人员的ctx
+        api.getNewProject(work_id).then(data=>{
+            console.log("project info get success");
+            console.log(data);
+
+            //取到测试人员的ctx,显示到页面上
+            objData["reporter_ctx"] = data.data.tester_ctx;
+            objData["work_id"] = work_id;
+            this.setState(objData);
+
+            console.log(this.state);
+
+        });
     }
 }
