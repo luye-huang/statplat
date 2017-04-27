@@ -7,11 +7,11 @@
 import React, {Component} from "react";
 import {
   Input,
-  Select,
   Icon,
   Row, Col,
   Menu, Dropdown,
   Button,
+  Modal,
   DatePicker,
 } from 'antd';
 import moment from 'moment';
@@ -35,7 +35,7 @@ function getNowTime(date) {
   return ( y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d) );
 }
 
-var currDate,currTime;//当前时间
+var currDate, currTime;//当前时间
 currDate = new Date();
 currTime = getNowTime(currDate);
 export default class ReportList extends Component {
@@ -45,12 +45,13 @@ export default class ReportList extends Component {
     this.state = {
       name: "xuqiu",
       reporter_name: "reporter",
-      date_begin:"2017-04-18",
-      date_end:currTime,
+      date_begin: "2017-04-18",
+      date_end: currTime,
       dep1: "dep1",
       dep2: "dep2",
       dep3: "dep3",
       dropData: "未通过",
+      testModal: false
     };
   }
 
@@ -60,8 +61,8 @@ export default class ReportList extends Component {
     console.log(dateString);
     //更改提交时间的状态
     this.setState({
-      date_begin:dateString[0],
-      date_end:dateString[1],
+      date_begin: dateString[0],
+      date_end: dateString[1],
     });
   }
 
@@ -80,6 +81,13 @@ export default class ReportList extends Component {
     //
     this.setState(obj);
     console.log(this.state);
+  }
+
+  testModalOK() {
+
+  }
+
+  testModalCancel() {
 
   }
 
@@ -117,7 +125,7 @@ export default class ReportList extends Component {
           <Col span={12}>
             <span className="date-submit0">提交时间</span>
             <div className="div-date-submit0">
-              <RangePicker defaultValue={[moment(this.state.date_begin),moment(this.state.date_end)]}
+              <RangePicker defaultValue={[moment(this.state.date_begin), moment(this.state.date_end)]}
                            onChange={this.onChange.bind(this)}/>
             </div>
           </Col>
@@ -152,96 +160,117 @@ export default class ReportList extends Component {
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
                                 onClick={()=>window.location = 'index.html#/newProject'}>新建项目</Button></Col>
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
-                                onClick={ ()=>{
+                                onClick={ ()=> {
                                   this.getTbData();
                                 } }
-                          >查  询</Button></Col>
+          >查 询</Button></Col>
         </Row>
+        <Modal title="Basic Modal" visible={this.state.testModal}
+               onOk={this.testModalOK} onCancel={this.testModalCancel}
+        >
+          <p>some contents...</p>
+        </Modal>
         <div id="tb-div"></div>
       </div>
     );
   }
 
-   getTbData(){
+  getTbData() {
     console.log(this.state);
-     //调用接口函数
-    api.getReportList(this.state).then( data => {
+    //调用接口函数
+    api.getReportList(this.state).then(data => {
       console.log("reportList get success");
       console.log(data);
       console.log(data.data);
       let arr = data.data;
       let typeStr = "", nodeStr = "",
-        check_noteStr="",check_resultStr="",
-        _nUrl="";
+        check_noteStr = "", check_resultStr = "",
+        _nUrl = "";
       let nodeUrl = "index.html#/@@";
-      for(let i=0; i<arr.length; i++){
+      for (let i = 0; i < arr.length; i++) {
         //项目类型
-        arr[i]["typeStr"] = (arr[i].type == 0)?"App类":"非App类";
+        arr[i]["typeStr"] = (arr[i].type == 0) ? "App类" : "非App类";
         //节点类型
-        if(arr[i].node == 0){
-          nodeStr = "新项目";
-          _nUrl = "newCheckInReport";
-        }else if(arr[i].node == 1){
+        if (arr[i].node == 0) {
           nodeStr = "提测";
           _nUrl = "newCheckInReport";
-        }else if(arr[i].node == 2){
+        } else if (arr[i].node == 1) {
+          nodeStr = "提测";
+          _nUrl = "newCheckInReport";
+        } else if (arr[i].node == 2) {
           nodeStr = "上线";
           _nUrl = "newOnlineReport";
-        }else if(arr[i].node == 3){
+        } else if (arr[i].node == 3) {
           nodeStr = "合板";
           _nUrl = "newMergeReport";
         }
         arr[i]["nodeStr"] = nodeStr;
         arr[i]["_nUrl"] = _nUrl;
         //评估结果
-        if(arr[i].check_note == 0){
+        if (arr[i].check_note == 0) {
           check_noteStr = "待评估";
-        }else if(arr[i].check_note == 1){
+        } else if (arr[i].check_note == 1) {
           check_noteStr = "蓝灯";
-        }else if(arr[i].check_note == 2){
+        } else if (arr[i].check_note == 2) {
           check_noteStr = "绿灯";
-        }else if(arr[i].check_note == 3){
+        } else if (arr[i].check_note == 3) {
           check_noteStr = "黄灯";
-        }else if(arr[i].check_note == 4){
+        } else if (arr[i].check_note == 4) {
           check_noteStr = "红灯";
         }
         arr[i]["check_noteStr"] = check_noteStr;
         //审核结果
-        if(arr[i].check_result == 0){
+        if (arr[i].check_result == 0) {
           check_resultStr = "待审核";
-        }else if(arr[i].check_result == 1){
+        } else if (arr[i].check_result == 1) {
           check_resultStr = "通过";
-        }else if(arr[i].check_result == 2){
+        } else if (arr[i].check_result == 2) {
           check_resultStr = "未通过";
         }
         arr[i]["check_resultStr"] = check_resultStr;
-      };
+      }
+      ;
       console.log(arr);
+      const redirectToTest = (e)=> {
+        if (Object.is(e.data.node, 1)) {
+          window.location = "index.html#/newCheckInReport";
+        }
+        else if (Object.is(e.data.node, 2)) {
+          window.location = "index.html#/newOnlineReport";
+        }
+        else if (Object.is(e.data.node, 3)) {
+          window.location = "index.html#/newMergeReport";
+        }
+        else {
+          this.setState({testModal: true});
+        }
+      }
       //表格数据渲染
       var tbParam = {
-        el:$("#tb-div"),
-        data:arr,
-        columns:[{cname:"报告ID",cdata:"id"},
-          {cname:"需求名称",cdata:"name"},
-          {cname:"需求ID",cdata:"jira_id"},
-          {cname:"项目类型",cdata:"typeStr"},
-          {cname:"报告人姓名",cdata:"tester_ctx"},
-          {cname:"节点",cdata:"nodeStr",type:"a", url:nodeUrl, params:["_nUrl"]},
-          {cname:"评估结果",cdata:"check_noteStr"},
-          {cname:"审核结果",cdata:"check_resultStr"},
-          {cname:"一级部门",cdata:"dep1_name"},
-          {cname:"二级部门",cdata:"dep2_name"},
-          {cname:"三级部门",cdata:"dep3_name"},
-          {cname:"提交时间",cdata:"create_time"},
+        el: $("#tb-div"),
+        data: arr,
+        columns: [{cname: "报告ID", cdata: "id"},
+          {cname: "需求名称", cdata: "name"},
+          {cname: "需求ID", cdata: "jira_id"},
+          {cname: "项目类型", cdata: "typeStr"},
+          {cname: "报告人姓名", cdata: "tester_ctx"},
+          // {cname:"节点",cdata:"nodeStr",type:"a", url:nodeUrl, params:["_nUrl"]},
+          {cname: "节点", cdata: "nodeStr", style: "fakeA", action: "click", trigger: redirectToTest},
+          {cname: "评估结果", cdata: "check_noteStr"},
+          {cname: "审核结果", cdata: "check_resultStr"},
+          {cname: "一级部门", cdata: "dep1_name"},
+          {cname: "二级部门", cdata: "dep2_name"},
+          {cname: "三级部门", cdata: "dep3_name"},
+          {cname: "提交时间", cdata: "create_time"},
         ],
-        managePageSize:true,
+        managePageSize: true,
       };
       let tb = new LuyeTable(tbParam);
 
-    } );
+    });
   }
 
-  componentDidMount(){
+  componentDidMount() {
 
   }
 }
