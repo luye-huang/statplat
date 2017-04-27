@@ -30,14 +30,12 @@ export default class newProject extends Component {
     super();
     this.state = {
       visible: false,
-      projectName: "projectName",
-      requirementID: "requirementID",
+      name: "projectName",
+      jira_id: "requirementID",
       tester: "tester",
-      dropData: "APP类",
+      dropData: "App类",
       date_begin:"",
       date_end:"",
-
-      id:"8",
     };
   }
 
@@ -53,24 +51,49 @@ export default class newProject extends Component {
 
   //对话框
   showModal() {
-    this.setState({
-      visible: true,
-    });
+    //项目类型
+    this.state.type = (this.state.dropData=="App类")?0:1;
+    debugger;
     console.log(this.state); // 已经获取到新建项目的字段信息
+    if(this.state.name ==""){
+      alert("请输入完整项目信息");
+    }else if(this.state.jira_id ==""){
+      alert("请输入完整项目信息");
+    }else if(this.state.tester ==""){
+      alert("请输入完整项目信息");
+    }else if(this.state.date_begin =="" || this.state.date_end ==""){
+      alert("请输入完整项目信息");
+    }else{
+      //显示对话框
+      this.setState({
+        visible: true,
+      });
+    }
   }
 
   handleOk(e) {
     console.trace();
-    console.log(22);
     console.log(e);
 
+    console.log("new project submit info");
+    console.log(this.state);
+
     //提交 新建项目信息
-    api.postNewProject("app类测试项目1",0,"EE-203","2017-4-20","2017-4-21").then(data=>{
-      console.log(1111);
-      console.log(data);
+    api.postNewProject(this.state).then(data=>{
+      console.log("new project post success");
+      console.log(data.data);
+      console.log(data.data.id);
+
+      //获取 项目信息
+      api.getNewProject(data.data.id).then(data=>{
+        console.log("new project get success");
+        console.log(data);
+      });
     });
-    
-    window.location = 'index.html#/newCheckInReport';
+
+    //点击弹框中的 "是" -- 跳转到"准入报告列表"页
+    window.location = 'index.html#/reportList';
+
     this.setState({
       visible: false,
     });
@@ -120,15 +143,15 @@ export default class newProject extends Component {
         <div>
           <Row style={{marginBottom: 20}}>
             <Col span={10}></Col>
-            <Col span={4} className="title-txt">新建项目</Col>
+            <Col span={4} className="title-txt">项目信息</Col>
           </Row>
           <Row gutter={16} style={{marginBottom: 16}}>
             <Col span={8}>
-              <Input addonBefore="项目名称" defaultValue={this.state.projectName} name="projectName"
+              <Input addonBefore="项目名称" defaultValue={this.state.name} name="name"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
             <Col span={8}>
-              <Input addonBefore="需求ID" defaultValue={this.state.requirementID} name="requirementID"
+              <Input addonBefore="需求ID" defaultValue={this.state.jira_id} name="jira_id"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
             <Col span={8} className="exam-result">
@@ -174,11 +197,7 @@ export default class newProject extends Component {
   }
 
   componentDidMount(){
-    let id = this.state.id;
-    //获取 新建项目信息
-    api.getNewProject(id).then(data=>{
-      console.log(data);
-    });
+
   }
 
 }

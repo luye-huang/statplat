@@ -10,19 +10,13 @@ export const api = {
   },
 
   //提交 项目信息 workflow/work/  -- OK
-  postNewProject(name,type,jId,dBegin,dEnd){
+  postNewProject(obj){
     let url = domain+"workflow/work/";
     return $.ajax({
         type:"post",
         url:url,
         dataType:"json",
-        data:{
-          name:name,
-          type:type,
-          jira_id: jId,
-          date_begin: dBegin,
-          date_end: dEnd,
-        },
+        data:obj,
         error:function (data) {
           console.log(data.status);
           console.log(data.statusText);
@@ -60,7 +54,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交提测报告 workflow/report/checkin/  -- OK
+  //提交 提交提测报告 workflow/report/checkin/  -- 404 not found
   postCheckinReport(obj){
     let url = domain+"workflow/report/checkin/";
     return $.ajax({
@@ -86,8 +80,8 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交提测报告审核信息 workflow/checkreport/checkin/
-  postCheckreportForCheckin(obj){ 
+  //提交 提交提测报告审核信息 workflow/checkreport/checkin/  -- 404 not found
+  postCheckreportForCheckin(obj){
     let url = domain+"workflow/checkreport/checkin/";
     return $.ajax({
       type:"post",
@@ -119,7 +113,25 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交合板报告 workflow/report/merge/
+  //提交 提交合板报告 workflow/report/merge/  -- 404 not found
+  postMergeReport(obj){
+    let url = domain+"workflow/report/merge/";
+    return $.ajax({
+      type:"post",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  },
 
   //获取 查看合板报告的 评估结果  -- OK
   getCheckreportForMerge(work_id){
@@ -127,7 +139,25 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交合版报告审核信息 workflow/checkreport/merge/
+  //提交 提交合版报告审核信息 workflow/checkreport/merge/   -- 404 not found
+  postCheckreportForMerge(obj){
+    let url = domain+"workflow/checkreport/merge/";
+    return $.ajax({
+      type:"post",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  },
 
   /*
     上线报告
@@ -142,7 +172,25 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交合板报告 workflow/report/online/
+  //提交 提交上线报告 workflow/report/online/    -- 404 not found
+  postOnlineReport(obj){
+    let url = domain+"workflow/report/merge/";
+    return $.ajax({
+      type:"post",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  },
 
   //获取 查看上线报告的 评估结果  -- OK
   getCheckreportForOnline(work_id){
@@ -150,7 +198,24 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交上线报告审核信息 workflow/checkreport/online/
-
+  //提交 提交上线报告审核信息 workflow/checkreport/online/   -- 404 not found
+  postCheckreportForOnline(obj){
+    let url = domain+"workflow/checkreport/online/";
+    return $.ajax({
+      type:"post",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  },
 
 }

@@ -15,6 +15,13 @@ import {
 } from "antd";
 import {api} from "../api.js";
 
+var objData = {};
+var work_id;
+var safeSta, //安全测试 状态
+  serviceSta, //相关服务已上线 状态
+  mergeSta, //合版后需求无更新 状态
+  testSta, //测试报告结论 状态
+  UATSta; //UAT验收结论 状态
 export default class NewMergeReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -137,6 +144,7 @@ export default class NewMergeReport extends Component {
         </Menu.Item>
       </Menu>
     );
+
     return (
       <div>
         <Row style={{ marginBottom: 20 }}>
@@ -149,7 +157,7 @@ export default class NewMergeReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容"/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
             </Col>
           </Row>
           <Row>
@@ -159,41 +167,42 @@ export default class NewMergeReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">状态</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Pass"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Fail"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Block"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="NoRun"/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder="Total"/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Pass</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Fail</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Block</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>NoRun</span></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <span>Total</span></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="1"/></Col>
+                  placeholder="1" name="tl_num_1" value={this.state.tl_num_1}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="2"/></Col>
+                  placeholder="2" name="tl_num_2" value={this.state.tl_num_2}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="tl_num_3" value={this.state.tl_num_3}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="tl_num_4" value={this.state.tl_num_4}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="tl_num_total" value={this.state.tl_num_total}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css">比率</Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="2"/></Col>
+                  placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1}/></Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="tl_rate_2" value={this.state.tl_rate_2}/></Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="tl_rate_3" value={this.state.tl_rate_3}/></Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder=""/></Col>
-                <Col span={4} className="test-result-detail"><Input placeholder=""/></Col>
+                  placeholder="" name="tl_rate_4" value={this.state.tl_rate_4}/></Col>
+                <Col span={4} className="test-result-detail"><Input
+                  placeholder="" name="tl_rate_total" value={this.state.tl_rate_total}/></Col>
               </Row>
             </Col>
           </Row>
@@ -204,7 +213,7 @@ export default class NewMergeReport extends Component {
               JIRA入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="摘要中需求名称"/>
+              <Input placeholder="摘要中需求名称" name="jira_id" value={this.state.jira_id}/>
             </Col>
           </Row>
           <Row>
@@ -215,55 +224,56 @@ export default class NewMergeReport extends Component {
               <Row>
                 <Col span={4}
                      className="test-result-detail border-right-css border-bottom-css">严重级别</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Block"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Critical"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Major"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Minor"/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder="Total"/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Block</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Critical</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Major</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Minor</span></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <span>Total</span></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="2"/></Col>
+                  placeholder="2" name="jira_num_1" value={this.state.jira_num_1}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="3"/></Col>
+                  placeholder="3" name="jira_num_2" value={this.state.jira_num_2}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_num_3" value={this.state.jira_num_3}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_num_4" value={this.state.jira_num_4}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_num_total" value={this.state.jira_num_total}/></Col>
               </Row>
               <Row>
                 <Col span={4}
                      className="test-result-detail border-right-css border-bottom-css">关闭数量</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="1"/></Col>
+                  placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="2"/></Col>
+                  placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css">修复比率</Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="2"/></Col>
+                  placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1}/></Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2}/></Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder=""/></Col>
+                  placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3}/></Col>
                 <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder=""/></Col>
-                <Col span={4} className="test-result-detail"><Input placeholder=""/></Col>
+                  placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4}/></Col>
+                <Col span={4} className="test-result-detail"><Input
+                  placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total}/></Col>
               </Row>
             </Col>
           </Row>
@@ -276,16 +286,16 @@ export default class NewMergeReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">需要测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css"></Col>
+                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_need}</Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">实际测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css"></Col>
+                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_final}</Col>
               </Row>
               <Row>
                 <Col span={18}
                      className="test-result-detail border-right-css border-bottom-css">百分率</Col>
-                <Col span={6} className="test-result-detail border-bottom-css"></Col>
+                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_rate}</Col>
               </Row>
             </Col>
           </Row>
@@ -295,10 +305,12 @@ export default class NewMergeReport extends Component {
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
             <Col span={3}
-                 className="test-result-detail dropdown-list-css border-right-css border-bottom-css">
+                 className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+                 style={{ backgroundColor:(this.state.dropData_safe=="蓝灯"?"blue":(this.state.dropData_safe=="绿灯"?"green":(this.state.dropData_safe=="黄灯"?"yellow":(this.state.dropData_safe=="红灯"?"red":"white")))) }}
+            >
               <div>
                 <Dropdown overlay={dropMenu_safe} trigger={["click"]}>
-                  <a className="ant-dropdown-link" href="#">
+                  <a style={{ color:"black" }} className="ant-dropdown-link" href="#">
                     {this.state.dropData_safe}
                     <Icon type="down"/>
                   </a>
@@ -318,7 +330,7 @@ export default class NewMergeReport extends Component {
                  className="test-result-detail dropdown-list-css border-right-css border-bottom-css">
               <div>
                 <Dropdown overlay={dropMenu_service} trigger={["click"]}>
-                  <a className="ant-dropdown-link" href="#">
+                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_service}
                     <Icon type="down"/>
                   </a>
@@ -338,7 +350,7 @@ export default class NewMergeReport extends Component {
                  className="test-result-detail dropdown-list-css border-right-css border-bottom-css">
               <div>
                 <Dropdown overlay={dropMenu_merge} trigger={["click"]}>
-                  <a className="ant-dropdown-link" href="#">
+                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_merge}
                     <Icon type="down"/>
                   </a>
@@ -355,10 +367,12 @@ export default class NewMergeReport extends Component {
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
             <Col span={3}
-                 className="test-result-detail dropdown-list-css border-right-css border-bottom-css">
+                 className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+                 style={{ backgroundColor:(this.state.dropData_test=="未通过" ? "red" : "green") }}
+            >
               <div>
                 <Dropdown overlay={dropMenu_test} trigger={["click"]}>
-                  <a className="ant-dropdown-link" href="#">
+                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_test}
                     <Icon type="down"/>
                   </a>
@@ -374,10 +388,12 @@ export default class NewMergeReport extends Component {
             <Col span={10} className="test-result-detail border-right-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3} className="test-result-detail dropdown-list-css border-right-css">
+            <Col span={3} className="test-result-detail dropdown-list-css border-right-css"
+                 style={{backgroundColor:(this.state.dropData_UAT=="未通过" ? "red" : "green") }}
+            >
               <div>
                 <Dropdown overlay={dropMenu_UAT} trigger={["click"]}>
-                  <a className="ant-dropdown-link" href="#">
+                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_UAT}
                     <Icon type="down"/>
                   </a>
@@ -399,7 +415,15 @@ export default class NewMergeReport extends Component {
             </Col>
             <Col span={12} className="submit-btn">
               <Button type="primary"
-                      onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge" } }
+                      onClick={ ()=>{
+                        //提交 提交合板报告信息
+                        console.log();
+                        api.postMergeReport().then(data=>{
+                          console.log("merge report post success");
+                          console.log(data);
+                        });
+
+                        window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge&work_id=" + work_id } }
               >提交</Button>
             </Col>
           </Row>
@@ -412,7 +436,47 @@ export default class NewMergeReport extends Component {
   componentDidMount() {
     //新建合板报告前,获取合板的jira数据
     api.getMergeReport_Jira(this.state.work_id).then(data=> {
+      console.log("merge report get jira success");
       console.log(data);
+      objData = data.data;
+      work_id = this.state.work_id;
+      objData["work_id"] = work_id;
+      console.log(work_id);
+
+      //将获取的数据显示在合板页面中
+      this.state = data.data;
+      // this.setState({});
+
+      /*
+       int型数据,解析成字符串类型的
+       */
+      //安全测试
+      safeSta = this.state.safetest_status;
+      if( safeSta== 0){
+        this.setState({dropData_safe:"未选择"});
+      }else if(safeSta == 1){
+        this.setState({dropData_safe:"蓝灯"});
+      }else if(safeSta ==2){
+        this.setState({dropData_safe:"绿灯"});
+      }else if(safeSta ==3){
+        this.setState({dropData_safe:"黄灯"});
+      }else if(safeSta ==4){
+        this.setState({dropData_safe:"红灯"});
+      }
+      //相关服务已上线
+      serviceSta = this.state.If_online;
+      this.setState({ dropData_service:(serviceSta == 0)?"未上线":"已上线" });
+      //合版后需求无更新
+      mergeSta = this.state.no_change_after_merge;
+      this.setState({ dropData_merge:(mergeSta == 0)?"无变更":"有变更" });
+      //测试报告结论
+      testSta = this.state.test_result;
+      this.setState({ dropData_test:(testSta == 0)?"未通过":"通过" });
+      //UAT验收结论
+      UATSta = this.state.uat_result;
+      this.setState({ dropData_UAT:(UATSta == 0)?"未通过":"通过" });
+
+      console.log(this.state);
     });
   }
 

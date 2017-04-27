@@ -26,6 +26,7 @@ import "../../less/newCheckInReport.less";
 import {api} from "../api.js";
 
 var objData = {};
+var work_id;
 export default class NewCheckInReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -56,7 +57,7 @@ export default class NewCheckInReport extends Component {
 
   render() {
     //下拉菜单 - menu - 提测邮件
-    const dropData = ["发送", "未发送"];
+    const dropData = ["已发送", "未发送"];
     const dropMenu = (
       <Menu onClick={this.menuOnclick.bind(this)}>
         <Menu.Item key={dropData[0]}>
@@ -92,7 +93,7 @@ export default class NewCheckInReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容"/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
             </Col>
           </Row>
           <Row>
@@ -102,31 +103,42 @@ export default class NewCheckInReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">状态</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Pass"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Fail"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Block"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="NoRun"/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input placeholder="Total"/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Pass</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Fail</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Block</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>NoRun</span></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <span>Total</span></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="1"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="2"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input placeholder=""/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css">比率</Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input placeholder="2"/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail"><Input placeholder=""/></Col>
+                <Col span={4} className="test-result-detail border-right-css">
+                  <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1}/></Col>
+                <Col span={4} className="test-result-detail border-right-css">
+                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2}/></Col>
+                <Col span={4} className="test-result-detail border-right-css">
+                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3}/></Col>
+                <Col span={4} className="test-result-detail border-right-css">
+                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4}/></Col>
+                <Col span={4} className="test-result-detail">
+                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total}/></Col>
               </Row>
             </Col>
           </Row>
@@ -137,7 +149,7 @@ export default class NewCheckInReport extends Component {
               JIRA入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入需求名称或需求ID"/>
+              <Input placeholder="输入需求名称或需求ID" name="jira_id" value={this.state.jira_id}/>
             </Col>
           </Row>
           <Row>
@@ -147,49 +159,65 @@ export default class NewCheckInReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">严重级别</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Block"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Critical"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Major"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
-                  placeholder="Minor"/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input placeholder="Total"/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Block</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Critical</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Major</span></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <span>Minor</span></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <span>Total</span></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="2"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="3"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input placeholder=""/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="2" name="jira_num_1" value={this.state.jira_num_1}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="3" name="jira_num_2" value={this.state.jira_num_2}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_num_3" value={this.state.jira_num_3}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_num_4" value={this.state.jira_num_4}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">关闭数量</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="1"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="2"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input placeholder=""/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">修复比率</Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder="2"/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input placeholder=""/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input placeholder=""/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3}/></Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css">
+                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total}/></Col>
               </Row>
             </Col>
           </Row>
 
           <Row>
-            <Col span={6} className="test-link-css border-right-css border-bottom-css">
+            <Col span={6} className="test-link-css border-right-css">
               提测邮件
             </Col>
-            <Col span={10} style={{ backgroundColor:((this.state.dropData=="发送")?"green":"red") }}
-                 className="test-link-css dropdown-list-css dropdown-a-css border-right-css border-bottom-css">
+            <Col span={10} style={{ backgroundColor:((this.state.dropData=="已发送")?"green":"red") }}
+                 className="test-result-detail dropdown-list-css dropdown-a-css border-right-css">
               <div>
                 <Dropdown overlay={dropMenu} trigger={["click"]}>
                   <a className="ant-dropdown-link" href="#">
@@ -199,12 +227,19 @@ export default class NewCheckInReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={8} className="test-link-css border-bottom-css">
-              <Input type="file" placeholder="上传附件"/>
+            <Col span={8} className="test-link-css">
+              <Input id="fileId" type="file" placeholder="上传附件" name="email_file"
+                     onChange={ ()=>{
+                     let fileVal = document.getElementById("fileId").value;
+                      console.log(fileVal);
+                      this.state.email_file = fileVal;
+                     } }
+
+              />
             </Col>
           </Row>
 
-          <Row>
+          <Row style={{ display:"none" }}>
             <Col span={6} className="test-link-css border-right-css">
               Demo演示
             </Col>
@@ -234,13 +269,14 @@ export default class NewCheckInReport extends Component {
             <Col span={12} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{
-                      window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin";
                       //提交 提交提测报告信息
-                      api.postCheckinReport(objData["data"]).then(data=>{
-                        console.log(333);
+                      console.log(objData);
+                      api.postCheckinReport(objData).then(data=>{
+                        console.log("checkin report post success");
                         console.log(data);
                       });
 
+                      window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
                       } }
               >提交</Button>
             </Col>
@@ -252,12 +288,22 @@ export default class NewCheckInReport extends Component {
 
   componentDidMount() {
     //新建提测报告前,获取提测的jira数据
+    console.log(this.state.work_id);
     api.getCheckinReport_Jira(this.state.work_id).then(data=> {
+      console.log("checkin report get jira success");
       console.log(data);
-      objData = data;
-      objData["data"].work_id = 12;
-      console.log(111);
-      console.log(objData);
+      objData = data.data;
+      work_id = this.state.work_id;
+      objData["work_id"] = work_id;
+      console.log(work_id);
+
+      //将获取到的数据显示到页面上
+      this.state = data.data;
+      this.setState({
+        //提测邮件
+        dropData:(data.data.if_email==0)?"未发送":"已发送",
+      });
+      console.log(this.state);
     });
   }
 }
