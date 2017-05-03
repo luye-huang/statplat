@@ -53,7 +53,6 @@ export default class newProject extends Component {
   showModal() {
     //项目类型
     this.state.type = (this.state.dropData=="App类")?0:1;
-    debugger;
     console.log(this.state); // 已经获取到新建项目的字段信息
     if(this.state.name ==""){
       alert("请输入完整项目信息");

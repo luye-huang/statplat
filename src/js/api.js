@@ -37,7 +37,7 @@ export const api = {
 
   //获取 准入报告列表信息 -- OK
   getReportList(obj){
-    let url = domain+"workflow/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end;
+    let url = domain+"workflow/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end+"&check_result="+obj.check_result
     return fetch(url).then( response => response.json() );
   },
 
@@ -218,4 +218,22 @@ export const api = {
     });
   },
 
+}
+
+//url字符串处理函数
+export const dealUrl = (url)=>{
+  //获取第一次出现?的下标
+  let first = url.indexOf("?");
+  let _str = url.substr(first + 1, url.length); //截取问号?之后的内容
+  let _arr = _str.split("&"); //用&分割字符串
+  // console.log(_arr);
+
+  let newObj = {};
+  for (let i = 0; i < _arr.length; i++) {
+    //将_arr数组中的字符串元素,用=分割成字符串数组,并选择第2个元素
+    let eleKey = _arr[i].split("=")[0];
+    let eleValue = _arr[i].split("=")[1];
+    newObj[eleKey] = eleValue;
+  }
+  return newObj;
 }
