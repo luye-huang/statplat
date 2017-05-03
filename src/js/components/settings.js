@@ -14,6 +14,7 @@ export default class Settings extends React.Component{
     api.getManageConfig().then(data=>{
       console.log(data);
       const dataSource = JSON.parse(data.data.json);
+      console.log(dataSource);
       const param = {
         dom: document.getElementById('json-editor'),
         data: dataSource

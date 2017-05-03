@@ -1,8 +1,61 @@
-.editor-container{
-  background-color: green;
-  .editor-row{
-    .editor-cell{
-
+.editor-container {
+  position: relative;
+  background-color: #73e5eb;
+  padding: 10px 0 100px;
+  border-radius: 6px;
+  input {
+    width: 40px;
+    margin: 4px;
+    box-shadow: 3px 3px 2px #888888;
+  }
+  button {
+    margin: 0 4px;
+    box-shadow: 3px 3px 2px #888888;
+  }
+  .editor-row {
+    position: relative;
+    margin: 12px 0;
+    .front-btn {
+      display: inline-block;
+      width: 24px;
+      height: 20px;
+      margin-right: 2px;
+    }
+    .editor-cell {
+      margin: 4px;
+      padding: 2px;
+      border-radius: 4px;
+      box-shadow: 3px 3px 2px #888888;
+      border: 1px solid #888888;
+    }
+    .editor-cell-key {
+      background-color: #c1ee28;
+    }
+    .editor-cell-value {
+      background-color: #ee9a35;
     }
   }
+  .json-dashboard {
+    position: absolute;
+    margin-top: 100px;
+    bottom: 10px;
+  }
+  .preview-board {
+    display: none;
+    color: beige;
+    background-color: cadetblue;
+    margin: 40px;
+    border-radius: 4px;
+    padding: 10px;
+  }
+}
+
+.inv {
+  visibility: hidden;
+}
+
+.transparent {
+  border: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
 }
