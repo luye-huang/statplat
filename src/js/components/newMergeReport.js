@@ -422,13 +422,19 @@ export default class NewMergeReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{
                         //提交 提交合板报告信息
-                        console.log();
-                        api.postMergeReport().then(data=>{
-                          console.log("merge report post success");
-                          console.log(data);
+                        console.log(objData);
+                        console.log(this.state);
+                        api.postMergeReport(this.state).then(data=>{
+                          if(data.status == 200){
+                            console.log("merge report post success");
+                            console.log(data);
+                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge&work_id=" + work_id
+                          }else if(data.status == 500){
+                            console.log(data.message);
+                            alert(data.message);
+                          }
                         });
-
-                        window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge&work_id=" + work_id } }
+                        } }
               >提交</Button>
             </Col>
           </Row>

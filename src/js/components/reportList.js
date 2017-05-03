@@ -86,8 +86,8 @@ export default class ReportList extends Component {
   }
 
   testModalOK() {
-    //跳转到 -- 新建提测报告页面
-    window.location = "index.html#/newCheckInReport";
+    //跳转到 -- 新建提测报告页面,并将work_id传过去
+    window.location = "index.html#/newCheckInReport?work_id=" + work_id;
     this.setState({
       testModal:false,
     });

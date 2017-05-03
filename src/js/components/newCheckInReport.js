@@ -283,6 +283,7 @@ export default class NewCheckInReport extends Component {
                           window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
                         }else if(data.status == 500){
                           console.log(data.message);
+                          alert(data.message);
                         }
                       });
                       } }
@@ -307,7 +308,7 @@ export default class NewCheckInReport extends Component {
       this.state = data.data;
       this.setState({
         //提测邮件
-        dropData:(data.data.if_email==0)?"未发送":"已发送",
+        dropData:(data.data.if_email==1)?"已发送":"未发送",
       });
       console.log(this.state);
     });

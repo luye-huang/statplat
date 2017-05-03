@@ -146,7 +146,7 @@ export default class NewOnlineReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容"/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
             </Col>
           </Row>
           <Row>
@@ -395,12 +395,20 @@ export default class NewOnlineReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{ 
                         //提交 提交上线报告信息
+                        console.log(objData);
+                        console.log(this.state);
                         api.postOnlineReport(objData).then(data=>{
-                          console.log("online report post success");
                           console.log(data);
+                          if(data.status == 200){
+                            console.log("online report post success");
+                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=online&work_id="+ work_id
+                          }else if(data.status == 500){
+                            console.log(data.message);
+                            alert(data.message);
+                          }
                         });
-                        
-                        window.location.href="index.html#/evaluationResult?flag=1&pageTag=online&work_id="+ work_id } }
+
+                        } }
               >提交</Button>
             </Col>
           </Row>
