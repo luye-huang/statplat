@@ -361,7 +361,7 @@ export default class LuyeJsonEditor {
   }
 
   attachSubmitEvent(btn) {
-    btn.click(()=>console.log(this.metadata))
+    btn.click(()=>this.param.submit.call(this.metadata));
   }
 
   attachPreviewEvent() {

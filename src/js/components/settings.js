@@ -17,7 +17,10 @@ export default class Settings extends React.Component{
       console.log(dataSource);
       const param = {
         dom: document.getElementById('json-editor'),
-        data: dataSource
+        data: dataSource,
+        submit: function(){
+          console.log(this);
+        }
       };
       const editor = new JsonEditor(param);
     });
