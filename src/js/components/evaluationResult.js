@@ -45,20 +45,21 @@ export default class EvaluationResult extends Component {
   constructor(props) {
     super();
     this.state = {
-      work_id: "8",
       statusResult:"未选择",
       _flow:"",
     };
   }
 
   render() {
-    //从提测准入报告页面条转过来后,解析传过来的url中的flag参数
+    //从提测准入报告页面跳转过来后,解析传过来的url中的flag参数
     let url = window.location.href;
     let obj = dealUrl(url);
     pageTag = obj["pageTag"];
     console.log(pageTag);
     work_id = obj["work_id"];
-    console.log(work_id);
+    this.state.work_id = work_id;
+    debugger;
+    console.log(this.state.work_id);
     let flag = obj["flag"];
     let isHide = (flag == 1) ? "block" : "none";
     console.log(isHide);
@@ -104,7 +105,7 @@ export default class EvaluationResult extends Component {
             是否需要审核
           </Col>
           <Col span={18} className="test-link-css border-bottom-css">
-            <span>{(this.state.need_check==1)?"需要审核":"不需要审核"}</span>
+            <span>{(this.state.need_check==1)?"需要审核":(this.state.need_check==0?"不需要审核":"null")}</span>
           </Col>
         </Row>
         <Row>

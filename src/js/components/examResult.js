@@ -151,22 +151,28 @@ export default class ExamResult extends Component{
                                         //是否审核通过
                                         let if_pass = this.state.dropData=="通过" ? 1 : 0;
                                         objData["if_pass"] = if_pass;
-                                        console.log(objData);
-
+                                        console.log(objData); 
+                                        debugger;
                                         if(pageTag == "checkin"){
-                                            //提交 提交提测报告审核信息
+                                            //提交 提测报告审核信息
                                             api.postCheckreportForCheckin(objData).then(data=>{
-                                                console.log("CheckreportForCheckin");
+                                                console.log("Checkreport For Checkin success");
                                                 console.log(data);
                                             });
                                         }else if(pageTag == "online"){
-                                            //提交 提交上线报告审核信息
+                                            //提交 上线报告审核信息
+                                            api.postCheckreportForOnline(objData).then(data=>{
+                                                console.log("Checkreport For Online success");
+                                                console.log(data);
+                                            });
                                             console.log("CheckreportForOnline");
                                         }else if(pageTag == "merge"){
-                                            //提交 提交合板报告审核信息
-                                            console.log("CheckreportForMerge");
+                                            //提交 合板报告审核信息
+                                            api.postCheckreportForMerge(objData).then(data=>{
+                                                console.log("Checkreport For Merge success");
+                                                console.log(data);
+                                            });
                                         }
-
                                         window.location="index.html#/reportList?exam_result=1";
                                     } }
                             >提交</Button>
@@ -214,14 +220,12 @@ export default class ExamResult extends Component{
         api.getNewProject(work_id).then(data=>{
             console.log("project info get success");
             console.log(data);
-
             //取到测试人员的ctx,显示到页面上
             objData["reporter_ctx"] = data.data.tester_ctx;
             objData["work_id"] = work_id;
             this.setState(objData);
 
             console.log(this.state);
-
         });
     }
 }

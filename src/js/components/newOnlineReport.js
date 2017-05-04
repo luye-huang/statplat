@@ -70,6 +70,14 @@ export default class NewOnlineReport extends Component {
     });
   }
 
+  //输入框 的onChange事件监听
+  handleChange(e){
+    let obj = {};
+    obj[e.target.name] = e.target.value;
+    this.setState(obj);
+    console.log(this.state);
+  }
+
   render() {
     //从准入报告列表页,解析传过来的url中的work_id参数
     let url = window.location.href;
@@ -170,28 +178,28 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1}/></Col>
+                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2}/></Col>
+                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3}/></Col>
+                  <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4}/></Col>
+                  <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total}/></Col>
+                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css">比率</Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1}/></Col>
+                  <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2}/></Col>
+                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3}/></Col>
+                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4}/></Col>
+                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
-                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total}/></Col>
+                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>
@@ -226,54 +234,54 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_num_1" value={this.state.jira_num_1}/></Col>
+                  <Input placeholder="2" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="3" name="jira_num_2" value={this.state.jira_num_2}/></Col>
+                  <Input placeholder="3" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_num_3" value={this.state.jira_num_3}/></Col>
+                  <Input placeholder="" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_num_4" value={this.state.jira_num_4}/></Col>
+                  <Input placeholder="" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total}/></Col>
+                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">关闭数量</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1}/></Col>
+                  <Input placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2}/></Col>
+                  <Input placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3}/></Col>
+                  <Input placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4}/></Col>
+                  <Input placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total}/></Col>
+                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">修复比率</Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1}/></Col>
+                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css">未有解决方案</Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="2" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1}/></Col>
+                  <Input placeholder="2" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
-                  <Input placeholder="" name="jira_notfinish_num_total" value={this.state.jira_notfinish_num_total}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_total" value={this.state.jira_notfinish_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>
@@ -394,7 +402,7 @@ export default class NewOnlineReport extends Component {
             <Col span={12} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{ 
-                        //提交 提交上线报告信息
+                        //提交 上线报告信息
                         console.log(objData);
                         console.log(this.state);
                         api.postOnlineReport(objData).then(data=>{
@@ -423,8 +431,8 @@ export default class NewOnlineReport extends Component {
     api.getOnlineReport_Jira(work_id).then(data=> {
       console.log("online report get jira success");
       console.log(data);
-      objData = data.data;
-      objData["work_id"] = work_id;
+      // objData = data.data;
+      // objData["work_id"] = work_id;
       console.log(work_id);
 
       //将数据显示在页面上
@@ -463,11 +471,14 @@ export default class NewOnlineReport extends Component {
 
       //测试报告结论 状态
       testSta = this.state.test_result;
-      this.setState({ dropData_test:(testSta == 0)?"未通过":(testSta == 1?"通过":"null") });
       //UAT验收结论 状态
       UATSta = this.state.uat_result;
-      this.setState({ dropData_UAT:(UATSta == 0)?"未通过":(UATSta == 1?"通过":"null") });
+      this.setState({
+        dropData_test:(testSta == 0)?"未通过":(testSta == 1?"通过":"null") ,
+        dropData_UAT:(UATSta == 0)?"未通过":(UATSta == 1?"通过":"null"),
+        work_id:work_id,
 
+      });
       console.log(this.state);
     });
   }
