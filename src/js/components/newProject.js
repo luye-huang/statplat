@@ -32,7 +32,7 @@ export default class newProject extends Component {
       visible: false,
       name: "projectName",
       jira_id: "requirementID",
-      tester: "tester",
+      tester_ctx: "tester",
       dropData: "App类",
       date_begin:"",
       date_end:"",
@@ -53,13 +53,12 @@ export default class newProject extends Component {
   showModal() {
     //项目类型
     this.state.type = (this.state.dropData=="App类")?0:1;
-    debugger;
     console.log(this.state); // 已经获取到新建项目的字段信息
     if(this.state.name ==""){
       alert("请输入完整项目信息");
     }else if(this.state.jira_id ==""){
       alert("请输入完整项目信息");
-    }else if(this.state.tester ==""){
+    }else if(this.state.tester_ctx ==""){
       alert("请输入完整项目信息");
     }else if(this.state.date_begin =="" || this.state.date_end ==""){
       alert("请输入完整项目信息");
@@ -125,8 +124,8 @@ export default class newProject extends Component {
   }
 
   render() {
-    //下拉菜单 - menu
-    const dropData = ["APP类", "非APP类"];
+    //下拉菜单 -  menu
+    const dropData = ["App类", "非App类"];
     const dropMenu = (
       <Menu onClick={this.menuOnclick.bind(this)}>
         <Menu.Item key={dropData[0]}>
@@ -174,7 +173,7 @@ export default class newProject extends Component {
               </div>
             </Col>
             <Col span={12}>
-              <Input addonBefore="测试人员" defaultValue={this.state.tester} name="tester"
+              <Input addonBefore="测试人员" defaultValue={this.state.tester_ctx} name="tester_ctx"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>

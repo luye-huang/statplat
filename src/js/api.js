@@ -5,9 +5,31 @@ import $ from "jquery";
 export const domain = 'http://aeplat.intra.sit.ffan.com/';
 
 export const api = {
+  //获取 配置管理信息 manager/config
   getManageConfig(){
     return fetch(domain+'manager/config').then(response => response.json());
   },
+
+  //提交 配置管理接口 manager/config/
+  postManagerConfig(obj){
+    let url = domain+"manager/config/";
+    return $.ajax({
+      type:"post",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  },
+
 
   //提交 项目信息 workflow/work/  -- OK
   postNewProject(obj){
@@ -37,7 +59,7 @@ export const api = {
 
   //获取 准入报告列表信息 -- OK
   getReportList(obj){
-    let url = domain+"workflow/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end;
+    let url = domain+"workflow/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end+"&check_result="+obj.check_result
     return fetch(url).then( response => response.json() );
   },
 
@@ -174,7 +196,7 @@ export const api = {
 
   //提交 提交上线报告 workflow/report/online/    -- 404 not found
   postOnlineReport(obj){
-    let url = domain+"workflow/report/merge/";
+    let url = domain+"workflow/report/online/";
     return $.ajax({
       type:"post",
       url:url,
@@ -218,4 +240,22 @@ export const api = {
     });
   },
 
+}
+
+//url字符串处理函数
+export const dealUrl = (url)=>{
+  //获取第一次出现?的下标
+  let first = url.indexOf("?");
+  let _str = url.substr(first + 1, url.length); //截取问号?之后的内容
+  let _arr = _str.split("&"); //用&分割字符串
+  // console.log(_arr);
+
+  let newObj = {};
+  for (let i = 0; i < _arr.length; i++) {
+    //将_arr数组中的字符串元素,用=分割成字符串数组,并选择第2个元素
+    let eleKey = _arr[i].split("=")[0];
+    let eleValue = _arr[i].split("=")[1];
+    newObj[eleKey] = eleValue;
+  }
+  return newObj;
 }

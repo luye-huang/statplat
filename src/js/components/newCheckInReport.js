@@ -24,6 +24,7 @@ import {
 } from "antd";
 import "../../less/newCheckInReport.less";
 import {api} from "../api.js";
+import {dealUrl} from "../api.js";
 
 var objData = {};
 var work_id;
@@ -34,8 +35,6 @@ export default class NewCheckInReport extends Component {
     this.state = {
       dropData: "发送",
       dropData_demo: "NA",
-
-      work_id:"8",
     };
   }
 
@@ -56,6 +55,12 @@ export default class NewCheckInReport extends Component {
   }
 
   render() {
+    //从准入报告列表页,解析传过来的url中的work_id参数
+    let url = window.location.href;
+    let obj = dealUrl(url);
+    work_id = obj["work_id"];
+    console.log(work_id);
+
     //下拉菜单 - menu - 提测邮件
     const dropData = ["已发送", "未发送"];
     const dropMenu = (
@@ -272,11 +277,15 @@ export default class NewCheckInReport extends Component {
                       //提交 提交提测报告信息
                       console.log(objData);
                       api.postCheckinReport(objData).then(data=>{
-                        console.log("checkin report post success");
                         console.log(data);
+                        if(data.status == 200){
+                          console.log("checkin report post success");
+                          window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
+                        }else if(data.status == 500){
+                          console.log(data.message);
+                          alert(data.message);
+                        }
                       });
-
-                      window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
                       } }
               >提交</Button>
             </Col>
@@ -288,12 +297,10 @@ export default class NewCheckInReport extends Component {
 
   componentDidMount() {
     //新建提测报告前,获取提测的jira数据
-    console.log(this.state.work_id);
-    api.getCheckinReport_Jira(this.state.work_id).then(data=> {
+    api.getCheckinReport_Jira(work_id).then(data=> {
       console.log("checkin report get jira success");
       console.log(data);
       objData = data.data;
-      work_id = this.state.work_id;
       objData["work_id"] = work_id;
       console.log(work_id);
 
@@ -301,7 +308,7 @@ export default class NewCheckInReport extends Component {
       this.state = data.data;
       this.setState({
         //提测邮件
-        dropData:(data.data.if_email==0)?"未发送":"已发送",
+        dropData:(data.data.if_email==1)?"已发送":"未发送",
       });
       console.log(this.state);
     });

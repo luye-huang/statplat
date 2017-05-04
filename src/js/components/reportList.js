@@ -38,6 +38,8 @@ function getNowTime(date) {
 var currDate, currTime;//当前时间
 currDate = new Date();
 currTime = getNowTime(currDate);
+let work_id;
+let check_result; //审核结果
 export default class ReportList extends Component {
   //状态初始化 -- input输入框 和 下拉列表dropdown
   constructor(props) {
@@ -50,7 +52,7 @@ export default class ReportList extends Component {
       dep1: "dep1",
       dep2: "dep2",
       dep3: "dep3",
-      dropData: "未通过",
+      dropData: "全部",
       testModal: false
     };
   }
@@ -84,16 +86,22 @@ export default class ReportList extends Component {
   }
 
   testModalOK() {
-
+    //跳转到 -- 新建提测报告页面,并将work_id传过去
+    window.location = "index.html#/newCheckInReport?work_id=" + work_id;
+    this.setState({
+      testModal:false,
+    });
   }
 
   testModalCancel() {
-
+    this.setState({
+      testModal:false, //关闭对话框
+    });
   }
 
   render() {
     //下拉菜单 - menu
-    const dropData = ["通过", "未通过", "待审核", "自动通过"];
+    const dropData = ["全部","通过", "未通过", "待审核"];
     const dropMenu = (
       <Menu onClick={this.menuOnclick.bind(this)}>
         <Menu.Item key={dropData[0]}>
@@ -165,10 +173,11 @@ export default class ReportList extends Component {
                                 } }
           >查 询</Button></Col>
         </Row>
-        <Modal title="Basic Modal" visible={this.state.testModal}
-               onOk={this.testModalOK} onCancel={this.testModalCancel}
+        <Modal title="提交询问" visible={this.state.testModal}
+               onOk={this.testModalOK.bind(this)} onCancel={this.testModalCancel.bind(this)}
+               okText="是" cancelText="否"
         >
-          <p>some contents...</p>
+          <p>尚未提交提测报告,是否立即提交?</p>
         </Modal>
         <div id="tb-div"></div>
       </div>
@@ -176,6 +185,17 @@ export default class ReportList extends Component {
   }
 
   getTbData() {
+    //审核结果 字符串解析成int型
+    if(this.state.dropData == "全部"){
+      check_result = -1;
+    }else if(this.state.dropData == "待审核"){
+      check_result = 0;
+    }else if(this.state.dropData == "通过"){
+      check_result = 1;
+    }else if(this.state.dropData == "未通过"){
+      check_result = 2;
+    }
+    this.state.check_result = check_result;
     console.log(this.state);
     //调用接口函数
     api.getReportList(this.state).then(data => {
@@ -192,7 +212,7 @@ export default class ReportList extends Component {
         arr[i]["typeStr"] = (arr[i].type == 0) ? "App类" : "非App类";
         //节点类型
         if (arr[i].node == 0) {
-          nodeStr = "提测";
+          nodeStr = "新项目";
           _nUrl = "newCheckInReport";
         } else if (arr[i].node == 1) {
           nodeStr = "提测";
@@ -232,17 +252,20 @@ export default class ReportList extends Component {
       ;
       console.log(arr);
       const redirectToTest = (e)=> {
+        //取到对应的工作流id
+        work_id = e.data.id;
+        console.log(work_id);
         if (Object.is(e.data.node, 1)) {
-          window.location = "index.html#/newCheckInReport";
+          window.location.href = "index.html#/newCheckInReport?work_id=" + work_id;
         }
         else if (Object.is(e.data.node, 2)) {
-          window.location = "index.html#/newOnlineReport";
+          window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
         }
         else if (Object.is(e.data.node, 3)) {
-          window.location = "index.html#/newMergeReport";
+          window.location.href = "index.html#/newMergeReport?work_id=" + work_id;
         }
         else {
-          this.setState({testModal: true});
+          this.setState({testModal: true}); //显示对话框
         }
       }
       //表格数据渲染

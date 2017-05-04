@@ -18,6 +18,7 @@ import {
 } from "antd";
 import "../../less/newOnlineReport.less";
 import {api} from "../api.js";
+import {dealUrl} from "../api.js";
 
 var objData = {};
 var work_id;
@@ -34,8 +35,6 @@ export default class NewOnlineReport extends Component {
       dropData_weak: "NA",
       dropData_test: "通过",
       dropData_UAT: "通过",
-
-      work_id:"8"
     };
   }
 
@@ -72,6 +71,12 @@ export default class NewOnlineReport extends Component {
   }
 
   render() {
+    //从准入报告列表页,解析传过来的url中的work_id参数
+    let url = window.location.href;
+    let obj = dealUrl(url);
+    work_id = obj["work_id"];
+    console.log(work_id);
+    
     //下拉菜单 - menu - 安全测试
     const dropData_safe = ["蓝灯", "绿灯", "黄灯", "红灯"];
     const dropMenu_safe = (
@@ -141,7 +146,7 @@ export default class NewOnlineReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容"/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
             </Col>
           </Row>
           <Row>
@@ -390,12 +395,20 @@ export default class NewOnlineReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{ 
                         //提交 提交上线报告信息
+                        console.log(objData);
+                        console.log(this.state);
                         api.postOnlineReport(objData).then(data=>{
-                          console.log("online report post success");
                           console.log(data);
+                          if(data.status == 200){
+                            console.log("online report post success");
+                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=online&work_id="+ work_id
+                          }else if(data.status == 500){
+                            console.log(data.message);
+                            alert(data.message);
+                          }
                         });
-                        
-                        window.location.href="index.html#/evaluationResult?flag=1&pageTag=online&work_id="+ work_id } }
+
+                        } }
               >提交</Button>
             </Col>
           </Row>
@@ -407,11 +420,10 @@ export default class NewOnlineReport extends Component {
 
   componentDidMount() {
     //新建上线报告前,获取上线的jira数据
-    api.getOnlineReport_Jira(this.state.work_id).then(data=> {
+    api.getOnlineReport_Jira(work_id).then(data=> {
       console.log("online report get jira success");
       console.log(data);
       objData = data.data;
-      work_id = this.state.work_id;
       objData["work_id"] = work_id;
       console.log(work_id);
 
