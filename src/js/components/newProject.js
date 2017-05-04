@@ -70,6 +70,11 @@ export default class newProject extends Component {
     }
   }
 
+  //取消
+  btnCancel(){
+    window.location = 'index.html#/reportList';
+  }
+
   handleOk(e) {
     console.trace();
     console.log(e);
@@ -100,7 +105,7 @@ export default class newProject extends Component {
   }
 
   handleCancel(e) {
-    console.log(e);
+    // console.log(e);
     this.setState({
       visible: false,
     });
@@ -179,7 +184,7 @@ export default class newProject extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={8}></Col>
-            <Col span={5}><Button>取消</Button></Col>
+            <Col span={5}><Button onClick={this.btnCancel.bind(this)}>取消</Button></Col>
             <Col span={8}>
               <Button type="primary" onClick={this.showModal.bind(this)}>提交</Button>
               <Modal className="submitModal" title="提交确认" visible={this.state.visible}
