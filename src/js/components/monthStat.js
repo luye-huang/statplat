@@ -66,6 +66,10 @@ export default class MonthStat extends Component{
 
     }
 
+    renderTable(){
+        console.log(22);
+    }
+
     render(){
         //当前时间
         let currDate = new Date();
@@ -102,14 +106,14 @@ export default class MonthStat extends Component{
                         <Input addonBefore="责任人团队" defaultValue={this.state.team} name="team"
                                onChange={this.handleChange.bind(this)}/>
                     </Col>
-                    <Col span={6}><Button style={{ float:"right" }} type="primary">查询</Button></Col>
+                    <Col span={6}><Button style={{ float:"right" }} type="primary" onClick={this.renderTable }>查询</Button></Col>
                 </Row>
-                
                 <div id="tb-div"></div>
-
             </div>
 
         );
     }
+
+
 }
 

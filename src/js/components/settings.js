@@ -20,7 +20,7 @@ export default class Settings extends React.Component{
         data: dataSource,
         submit: function(){
           console.log(this);
-          api.postManagerConfig(this);
+          api.postManagerConfig({json:JSON.stringify(this)});
         }
       };
       const editor = new JsonEditor(param);
