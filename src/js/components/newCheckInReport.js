@@ -28,6 +28,7 @@ import {dealUrl} from "../api.js";
 
 var objData = {};
 var work_id;
+let if_email; // 提测邮件 int
 export default class NewCheckInReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -106,7 +107,7 @@ export default class NewCheckInReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}
+              <Input placeholder="输入测试计划名称" name="tl_id" value={this.state.tl_id}
                      onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
@@ -284,8 +285,9 @@ export default class NewCheckInReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{
                       //提交 提交提测报告信息
-                      console.log(objData);
-                      api.postCheckinReport(objData).then(data=>{
+                      this.setState({ if_email:1,});
+                      console.log(this.state);
+                      api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
                         if(data.status == 200){
                           console.log("checkin report post success");
@@ -309,8 +311,8 @@ export default class NewCheckInReport extends Component {
     api.getCheckinReport_Jira(work_id).then(data=> {
       console.log("checkin report get jira success");
       console.log(data);
-      objData = data.data;
-      objData["work_id"] = work_id;
+      // objData = data.data;
+      // objData["work_id"] = work_id;
       console.log(work_id);
 
       //将获取到的数据显示到页面上
@@ -318,6 +320,8 @@ export default class NewCheckInReport extends Component {
       this.setState({
         //提测邮件
         dropData:(data.data.if_email==1)?"已发送":"未发送",
+        work_id:work_id,
+        // if_email:1,
       });
       console.log(this.state);
     });
