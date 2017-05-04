@@ -211,12 +211,17 @@ export default class ReportList extends Component {
         //项目类型
         arr[i]["typeStr"] = (arr[i].type == 0) ? "App类" : "非App类";
         //节点类型
+        debugger;
         if (arr[i].node == 0) {
           nodeStr = "新项目";
           _nUrl = "newCheckInReport";
         } else if (arr[i].node == 1) {
           nodeStr = "提测";
           _nUrl = "newCheckInReport";
+          if(arr[i].check_result==1){
+            nodeStr = "上线";
+            _nUrl = "newOnlineReport";
+          }
         } else if (arr[i].node == 2) {
           nodeStr = "上线";
           _nUrl = "newOnlineReport";
@@ -257,6 +262,10 @@ export default class ReportList extends Component {
         console.log(work_id);
         if (Object.is(e.data.node, 1)) {
           window.location.href = "index.html#/newCheckInReport?work_id=" + work_id;
+
+          if(Object.is(e.data.check_result, 1)){ // 节点为1, 且审核结果为1 ,进入上线报告
+            window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
+          }
         }
         else if (Object.is(e.data.node, 2)) {
           window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;

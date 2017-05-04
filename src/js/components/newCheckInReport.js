@@ -284,9 +284,8 @@ export default class NewCheckInReport extends Component {
             <Col span={12} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{
-                      //提交 提交提测报告信息
+                      //提交 提测报告信息
                       this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
-                      debugger;
                       console.log(this.state);
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
