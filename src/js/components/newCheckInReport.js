@@ -34,8 +34,8 @@ export default class NewCheckInReport extends Component {
   constructor(props) {
     super();
     this.state = {
-      dropData: "发送",
-      dropData_demo: "NA",
+      dropData: "未发送",
+      // dropData_demo: "NA",
     };
   }
 
@@ -285,7 +285,8 @@ export default class NewCheckInReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{
                       //提交 提交提测报告信息
-                      this.setState({ if_email:1,});
+                      this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
+                      debugger;
                       console.log(this.state);
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
@@ -321,7 +322,7 @@ export default class NewCheckInReport extends Component {
         //提测邮件
         dropData:(data.data.if_email==1)?"已发送":"未发送",
         work_id:work_id,
-        // if_email:1,
+        if_email:(this.state.dropData == "已发送")? 1 : 0 ,
       });
       console.log(this.state);
     });
