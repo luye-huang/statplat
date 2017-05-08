@@ -154,7 +154,9 @@ export default class NewOnlineReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}
+                     onChange={this.handleChange.bind(this)}
+              />
             </Col>
           </Row>
           <Row>
@@ -294,15 +296,21 @@ export default class NewOnlineReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">需要测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_need}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_need" value={this.state.cptest_need} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">实际测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_final}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_final" value={this.state.cptest_final} onChange={this.handleChange.bind(this)}/>
+                  </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">百分率</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_rate}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_rate" value={this.state.cptest_rate} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
             </Col>
           </Row>
@@ -403,9 +411,9 @@ export default class NewOnlineReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{ 
                         //提交 上线报告信息
-                        console.log(objData);
+                        this.getIntFromString();
                         console.log(this.state);
-                        api.postOnlineReport(objData).then(data=>{
+                        api.postOnlineReport(this.state).then(data=>{
                           console.log(data);
                           if(data.status == 200){
                             console.log("online report post success");
@@ -424,6 +432,39 @@ export default class NewOnlineReport extends Component {
 
       </div>
     );
+  }
+
+  getIntFromString(){
+    //安全测试
+    if(this.state.dropData_safe == "蓝灯"){
+      this.state.safetest_status = 1;
+    }else if(this.state.dropData_safe == "绿灯"){
+      this.state.safetest_status = 2;
+    }else if(this.state.dropData_safe == "黄灯"){
+      this.state.safetest_status = 3;
+    }else if(this.state.dropData_safe == "红灯"){
+      this.state.safetest_status = 4;
+    }
+    //弱网测试总结  -- 待定
+    if(this.state.dropData_weak == "NA"){
+      this.state.rwtest_status = 0
+    }else if(this.state.dropData_weak == "通过"){
+      this.state.rwtest_status = 1
+    }else if(this.state.dropData_weak == "未通过"){
+      this.state.rwtest_status = 0
+    }
+    //测试报告结论
+    if(this.state.dropData_test == "通过"){
+      this.state.test_result = 1
+    }else if(this.state.dropData_test == "未通过"){
+      this.state.test_result = 0
+    }
+    //UAT验收结论
+    if(this.state.dropData_UAT == "通过"){
+      this.state.uat_result = 1
+    }else if(this.state.dropData_UAT == "未通过"){
+      this.state.uat_result = 0
+    }
   }
 
   componentDidMount() {

@@ -49,9 +49,9 @@ export default class ReportList extends Component {
       reporter_name: "reporter",
       date_begin: "2017-04-18",
       date_end: currTime,
-      dep1: "dep1",
-      dep2: "dep2",
-      dep3: "dep3",
+      dep1_name: "dep1",
+      dep2_name: "dep2",
+      dep3_name: "dep3",
       dropData: "全部",
       testModal: false
     };
@@ -140,15 +140,15 @@ export default class ReportList extends Component {
         </Row>
         <Row gutter={16} style={{marginBottom: 16}}>
           <Col span={6}>
-            <Input addonBefore="一级部门" defaultValue={this.state.dep1} name="dep1"
+            <Input addonBefore="一级部门" defaultValue={this.state.dep1_name} name="dep1_name"
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6}>
-            <Input addonBefore="二级部门" defaultValue={this.state.dep2} name="dep2"
+            <Input addonBefore="二级部门" defaultValue={this.state.dep2_name} name="dep2_name"
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6}>
-            <Input addonBefore="三级部门" defaultValue={this.state.dep3} name="dep3"
+            <Input addonBefore="三级部门" defaultValue={this.state.dep3_name} name="dep3_name"
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6} className="exam-result">

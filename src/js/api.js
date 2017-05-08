@@ -240,6 +240,18 @@ export const api = {
     });
   },
 
+  //月度统计表  stat/list
+  getMonthStatList(obj){
+    let url = domain+"stat/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end
+    return fetch(url).then( response => response.json() );
+  },
+
+  //get1，2，3级部门的初始化数据   base/depdict
+  getDepartmentData(){
+    let url = domain + "base/depdict";
+    return fetch(url).then( response => response.json() );
+  }
+
 }
 
 //url字符串处理函数
