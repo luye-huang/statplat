@@ -3,7 +3,7 @@
  */
 
 /*
- 新建项目
+ 新建项目信息
  */
 import React, {Component} from "react";
 import "../../less/newProject.less";
@@ -52,6 +52,7 @@ export default class newProject extends Component {
   //对话框
   showModal() {
     //项目类型
+    debugger;
     this.state.type = (this.state.dropData=="App类")?0:1;
     console.log(this.state); // 已经获取到新建项目的字段信息
     if(this.state.name ==""){

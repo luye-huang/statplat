@@ -37,16 +37,14 @@ function dealUrl(url) {
 }
 var pageTag; //分辨是从哪一个页面跳转过来的 : 提测/上线/合板
 var work_id;
-var objResultData;
 var status; //评估结论
-var flow;//审核流程
 export default class EvaluationResult extends Component {
   //初始化状态
   constructor(props) {
     super();
     this.state = {
-      statusResult:"未选择",
-      _flow:"",
+      statusResult:"待评估",
+      _flow:"",  //审核流程
     };
   }
 
@@ -61,7 +59,7 @@ export default class EvaluationResult extends Component {
     debugger;
     console.log(this.state.work_id);
     let flag = obj["flag"];
-    let isHide = (flag == 1) ? "block" : "none";
+    let isHide = flag==0?"none":"block";
     console.log(isHide);
 
     //评估结论
@@ -105,7 +103,7 @@ export default class EvaluationResult extends Component {
             是否需要审核
           </Col>
           <Col span={18} className="test-link-css border-bottom-css">
-            <span>{(this.state.need_check==1)?"需要审核":(this.state.need_check==0?"不需要审核":"null")}</span>
+            <span>{(this.state.need_check==1)?"需要审核":(this.state.need_check==0?"不需要审核":" ")}</span>
           </Col>
         </Row>
         <Row>
@@ -137,35 +135,52 @@ export default class EvaluationResult extends Component {
   }
 
   componentDidMount() {
+    let flow;
+    debugger;
     if (pageTag == "checkin") {
       //查看提测报告的 评估结果
       api.getCheckreportForCheckin(this.state.work_id).then(data=> {
-        console.log(data);
-        objResultData = data.data;
-        this.state = objResultData;
+        // console.log(data);
+        this.state = data.data;
         console.log(this.state);
 
         status = this.state.status;
-        this.setState({
-          _flow:this.state.flow.join("->"), //审核流程
-        });
         console.log(status);
+        flow = this.state.flow;
+        this.setState({
+          _flow:flow!=undefined?this.state.flow.join("->"):"无", //审核流程
+        });
+
       });
     } else if (pageTag == "online") {
       //查看上线报告的 评估结果
       api.getCheckreportForOnline(this.state.work_id).then(data=> {
-        console.log(data);
-        objResultData = data.data;
-        this.state = objResultData;
+        // console.log(data);
+
+        this.state = data.data;
         console.log(this.state);
+
+        status = this.state.status;
+        console.log(status);
+        flow = this.state.flow;
+        this.setState({
+          _flow:flow!=undefined?this.state.flow.join("->"):"无", //审核流程
+        });
       });
     } else if (pageTag == "merge") {
+      debugger;
       //查看合板报告的 评估结果
       api.getCheckreportForMerge(this.state.work_id).then(data=> {
-        console.log(data);
-        objResultData = data.data;
-        this.state = objResultData;
+        // console.log(data);
+        this.state = data.data;
         console.log(this.state);
+
+        status = this.state.status;
+        console.log(status);
+        flow = this.state.flow;
+        this.setState({
+          _flow:flow!=undefined?this.state.flow.join("->"):"无", //审核流程
+        });
       });
     }
 

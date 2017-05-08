@@ -35,7 +35,8 @@ function dealUrl(url) {
 
 var objData = {};
 var pageTag; //分辨上上个页面是哪一个页面 : 提测/上线/合板
-var work_id;
+var work_id,
+  flag; //flag为0 隐藏 ,即display:none
 export default class ExamResult extends Component{
     //状态初始化 -- 下拉列表dropdown的初始化数据
     constructor(props){
@@ -69,6 +70,8 @@ export default class ExamResult extends Component{
         pageTag = obj["pageTag"];
         work_id = obj["work_id"];
         console.log(work_id);
+        flag = obj["flag"];
+        console.log(flag);
 
         //下拉菜单 - menu - 提测邮件
         const dropData = ["通过", "未通过"];
@@ -139,7 +142,7 @@ export default class ExamResult extends Component{
                             <Input placeholder="" />
                         </Col>
                     </Row>
-                    <Row className="jira-css row-btn-css">
+                    <Row style={{ display:(flag==0?"none":"block") }} className="jira-css row-btn-css">
                         <Col span={12} className="submit-btn">
                             <Button
                                 onClick={ ()=>{ window.location="index.html#/reportList" } }
@@ -156,24 +159,32 @@ export default class ExamResult extends Component{
                                         if(pageTag == "checkin"){
                                             //提交 提测报告审核信息
                                             api.postCheckreportForCheckin(objData).then(data=>{
-                                                console.log("Checkreport For Checkin success");
+                                                if(data.status == 200){
+                                                    console.log("Checkreport For Checkin success");
+                                                    window.location="index.html#/reportList?exam_result=1";
+                                                }
                                                 console.log(data);
                                             });
                                         }else if(pageTag == "online"){
                                             //提交 上线报告审核信息
                                             api.postCheckreportForOnline(objData).then(data=>{
-                                                console.log("Checkreport For Online success");
+                                                if(data.status == 200){
+                                                    console.log("Checkreport For Online success");
+                                                    window.location="index.html#/reportList?exam_result=1";
+                                                }
                                                 console.log(data);
                                             });
                                             console.log("CheckreportForOnline");
                                         }else if(pageTag == "merge"){
                                             //提交 合板报告审核信息
                                             api.postCheckreportForMerge(objData).then(data=>{
-                                                console.log("Checkreport For Merge success");
+                                                if(data.status == 200){
+                                                    console.log("Checkreport For Merge success");
+                                                    window.location="index.html#/reportList?exam_result=1";
+                                                }
                                                 console.log(data);
                                             });
                                         }
-                                        window.location="index.html#/reportList?exam_result=1";
                                     } }
                             >提交</Button>
                         </Col>
