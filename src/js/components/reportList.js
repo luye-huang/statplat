@@ -53,7 +53,9 @@ export default class ReportList extends Component {
       dep2_name: "dep2",
       dep3_name: "dep3",
       dropData: "全部",
-      testModal: false
+      checkinModal: false,
+      onlineModal:false,
+      mergeModal:false,
     };
   }
 
@@ -85,17 +87,43 @@ export default class ReportList extends Component {
     console.log(this.state);
   }
 
-  testModalOK() {
+  //提测对话框
+  checkinModalOK() {
     //跳转到 -- 新建提测报告页面,并将work_id传过去
     window.location = "index.html#/newCheckInReport?work_id=" + work_id;
     this.setState({
-      testModal:false,
+      checkinModal:false,
     });
   }
-
-  testModalCancel() {
+  checkinModalCancel() {
     this.setState({
-      testModal:false, //关闭对话框
+      checkinModal:false, //关闭对话框
+    });
+  }
+  //上线对话框
+  onlineModalOK() {
+    //跳转到 -- 新建上线报告的页面,传递work_id
+    window.location = "index.html#/newOnlineReport?work_id=" + work_id;
+    this.setState({
+      onlineModal:false,
+    });
+  }
+  onlineModalCancel() {
+    this.setState({
+      onlineModal:false, //关闭对话框
+    });
+  }
+  //合板对话框
+  mergeModalOK(){
+    //跳转到 -- 新建合板报告的页面,传递work_id
+    window.location = "index.html#/newMergeReport?work_id=" + work_id;
+    this.setState({
+      mergeModal:false,
+    });
+  }
+  mergeModalCancel() {
+    this.setState({
+      mergeModal:false, //关闭对话框
     });
   }
 
@@ -173,11 +201,23 @@ export default class ReportList extends Component {
                                 } }
           >查 询</Button></Col>
         </Row>
-        <Modal title="提交询问" visible={this.state.testModal}
-               onOk={this.testModalOK.bind(this)} onCancel={this.testModalCancel.bind(this)}
+        <Modal title="提交询问" visible={this.state.checkinModal}
+               onOk={this.checkinModalOK.bind(this)} onCancel={this.checkinModalCancel.bind(this)}
                okText="是" cancelText="否"
         >
-          <p>尚未提交提测报告,是否立即提交?</p>
+          <p>尚未提交提测报告,是否立即提交提测报告?</p>
+        </Modal>
+        <Modal title="提交询问" visible={this.state.onlineModal}
+               onOk={this.onlineModalOK.bind(this)} onCancel={this.onlineModalCancel.bind(this)}
+               okText="是" cancelText="否"
+        >
+          <p>尚未提交上线报告,是否立即提交上线报告?</p>
+        </Modal>
+        <Modal title="提交询问" visible={this.state.mergeModal}
+               onOk={this.mergeModalOK.bind(this)} onCancel={this.mergeModalCancel.bind(this)}
+               okText="是" cancelText="否"
+        >
+          <p>尚未提交合板报告,是否立即提交合板报告?</p>
         </Modal>
         <div id="tb-div"></div>
       </div>
@@ -211,22 +251,27 @@ export default class ReportList extends Component {
         //项目类型
         arr[i]["typeStr"] = (arr[i].type == 0) ? "App类" : "非App类";
         //节点类型
-        debugger;
         if (arr[i].node == 0) {
-          nodeStr = "新项目";
+          nodeStr = "提测";
           _nUrl = "newCheckInReport";
         } else if (arr[i].node == 1) {
           nodeStr = "提测";
           _nUrl = "newCheckInReport";
-          if(arr[i].check_result==1){
+          /*//非App类,type类型为1(提测,上线)
+          if(arr[i].check_result==1 && arr[i].type == 1){
             nodeStr = "上线";
             _nUrl = "newOnlineReport";
           }
-        } else if (arr[i].node == 2) {
+          //App类,type类型为0(提测,合板)
+          if(arr[i].check_result==1 && arr[i].type == 0){
+            nodeStr = "合板";
+            _nUrl = "newMergeReport";
+          }*/
+        } else if (arr[i].node == 2 || arr[i].node == 3) {
           nodeStr = "上线";
           _nUrl = "newOnlineReport";
-        } else if (arr[i].node == 3) {
-          nodeStr = "合板";
+        } else if (arr[i].node == 4 || arr[i].node == 5) {
+          nodeStr = "合版";
           _nUrl = "newMergeReport";
         }
         arr[i]["nodeStr"] = nodeStr;
@@ -256,25 +301,95 @@ export default class ReportList extends Component {
       }
       ;
       console.log(arr);
-      const redirectToTest = (e)=> {
+      //节点的跳转
+      const redirectTo_NodeTest = (e)=> {
         //取到对应的工作流id
         work_id = e.data.id;
         console.log(work_id);
-        if (Object.is(e.data.node, 1)) {
-          window.location.href = "index.html#/newCheckInReport?work_id=" + work_id;
+        //提测报告
+        if(Object.is(e.data.node, 0)){
+          this.setState({checkinModal: true}); //显示提测对话框
+        }
+        else if (Object.is(e.data.node, 1)) {
 
-          if(Object.is(e.data.check_result, 1)){ // 节点为1, 且审核结果为1 ,进入上线报告
+          window.location.href = "index.html#/newCheckInReport?work_id=" + work_id;
+          /*// 非App类型,type=1, 且审核结果为1 ,进入上线报告
+          if(Object.is(e.data.type, 1) && Object.is(e.data.check_result, 1)){
             window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
           }
+          // App类型,type=0, 且审核结果为1 ,进入合板报告
+          if(Object.is(e.data.type, 0) && Object.is(e.data.check_result, 1)){
+            window.location.href = "index.html#/newMergeReport?work_id=" + work_id;
+          }*/
         }
+        //上线报告
         else if (Object.is(e.data.node, 2)) {
-          window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
+          this.setState({onlineModal: true}); //显示上线对话框
         }
         else if (Object.is(e.data.node, 3)) {
+          window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
+          //若上线审核通过,则隐藏上线报告页面的提交按钮
+          if(Object.is(e.data.check_result, 1)){
+            window.location.href = "index.html#/newOnlineReport?work_id=" + work_id + "&flag=0";
+          }
+        }
+        //合板报告
+        else if (Object.is(e.data.node, 4)) {
+          this.setState({mergeModal: true}); //显示合板对话框
+        }
+        else if(Object.is(e.data.node, 5)){
           window.location.href = "index.html#/newMergeReport?work_id=" + work_id;
         }
-        else {
-          this.setState({testModal: true}); //显示对话框
+      }
+      //评估结论的跳转  -- 跳转到evaluationResult评估结论页面, pageTag=checkin
+      const redirectTo_Checknote = (e)=>{
+        work_id = e.data.id;
+        if(Object.is(e.data.node, 0)){
+          this.setState({checkinModal: true}); //显示提测对话框
+        }
+        else if(Object.is(e.data.node, 1)){ //跳转到提测的评估页面
+          window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=checkin";
+        }
+        else if (Object.is(e.data.node, 2)) {
+          this.setState({onlineModal: true}); //显示上线对话框
+        }
+        else if(Object.is(e.data.node, 3)){ //跳转到上线的评估页面
+          window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=online";
+          if(Object.is(e.data.check_result, 1)){
+            window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=online&flag=0";
+          }
+        }
+        else if (Object.is(e.data.node, 4)) {
+          this.setState({mergeModal: true}); //显示合板对话框
+        }
+        else if(Object.is(e.data.node, 5)){ //跳转到合板的评估页面
+          window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=merge";
+        }
+      }
+      //审核结果的跳转 -- 跳转到examResult审核结果页面,
+      const redirectTo_CheckResult = (e)=>{
+        work_id = e.data.id;
+        if(Object.is(e.data.node, 0)){
+          this.setState({checkinModal: true}); //显示提测对话框
+        }
+        else if(Object.is(e.data.node, 1)){ //跳转到提测的审核页面
+          window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=checkin";
+        }
+        else if (Object.is(e.data.node, 2)) {
+          this.setState({onlineModal: true}); //显示上线对话框
+        }
+        else if(Object.is(e.data.node, 3)){ //跳转到上线的审核页面
+          window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=online";
+          //若上线审核通过,则隐藏 审核页面 的提交按钮
+          if(Object.is(e.data.check_result, 1)){
+            window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=online"+ "&flag=0";
+          }
+        }
+        else if (Object.is(e.data.node, 4)) {
+          this.setState({mergeModal: true}); //显示合板对话框
+        }
+        else if(Object.is(e.data.node, 5)){ //跳转到合板的审核页面
+          window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=merge";
         }
       }
       //表格数据渲染
@@ -287,9 +402,11 @@ export default class ReportList extends Component {
           {cname: "项目类型", cdata: "typeStr"},
           {cname: "报告人姓名", cdata: "tester_ctx"},
           // {cname:"节点",cdata:"nodeStr",type:"a", url:nodeUrl, params:["_nUrl"]},
-          {cname: "节点", cdata: "nodeStr", style: "fakeA", action: "click", trigger: redirectToTest},
-          {cname: "评估结果", cdata: "check_noteStr"},
-          {cname: "审核结果", cdata: "check_resultStr"},
+          {cname: "节点", cdata: "nodeStr", style: "fakeA", action: "click", trigger: redirectTo_NodeTest},
+          // {cname: "评估结论", cdata: "check_noteStr"},
+          {cname: "评估结论", cdata: "check_noteStr", style:"fakeA", action:"click", trigger: redirectTo_Checknote},
+          // {cname: "审核结果", cdata: "check_resultStr"},
+          {cname: "审核结果", cdata: "check_resultStr", style:"fakeA", action:"click", trigger: redirectTo_CheckResult},
           {cname: "一级部门", cdata: "dep1_name"},
           {cname: "二级部门", cdata: "dep2_name"},
           {cname: "三级部门", cdata: "dep3_name"},

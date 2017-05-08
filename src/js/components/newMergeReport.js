@@ -92,7 +92,7 @@ export default class NewMergeReport extends Component {
     // console.log(work_id);
 
     //下拉菜单 - menu - 安全测试
-    const dropData_safe = ["蓝灯", "绿灯", "黄灯", "红灯"];
+    const dropData_safe = ["未选择","蓝灯", "绿灯", "黄灯", "红灯"];
     const dropMenu_safe = (
       <Menu onClick={this.menuOnclick_safe.bind(this)}>
         <Menu.Item key={dropData_safe[0]}>
@@ -170,7 +170,9 @@ export default class NewMergeReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}
+                     onChange={this.handleChange.bind(this)}
+              />
             </Col>
           </Row>
           <Row>
@@ -299,16 +301,22 @@ export default class NewMergeReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">需要测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_need}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_need" value={this.state.cptest_need} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">实际测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_final}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_final" value={this.state.cptest_final} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
               <Row>
                 <Col span={18}
                      className="test-result-detail border-right-css border-bottom-css">百分率</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_rate}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_rate" value={this.state.cptest_rate} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
             </Col>
           </Row>
@@ -430,7 +438,7 @@ export default class NewMergeReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{
                         //提交 合板报告信息
-                        console.log(objData);
+                        this.getIntFromString();
                         console.log(this.state);
                         api.postMergeReport(this.state).then(data=>{
                           if(data.status == 200){
@@ -452,25 +460,59 @@ export default class NewMergeReport extends Component {
     );
   }
 
+  getIntFromString(){
+    //安全测试
+    if(this.state.dropData_safe == "未选择"){
+      this.state.safetest_status = 0;
+    }else if(this.state.dropData_safe == "蓝灯"){
+      this.state.safetest_status = 1;
+    }else if(this.state.dropData_safe == "绿灯"){
+      this.state.safetest_status = 2;
+    }else if(this.state.dropData_safe == "黄灯"){
+      this.state.safetest_status = 3;
+    }else if(this.state.dropData_safe == "红灯"){
+      this.state.safetest_status = 4;
+    }
+    //相关服务已上线
+    if(this.state.dropData_service == "未上线"){
+      this.state.if_online = 0;
+    }else if(this.state.dropData_service == "已上线"){
+      this.state.if_online = 1;
+    }
+    //合版后需求无更新
+    if(this.state.dropData_merge == "无变更"){
+      this.state.no_change_after_merge = 0;
+    }else if(this.state.dropData_merge == "有变更"){
+      this.state.no_change_after_merge = 1;
+    }
+    //测试报告结论
+    if(this.state.dropData_test == "通过"){
+      this.state.test_result = 1
+    }else if(this.state.dropData_test == "未通过"){
+      this.state.test_result = 0
+    }
+    //UAT验收结论
+    if(this.state.dropData_UAT == "通过"){
+      this.state.uat_result = 1
+    }else if(this.state.dropData_UAT == "未通过"){
+      this.state.uat_result = 0
+    }
+  }
+
   componentDidMount() {
     //新建合板报告前,获取合板的jira数据
     api.getMergeReport_Jira(work_id).then(data=> {
       console.log("merge report get jira success");
       console.log(data);
-      objData = data.data;
-      objData["work_id"] = work_id;
       console.log(work_id);
-
       //将获取的数据显示在合板页面中
       this.state = data.data;
-      // this.setState({});
-
       /*
        int型数据,解析成字符串类型的
        */
       //安全测试
       safeSta = this.state.safetest_status;
-      if( safeSta== 0){
+      if( safeSta== 0 || safeSta==null){
         this.setState({dropData_safe:"未选择"});
       }else if(safeSta == 1){
         this.setState({dropData_safe:"蓝灯"});
@@ -482,21 +524,21 @@ export default class NewMergeReport extends Component {
         this.setState({dropData_safe:"红灯"});
       }
       //相关服务已上线
-      serviceSta = this.state.If_online;
-      this.setState({ dropData_service:(serviceSta == 0)?"未上线":"已上线" });
+      serviceSta = this.state.if_online;
       //合版后需求无更新
       mergeSta = this.state.no_change_after_merge;
-      this.setState({ dropData_merge:(mergeSta == 0)?"无变更":"有变更" });
       //测试报告结论
       testSta = this.state.test_result;
-      this.setState({ dropData_test:(testSta == 0)?"未通过":"通过" });
       //UAT验收结论
       UATSta = this.state.uat_result;
-      this.setState({ dropData_UAT:(UATSta == 0)?"未通过":"通过" });
-
+      this.setState({
+        dropData_service:(serviceSta == 0)?"未上线":"已上线" ,
+        dropData_merge:(mergeSta == 0)?"无变更":"有变更" ,
+        dropData_test:(testSta == 0)?"未通过":"通过" ,
+        dropData_UAT:(UATSta == 0)?"未通过":"通过" ,
+        work_id:work_id,
+      });
       console.log(this.state);
     });
   }
-
-
 }

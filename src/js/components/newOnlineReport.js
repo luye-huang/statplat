@@ -21,7 +21,8 @@ import {api} from "../api.js";
 import {dealUrl} from "../api.js";
 
 var objData = {};
-var work_id;
+let work_id,
+  flag; //flag为0 隐藏 ,即display:none
 var safeSta, //安全测试 状态
   weakSta, //弱网测试 状态
   testSta, //测试报告结论 状态
@@ -84,6 +85,8 @@ export default class NewOnlineReport extends Component {
     let obj = dealUrl(url);
     work_id = obj["work_id"];
     console.log(work_id);
+    flag = obj["flag"];
+    console.log(flag);
     
     //下拉菜单 - menu - 安全测试
     const dropData_safe = ["蓝灯", "绿灯", "黄灯", "红灯"];
@@ -400,7 +403,7 @@ export default class NewOnlineReport extends Component {
           </Row>
         </div>
 
-        <div>
+        <div style={{ display:(flag==0?"none":"block") }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
               <Button
@@ -472,14 +475,9 @@ export default class NewOnlineReport extends Component {
     api.getOnlineReport_Jira(work_id).then(data=> {
       console.log("online report get jira success");
       console.log(data);
-      // objData = data.data;
-      // objData["work_id"] = work_id;
       console.log(work_id);
-
       //将数据显示在页面上
       this.state = data.data;
-      // this.setState({});
-
       /*
         将int类型的状态数据,转换成对应的字符串类型
       */
@@ -509,7 +507,6 @@ export default class NewOnlineReport extends Component {
       }else{
         this.setState({ dropData_weak:"null" });
       }
-
       //测试报告结论 状态
       testSta = this.state.test_result;
       //UAT验收结论 状态
@@ -518,10 +515,8 @@ export default class NewOnlineReport extends Component {
         dropData_test:(testSta == 0)?"未通过":(testSta == 1?"通过":"null") ,
         dropData_UAT:(UATSta == 0)?"未通过":(UATSta == 1?"通过":"null"),
         work_id:work_id,
-
       });
       console.log(this.state);
     });
   }
-
 }
