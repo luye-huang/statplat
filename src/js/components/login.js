@@ -52,7 +52,7 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <div>
+      <div class="login">
         用户名:<br/>
         <input type="text"/>
         <br/>
