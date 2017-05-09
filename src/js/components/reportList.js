@@ -45,13 +45,13 @@ export default class ReportList extends Component {
   constructor(props) {
     super();
     this.state = {
-      name: "xuqiu",
-      reporter_name: "reporter",
+      name: "",
+      reporter_name: "",
       date_begin: "2017-04-18",
       date_end: currTime,
-      dep1_name: "dep1",
-      dep2_name: "dep2",
-      dep3_name: "dep3",
+      dep1_name: "",
+      dep2_name: "",
+      dep3_name: "",
       dropData: "全部",
       checkinModal: false,
       onlineModal:false,

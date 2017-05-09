@@ -109,7 +109,7 @@ export default class ExamResult extends Component{
                     </Row>
                     <Row>
                         <Col span={4} className="test-link-css border-bottom-css border-right-css">
-                            <Input placeholder="v_chenxiaoer" name="reporter_ctx" value={ this.state.reporter_ctx }/>
+                            <Input placeholder="v_chenxiaoer" name="reporter_ctx" value={ this.state.reporter_ctx } onChange={this.onChange.bind(this)}/>
                         </Col>
                         <Col span={8} className="test-link-css border-bottom-css border-right-css">
                             <Input placeholder="上线-提测-合板,,," name="comment" onChange={this.onChange.bind(this)}/>
@@ -154,14 +154,17 @@ export default class ExamResult extends Component{
                                         //是否审核通过
                                         let if_pass = this.state.dropData=="通过" ? 1 : 0;
                                         objData["if_pass"] = if_pass;
-                                        console.log(objData); 
-                                        debugger;
+                                        console.log(objData);
                                         if(pageTag == "checkin"){
                                             //提交 提测报告审核信息
                                             api.postCheckreportForCheckin(objData).then(data=>{
                                                 if(data.status == 200){
                                                     console.log("Checkreport For Checkin success");
+                                                    alert("success");
                                                     window.location="index.html#/reportList?exam_result=1";
+                                                }else if(data.status == 500){
+                                                    console.log(data.message);
+                                                    alert(data.message);
                                                 }
                                                 console.log(data);
                                             });
@@ -170,7 +173,11 @@ export default class ExamResult extends Component{
                                             api.postCheckreportForOnline(objData).then(data=>{
                                                 if(data.status == 200){
                                                     console.log("Checkreport For Online success");
+                                                    alert("success");
                                                     window.location="index.html#/reportList?exam_result=1";
+                                                }else if(data.status == 500){
+                                                    console.log(data.message);
+                                                    alert(data.message);
                                                 }
                                                 console.log(data);
                                             });
@@ -180,7 +187,11 @@ export default class ExamResult extends Component{
                                             api.postCheckreportForMerge(objData).then(data=>{
                                                 if(data.status == 200){
                                                     console.log("Checkreport For Merge success");
+                                                    alert("success");
                                                     window.location="index.html#/reportList?exam_result=1";
+                                                }else if(data.status == 500){
+                                                    console.log(data.message);
+                                                    alert(data.message);
                                                 }
                                                 console.log(data);
                                             });

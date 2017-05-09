@@ -76,7 +76,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交提测报告 workflow/report/checkin/  -- 404 not found
+  //提交 提交提测报告 workflow/report/checkin/  -- -- OK
   postCheckinReport(obj){
     let url = domain+"workflow/report/checkin/";
     return $.ajax({
@@ -102,7 +102,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交提测报告审核信息 workflow/checkreport/checkin/  -- 404 not found
+  //提交 提交提测报告审核信息 workflow/checkreport/checkin/  -- -- OK
   postCheckreportForCheckin(obj){
     let url = domain+"workflow/checkreport/checkin/";
     return $.ajax({
@@ -135,7 +135,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交合板报告 workflow/report/merge/  -- 404 not found
+  //提交 提交合板报告 workflow/report/merge/  -- -- OK
   postMergeReport(obj){
     let url = domain+"workflow/report/merge/";
     return $.ajax({
@@ -161,7 +161,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交合版报告审核信息 workflow/checkreport/merge/   -- 404 not found
+  //提交 提交合版报告审核信息 workflow/checkreport/merge/   -- OK
   postCheckreportForMerge(obj){
     let url = domain+"workflow/checkreport/merge/";
     return $.ajax({
@@ -194,7 +194,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交上线报告 workflow/report/online/    -- 404 not found
+  //提交 提交上线报告 workflow/report/online/    -- -- OK
   postOnlineReport(obj){
     let url = domain+"workflow/report/online/";
     return $.ajax({
@@ -220,7 +220,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交上线报告审核信息 workflow/checkreport/online/   -- 404 not found
+  //提交 提交上线报告审核信息 workflow/checkreport/online/   -- -- OK
   postCheckreportForOnline(obj){
     let url = domain+"workflow/checkreport/online/";
     return $.ajax({
@@ -240,7 +240,7 @@ export const api = {
     });
   },
 
-  //月度统计表  stat/list
+  //月度统计表  stat/list  - - OK
   getMonthStatList(obj){
     let url = domain+"stat/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end
     return fetch(url).then( response => response.json() );

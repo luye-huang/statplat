@@ -32,7 +32,7 @@ export default class newProject extends Component {
       visible: false,
       name: "projectName",
       jira_id: "requirementID",
-      tester_ctx: "tester",
+      testers: "testers",
       dropData: "App类",
       date_begin:"",
       date_end:"",
@@ -52,14 +52,13 @@ export default class newProject extends Component {
   //对话框
   showModal() {
     //项目类型
-    debugger;
     this.state.type = (this.state.dropData=="App类")?0:1;
     console.log(this.state); // 已经获取到新建项目的字段信息
     if(this.state.name ==""){
       alert("请输入完整项目信息");
     }else if(this.state.jira_id ==""){
       alert("请输入完整项目信息");
-    }else if(this.state.tester_ctx ==""){
+    }else if(this.state.testers ==""){
       alert("请输入完整项目信息");
     }else if(this.state.date_begin =="" || this.state.date_end ==""){
       alert("请输入完整项目信息");
@@ -179,7 +178,7 @@ export default class newProject extends Component {
               </div>
             </Col>
             <Col span={12}>
-              <Input addonBefore="测试人员" defaultValue={this.state.tester_ctx} name="tester_ctx"
+              <Input addonBefore="测试人员" defaultValue={this.state.testers} name="testers"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
