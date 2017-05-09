@@ -54,8 +54,9 @@ export default class LuyeJsonEditor {
         else if (property == 'str') {
           return function (parentNode, key, value, layer) {
             const id = [parentNode.attr('id'), key].join(separator);
+            const type = parentNode.attr('type');
             const node = $(`<div class="editor-row" id="${id}" type="str" style="margin-left:${layer * 24 + 24}px" layer="${layer}">
-                <span class="editor-cell editor-cell-key">${key}</span><span class="editor-cell editor-cell-value">${value}</span>
+                <span class="editor-cell ${type !== 'arr' ? 'editor-cell-key' : ''}">${key}</span><span class="editor-cell editor-cell-value">${value}</span>
                 <button class="btn-del">DEL</button></div>`);
             parentNode.append(node);
           }
@@ -71,7 +72,7 @@ export default class LuyeJsonEditor {
               id = [parentNode.parent().attr('id'), key].join(separator);
             }
             const node = $(`<div class="editor-row" id="${id}" type="arr" style="margin-left:${layer * 24}px" layer="${layer}">
-                <button class="front-btn row-btn-arr">+</button><span class="editor-cell editor-cell-key">${key}</span><span class="editor-cell">${txt}</span>
+                <button class="front-btn row-btn-arr">+</button><span class="editor-cell">${key}</span><span class="editor-cell">${txt}</span>
                 <button class="btn-add">ADD</button><button class="btn-del">DEL</button></div>`);
             parentNode.append(node);
             relations.set(id, value);
@@ -361,7 +362,7 @@ export default class LuyeJsonEditor {
   }
 
   attachSubmitEvent(btn) {
-    btn.click(()=>console.log(this.metadata))
+    btn.click(()=>this.param.submit.call(this.metadata));
   }
 
   attachPreviewEvent() {

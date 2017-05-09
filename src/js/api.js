@@ -5,6 +5,27 @@ import $ from "jquery";
 export const domain = 'http://aeplat.intra.sit.ffan.com/';
 
 export const api = {
+  //login
+  postLogin(obj){
+    let url = domain+"auth/login/";
+    return $.ajax({
+      type:"post",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  },
+
+
   //获取 配置管理信息 manager/config
   getManageConfig(){
     return fetch(domain+'manager/config').then(response => response.json());
@@ -76,7 +97,7 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //提交 提交提测报告 workflow/report/checkin/  -- -- OK
+  //提交 提交提测报告 workflow/report/checkin/  -- 404 not found
   postCheckinReport(obj){
     let url = domain+"workflow/report/checkin/";
     return $.ajax({

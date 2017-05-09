@@ -1,16 +1,27 @@
 import React from 'react';
 import {Link} from 'react-router';
 import 'antd/dist/antd.less';
+import '../less/tpl.less';
 import {Layout, Menu, Breadcrumb, Icon} from 'antd';
+import {api} from "./api.js";
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
 export default class Template extends React.Component {
+
+  constructor() {
+    super();
+  }
+
+  componentWillMount() {
+    if(!localStorage.getItem('uid'))window.location.href="index.html#/login";
+  }
+
   render() {
     return (
       <Layout>
         <Header className="header">
-          <div className="logo"/>
+          <div className="logo"></div>
           <Menu
             theme="dark"
             mode="horizontal"
@@ -27,11 +38,6 @@ export default class Template extends React.Component {
               defaultOpenKeys={['sub1']}
               style={{height: '100%'}}
             >
-              <SubMenu key="sub1" title={<span><Icon type="user"/>subnav1</span>}>
-                <Menu.Item key="1">option1<Link to={`/essence`}/></Menu.Item>
-                <Menu.Item key="2">option2<Link to={`/essence1`}/></Menu.Item>
-              </SubMenu>
-
               <Menu.Item key="5">准入报告列表<Link to={`/reportList`}/></Menu.Item>
               <Menu.Item key="6">月度统计表<Link to={`/monthStat`}/></Menu.Item>
               <Menu.Item key="1">配置管理<Link to={`/settings`}/></Menu.Item>
