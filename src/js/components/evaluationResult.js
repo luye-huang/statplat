@@ -38,6 +38,7 @@ function dealUrl(url) {
 var pageTag; //分辨是从哪一个页面跳转过来的 : 提测/上线/合板
 var work_id;
 var status; //评估结论
+let isExamBtnHide = true; //提交审核结果按钮 是否显示(默认显示)
 export default class EvaluationResult extends Component {
   //初始化状态
   constructor(props) {
@@ -56,27 +57,31 @@ export default class EvaluationResult extends Component {
     console.log(pageTag);
     work_id = obj["work_id"];
     this.state.work_id = work_id;
-    debugger;
     console.log(this.state.work_id);
     let flag = obj["flag"];
     let isHide = flag==0?"none":"block";
     console.log(isHide);
 
     //评估结论
-    if(this.state.status == 0){
-      this.state.statusResult = "未选择"
+    if(this.state.status!=undefined){
+      if(this.state.status == 0){
+        this.state.statusResult = "未选择"
 
-    }else if(this.state.status == 1){
-      this.state.statusResult = "蓝灯"
-    }
-    else if(this.state.status == 2){
-      this.state.statusResult = "绿灯"
-    }
-    else if(this.state.status == 3){
-      this.state.statusResult = "黄灯"
+      }else if(this.state.status == 1){
+        this.state.statusResult = "蓝灯"
+        isExamBtnHide = false; //蓝灯,按钮不显示
+      }
+      else if(this.state.status == 2){
+        this.state.statusResult = "绿灯"
+        isExamBtnHide = false; //绿灯,按钮不显示
+      }
+      else if(this.state.status == 3){
+        this.state.statusResult = "黄灯"
 
-    }else if(this.state.status == 4){
-      this.state.statusResult = "红灯"
+      }else if(this.state.status == 4){
+        this.state.statusResult = "红灯"
+      }
+      console.log(isExamBtnHide);
     }
 
     return (
@@ -118,7 +123,7 @@ export default class EvaluationResult extends Component {
         <div style={{ display: isHide }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
-              <Button type="primary"
+              <Button type="primary" style={{ display:(isExamBtnHide==false?"none":"block") }}
                       onClick={ ()=>{ window.location.href="index.html#/examResult?pageTag="+pageTag+"&work_id="+work_id } }
               >提交审核结果</Button>
             </Col>
@@ -136,7 +141,6 @@ export default class EvaluationResult extends Component {
 
   componentDidMount() {
     let flow;
-    debugger;
     if (pageTag == "checkin") {
       //查看提测报告的 评估结果
       api.getCheckreportForCheckin(this.state.work_id).then(data=> {
@@ -168,7 +172,6 @@ export default class EvaluationResult extends Component {
         });
       });
     } else if (pageTag == "merge") {
-      debugger;
       //查看合板报告的 评估结果
       api.getCheckreportForMerge(this.state.work_id).then(data=> {
         // console.log(data);

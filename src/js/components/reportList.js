@@ -248,6 +248,7 @@ export default class ReportList extends Component {
         _nUrl = "";
       let nodeUrl = "index.html#/@@";
       for (let i = 0; i < arr.length; i++) {
+        let nodeHistory1="";
         //项目类型
         arr[i]["typeStr"] = (arr[i].type == 0) ? "App类" : "非App类";
         //节点类型
@@ -270,12 +271,16 @@ export default class ReportList extends Component {
         } else if (arr[i].node == 2 || arr[i].node == 3) {
           nodeStr = "上线";
           _nUrl = "newOnlineReport";
+          //查看历史报告的节点
+          nodeHistory1 = "提测";
         } else if (arr[i].node == 4 || arr[i].node == 5) {
           nodeStr = "合版";
           _nUrl = "newMergeReport";
+          nodeHistory1 = "提测";
         }
         arr[i]["nodeStr"] = nodeStr;
         arr[i]["_nUrl"] = _nUrl;
+        arr[i]["nodeHistory1"] = nodeHistory1;
         //评估结果
         if (arr[i].check_note == 0) {
           check_noteStr = "待评估";
@@ -392,6 +397,14 @@ export default class ReportList extends Component {
           window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=merge";
         }
       }
+      //查看历史报告
+      const redirectTo_CheckinReportHistory = (e)=>{
+        work_id = e.data.id;
+
+        window.location.href = "index.html#/checkinReportHistoryPage?work_id=" + work_id;
+
+      }
+
       //表格数据渲染
       var tbParam = {
         el: $("#tb-div"),
@@ -411,6 +424,7 @@ export default class ReportList extends Component {
           {cname: "二级部门", cdata: "dep2_name"},
           {cname: "三级部门", cdata: "dep3_name"},
           {cname: "提交时间", cdata: "create_time"},
+          {cname: "查看历史报告", cdata: "nodeHistory1", style:"fakeA", action:"click", trigger: redirectTo_CheckinReportHistory},
         ],
         managePageSize: true,
       };

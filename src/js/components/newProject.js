@@ -30,9 +30,9 @@ export default class newProject extends Component {
     super();
     this.state = {
       visible: false,
-      name: "projectName",
-      jira_id: "requirementID",
-      testers: "testers",
+      name: "",
+      jira_id: "",
+      testers: "",
       dropData: "App类",
       date_begin:"",
       date_end:"",

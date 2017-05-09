@@ -117,7 +117,7 @@ export default class NewCheckInReport extends Component {
             </Col>
             <Col span={18}>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css">状态</Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>状态</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <span>Pass</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -130,7 +130,7 @@ export default class NewCheckInReport extends Component {
                   <span>Total</span></Col>
               </Row>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -143,7 +143,7 @@ export default class NewCheckInReport extends Component {
                   <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css">比率</Col>
+                <Col span={4} className="test-result-detail border-right-css"><span>比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css">
                   <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
@@ -173,7 +173,7 @@ export default class NewCheckInReport extends Component {
             </Col>
             <Col span={18}>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css">严重级别</Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>严重级别</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <span>Block</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -186,7 +186,7 @@ export default class NewCheckInReport extends Component {
                   <span>Total</span></Col>
               </Row>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css">数量</Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="2" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -199,7 +199,7 @@ export default class NewCheckInReport extends Component {
                   <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css">关闭数量</Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>关闭数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -212,7 +212,7 @@ export default class NewCheckInReport extends Component {
                   <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css">修复比率</Col>
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>修复比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -231,7 +231,7 @@ export default class NewCheckInReport extends Component {
             <Col span={6} className="test-link-css border-right-css">
               提测邮件
             </Col>
-            <Col span={10} style={{ backgroundColor:((this.state.dropData=="已发送")?"green":"red") }}
+            <Col span={8} style={{ backgroundColor:((this.state.dropData=="已发送")?"green":"red") }}
                  className="test-result-detail dropdown-list-css dropdown-a-css border-right-css">
               <div>
                 <Dropdown overlay={dropMenu} trigger={["click"]}>
@@ -242,7 +242,7 @@ export default class NewCheckInReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={8} className="test-link-css">
+            <Col span={10} className="test-link-css">
               <Input id="fileId" type="file" placeholder="上传附件" name="email_file"
                      onChange={ ()=>{
                      let fileVal = document.getElementById("fileId").value;
