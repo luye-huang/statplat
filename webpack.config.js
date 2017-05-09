@@ -53,7 +53,7 @@ module.exports = {
     //     warnings: false
     //   }
     // }),
-    new BomPlugin(true),
+    // new BomPlugin(true),
     new htmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
