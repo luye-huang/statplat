@@ -17,6 +17,7 @@ import EvaluationResult from "./components/evaluationResult.js";
 import ExamResult from "./components/examResult.js";
 import NewOnlineReport from "./components/newOnlineReport.js";
 import NewMergeReport from "./components/newMergeReport.js";
+import Login from "./components/login";
 
 export default class Main extends React.Component {
   render() {
@@ -38,7 +39,7 @@ export default class Main extends React.Component {
 
           <Route component={Settings} path="settings"></Route>
         </Route>
-        <Route component={Template} path="/login" />
+        <Route component={Login} path="/login" />
       </Router>
     );
   }
