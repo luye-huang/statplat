@@ -4,8 +4,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory} from 'react-router';
-import Essence from './components/essence';
-import Essence1 from './components/essence1';
 import Settings from './components/settings';
 import Template from './tpl';
 
@@ -28,9 +26,6 @@ export default class Main extends React.Component {
     return (
       <Router history={hashHistory}>
         <Route component={Template} path="/">
-          <Route component={Essence} path="essence"></Route>
-          <Route component={Essence1} path="essence1"></Route>
-
           <Route component={ReportList} path="reportList"></Route>
           <Route component={MonthlyChart} path="monthStat"></Route>
           <Route component={CheckinReportHistoryPage} path="checkinReportHistoryPage"></Route>
