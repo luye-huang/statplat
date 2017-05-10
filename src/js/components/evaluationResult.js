@@ -63,9 +63,11 @@ export default class EvaluationResult extends Component {
     console.log(isHide);
 
     //评估结论
+    debugger;
     if(this.state.status!=undefined){
       if(this.state.status == 0){
         this.state.statusResult = "未选择"
+        isExamBtnHide = true; //按钮显示
 
       }else if(this.state.status == 1){
         this.state.statusResult = "蓝灯"
@@ -77,9 +79,11 @@ export default class EvaluationResult extends Component {
       }
       else if(this.state.status == 3){
         this.state.statusResult = "黄灯"
+        isExamBtnHide = true; //按钮显示
 
       }else if(this.state.status == 4){
         this.state.statusResult = "红灯"
+        isExamBtnHide = true; //按钮显示
       }
       console.log(isExamBtnHide);
     }
@@ -120,14 +124,15 @@ export default class EvaluationResult extends Component {
           </Col>
         </Row>
 
-        <div style={{ display: isHide }}>
+        <div>
           <Row className="jira-css row-btn-css">
-            <Col span={12} className="look-result-btn">
-              <Button type="primary" style={{ display:(isExamBtnHide==false?"none":"block") }}
+            <Col span={12} offset={6}>
+              <Button type="primary"
+                      style={{ display:(isExamBtnHide==false?"none":"block") }}
                       onClick={ ()=>{ window.location.href="index.html#/examResult?pageTag="+pageTag+"&work_id="+work_id } }
               >提交审核结果</Button>
             </Col>
-            <Col span={12} className="submit-btn">
+            <Col span={6}>
               <Button
                 onClick={ ()=>{ window.location="index.html#/reportList" } }
               >关闭</Button>
