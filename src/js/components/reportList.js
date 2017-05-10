@@ -155,7 +155,7 @@ export default class ReportList extends Component {
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6}>
-            <Input addonBefore="报告人姓名" defaultValue={this.state.reporter_ctx} name="reporter_ctx"
+            <Input addonBefore="报告人ctx" defaultValue={this.state.reporter_ctx} name="reporter_ctx"
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={12}>
