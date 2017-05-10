@@ -85,17 +85,10 @@ export default class MonthStat extends Component{
         //下拉菜单 - menu
         dep1_id = this.state.dp1;
 
-       /* for(let i=0; i<dep1_id.length; i++){
-            dep1_name[i] = dep1_id.i["name"];
-        }
-        console.log(dep1_name);
-
-        console.log(11111111111111);
-        console.log(dep1_id[0]);*/
         const dropMenu1 = (
           <Menu onClick={this.menu1_Onclick.bind(this)}>
-              <Menu.Item key={dep1_id}>
-                  <p>{dep1_id}</p>
+              <Menu.Item key={0}>
+                  <p>{0}</p>
               </Menu.Item>
           </Menu>
         );
