@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js --progress --colors --display-module --display-reason",
-    "start": "webpack-dev-server --hot --inline --port 8111"
+    "start": "webpack-dev-server --hot --inline --port 8083"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/luye-huang/statplat/issues"
   },
-  "homepage": "https://github.com/luye-huang/statplat#readme",
+  "homepage": "https://github.com/luye-huang/s`tatplat#readme",
   "devDependencies": {
     "antd": "^2.8.3",
     "autoprefixer": "^6.7.7",

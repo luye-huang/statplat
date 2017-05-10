@@ -49,7 +49,13 @@ export default class ReportList extends Component {
       reporter_name: "",
       date_begin: "2017-04-18",
       date_end: currTime,
-      dep1_name: "",
+      deps:null,
+      dep1_overlay:(<div>{[2,3].map(function(item){
+        return <div>{item}</div>
+      })}</div>),
+      dep2_overlay:(<div>222</div>),
+      dep3_overlay:(<div>333</div>),
+      dep1_name: ['dd','cc'],
       dep2_name: "",
       dep3_name: "",
       dropData: "全部",
@@ -57,6 +63,16 @@ export default class ReportList extends Component {
       onlineModal:false,
       mergeModal:false,
     };
+  }
+
+  componentWillMount(){
+    api.getDepartment().then((data)=>{
+      console.log(data);
+      this.deps = data.data;
+      this.state.dep1_overlay = (<div>{[2,3].map(function(item){
+        <div>item</div>
+      })}</div>);
+    })
   }
 
   //时间日期选择  -- 提交时间事件处理
@@ -85,6 +101,10 @@ export default class ReportList extends Component {
     //
     this.setState(obj);
     console.log(this.state);
+    this.state.dep1_name =55;
+    this.state.dep1_overlay = (<div>{[2,3,5,5].map(function(item){
+      <div>{item}</div>
+    })}</div>);
   }
 
   //提测对话框
@@ -125,6 +145,18 @@ export default class ReportList extends Component {
     this.setState({
       mergeModal:false, //关闭对话框
     });
+  }
+
+  generateDropdown(list){
+    return (<Menu>
+
+        <Menu.Item>
+          <p>11</p>
+        </Menu.Item>
+        <Menu.Item>
+          <p>11</p>
+        </Menu.Item>
+    </Menu>)
   }
 
   render() {
@@ -168,8 +200,12 @@ export default class ReportList extends Component {
         </Row>
         <Row gutter={16} style={{marginBottom: 16}}>
           <Col span={6}>
-            <Input addonBefore="一级部门" defaultValue={this.state.dep1_name} name="dep1_name"
-                   onChange={this.handleChange.bind(this)}/>
+            <span>一级部门</span>
+            <select value="一级部门">
+              <option value="0">全部</option>
+            </select>
+            {/*<Input addonBefore="一级部门" defaultValue={this.state.dep1_name} name="dep1_name"*/}
+                   {/*onChange={this.handleChange.bind(this)}/>*/}
           </Col>
           <Col span={6}>
             <Input addonBefore="二级部门" defaultValue={this.state.dep2_name} name="dep2_name"
@@ -182,7 +218,7 @@ export default class ReportList extends Component {
           <Col span={6} className="exam-result">
             <span>审核结果</span>
             <div>
-              <Dropdown overlay={dropMenu} trigger={["click"]}>
+              <Dropdown overlay={this.state.dep1_overlay} trigger={["click"]}>
                 <a className="ant-dropdown-link" href="#">
                   {this.state.dropData}
                   <Icon type="down"/>

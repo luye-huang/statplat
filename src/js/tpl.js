@@ -2,8 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import 'antd/dist/antd.less';
 import '../less/tpl.less';
-import {Layout, Menu, Breadcrumb, Icon} from 'antd';
-import {api} from "./api.js";
+import {Layout, Menu, Breadcrumb, Icon, Button} from 'antd';
 const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
@@ -11,6 +10,12 @@ export default class Template extends React.Component {
 
   constructor() {
     super();
+  }
+
+  logout(){
+    localStorage.setItem('uid','');
+    localStorage.setItem('pwd','');
+    window.location.href="index.html#/login";
   }
 
   componentWillMount() {
@@ -22,6 +27,7 @@ export default class Template extends React.Component {
       <Layout>
         <Header className="header">
           <div className="logo"></div>
+          <Button className="logout" onClick={this.logout}>logout</Button>
           <Menu
             theme="dark"
             mode="horizontal"

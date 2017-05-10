@@ -14,17 +14,24 @@ export const api = {
       dataType:"json",
       data:obj,
       error:function (data) {
-        console.log(data.status);
-        console.log(data.statusText);
-        console.log(data.responseText);
       },
       success:function (data) {
-        console.log("success");
-        console.log(data);
       }
     });
   },
 
+  // postLogout(){
+  //   let url = domain+"auth/logout/";
+  //   return $.ajax({
+  //     type:"post",
+  //     url:url,
+  //     dataType:"json",
+  //     error:function (data) {
+  //     },
+  //     success:function (data) {
+  //     }
+  //   });
+  // },
 
   //获取 配置管理信息 manager/config
   getManageConfig(){
@@ -174,6 +181,12 @@ export const api = {
         console.log(data);
       }
     });
+  },
+
+  //获取部门
+  getDepartment(){
+    const url = domain + 'base/depdict';
+    return fetch(url).then( response => response.json());
   },
 
   //获取 查看合板报告的 评估结果  -- OK
