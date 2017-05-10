@@ -85,17 +85,10 @@ export default class MonthStat extends Component{
         //下拉菜单 - menu
         dep1_id = this.state.dp1;
 
-       /* for(let i=0; i<dep1_id.length; i++){
-            dep1_name[i] = dep1_id.i["name"];
-        }
-        console.log(dep1_name);
-
-        console.log(11111111111111);
-        console.log(dep1_id[0]);*/
         const dropMenu1 = (
           <Menu onClick={this.menu1_Onclick.bind(this)}>
-              <Menu.Item key={dep1_id[0]}>
-                  <p>{dep1_id[0]}</p>
+              <Menu.Item key={0}>
+                  <p>{0}</p>
               </Menu.Item>
           </Menu>
         );
@@ -159,23 +152,24 @@ export default class MonthStat extends Component{
             console.log(data);
 
             let arr = data.data;
-            let typeStr = "", nodeStr = "",
+            let typeStr = "",
+              nodeStr1 = "",nodeStr2 = "",
               check_noteStr1 = "", check_noteStr2 = "";
               for (let i = 0; i < arr.length; i++) {
                 //项目类型
                 arr[i]["typeStr"] = (arr[i].type == 0) ? "App类" : "非App类";
-                //节点类型
-                if (arr[i].node == 0) {
-                    nodeStr = "新项目";
-                } else if (arr[i].node == 1) {
-                    nodeStr = "提测";
-                } else if (arr[i].node == 2) {
-                    nodeStr = "上线";
-
-                } else if (arr[i].node == 3) {
-                    nodeStr = "合板";
+                //节点类型 节点1: node1
+                if (arr[i].node1 == 1) {
+                    nodeStr1 = "提测";
                 }
-                arr[i]["nodeStr"] = nodeStr;
+                //节点类型 节点2: node2
+                if (arr[i].node2 == 2) {
+                    nodeStr2 = "上线";
+                } else if (arr[i].node2 == 3 ) {
+                    nodeStr2 = "合板";
+                }
+                arr[i]["nodeStr1"] = nodeStr1;
+                arr[i]["nodeStr2"] = nodeStr2;
                 //评估结论1
                 if (arr[i].check1_note == 0) {
                     check_noteStr1 = "待评估";
@@ -214,9 +208,10 @@ export default class MonthStat extends Component{
                     {cname: "需求ID", cdata: "jira_id"},
                     {cname: "项目类型", cdata: "typeStr"},
                     {cname: "报告人姓名", cdata: "tester_ctx"},
-                    {cname: "节点", cdata: "nodeStr"},
+                    {cname: "节点1", cdata: "nodeStr1"},
                     {cname: "评估结论1", cdata: "check_noteStr1"},
                     {cname: "审核次数1", cdata: "check1_count"},
+                    {cname: "节点2", cdata: "nodeStr2"},
                     {cname: "评估结论2", cdata: "check_noteStr2"},
                     {cname: "审核次数2", cdata: "check2_count"},
                     {cname: "一级部门", cdata: "dep1_name"},

@@ -20,7 +20,6 @@ import "../../less/newOnlineReport.less";
 import {api} from "../api.js";
 import {dealUrl} from "../api.js";
 
-var objData = {};
 let work_id,
   flag; //flag为0 隐藏 ,即display:none
 var safeSta, //安全测试 状态
@@ -157,7 +156,9 @@ export default class NewOnlineReport extends Component {
               Testlink入参
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}/>
+              <Input placeholder="输入测试计划名称后可以检索到下面的内容" name="tl_id" value={this.state.tl_id}
+                     onChange={this.handleChange.bind(this)}
+              />
             </Col>
           </Row>
           <Row>
@@ -297,15 +298,21 @@ export default class NewOnlineReport extends Component {
             <Col span={18}>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">需要测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_need}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_need" value={this.state.cptest_need} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">实际测试的机型/浏览器</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_final}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_final" value={this.state.cptest_final} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">百分率</Col>
-                <Col span={6} className="test-result-detail border-bottom-css">{this.state.cptest_rate}</Col>
+                <Col span={6} className="test-result-detail border-bottom-css">
+                  <Input placeholder="" name="cptest_rate" value={this.state.cptest_rate} onChange={this.handleChange.bind(this)}/>
+                </Col>
               </Row>
             </Col>
           </Row>
@@ -398,7 +405,7 @@ export default class NewOnlineReport extends Component {
         <div style={{ display:(flag==0?"none":"block") }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
-              <Button
+              <Button style={{ display:"none"}}
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=online" }}
               >查看结果</Button>
             </Col>
@@ -406,9 +413,9 @@ export default class NewOnlineReport extends Component {
               <Button type="primary"
                       onClick={ ()=>{ 
                         //提交 上线报告信息
-                        console.log(objData);
+                        this.getIntFromString();
                         console.log(this.state);
-                        api.postOnlineReport(objData).then(data=>{
+                        api.postOnlineReport(this.state).then(data=>{
                           console.log(data);
                           if(data.status == 200){
                             console.log("online report post success");
@@ -429,6 +436,42 @@ export default class NewOnlineReport extends Component {
     );
   }
 
+  getIntFromString(){
+    //安全测试
+    if(this.state.dropData_safe == "未选择"){
+      this.state.safetest_status = 0;
+    }
+    else if(this.state.dropData_safe == "蓝灯"){
+      this.state.safetest_status = 1;
+    }else if(this.state.dropData_safe == "绿灯"){
+      this.state.safetest_status = 2;
+    }else if(this.state.dropData_safe == "黄灯"){
+      this.state.safetest_status = 3;
+    }else if(this.state.dropData_safe == "红灯"){
+      this.state.safetest_status = 4;
+    }
+    //弱网测试总结  -- 待定
+    if(this.state.dropData_weak == "NA"){
+      this.state.rwtest_status = 0
+    }else if(this.state.dropData_weak == "通过"){
+      this.state.rwtest_status = 1
+    }else if(this.state.dropData_weak == "未通过"){
+      this.state.rwtest_status = 0
+    }
+    //测试报告结论
+    if(this.state.dropData_test == "通过"){
+      this.state.test_result = 1
+    }else if(this.state.dropData_test == "未通过"){
+      this.state.test_result = 0
+    }
+    //UAT验收结论
+    if(this.state.dropData_UAT == "通过"){
+      this.state.uat_result = 1
+    }else if(this.state.dropData_UAT == "未通过"){
+      this.state.uat_result = 0
+    }
+  }
+
   componentDidMount() {
     //新建上线报告前,获取上线的jira数据
     api.getOnlineReport_Jira(work_id).then(data=> {
@@ -442,9 +485,7 @@ export default class NewOnlineReport extends Component {
       */
       //安全测试 状态
       safeSta = this.state.safetest_status;
-      if( safeSta== 0){
-        this.setState({dropData_safe:"未选择"});
-      }else if(safeSta == 1){
+      if(safeSta == 1){
         this.setState({dropData_safe:"蓝灯"});
       }else if(safeSta ==2){
         this.setState({dropData_safe:"绿灯"});
@@ -453,26 +494,24 @@ export default class NewOnlineReport extends Component {
       }else if(safeSta ==4){
         this.setState({dropData_safe:"红灯"});
       }else{
-        this.setState({dropData_safe:"null"});
+        this.setState({dropData_safe:"未选择"});
       }
       //弱网测试 状态
       weakSta = this.state.rwtest_status;
-      if( weakSta == 0 ){
-        this.setState({ dropData_weak:"未通过" });
-      }else if( weakSta== 1 ){
+      if( weakSta == 1 ){
         this.setState({ dropData_weak:"通过" });
-      }else if( weakSta== 2 ){  // --- 还需验证"弱网测试"的字段设计,接口中设计的有问题 - 2017.04.26
+      }else if( weakSta == 2 ){  // --- 还需验证"弱网测试"的字段设计,接口中设计的有问题 - 2017.04.26
         this.setState({ dropData_weak:"NA" });
       }else{
-        this.setState({ dropData_weak:"null" });
+        this.setState({ dropData_weak:"未通过" });
       }
       //测试报告结论 状态
       testSta = this.state.test_result;
       //UAT验收结论 状态
       UATSta = this.state.uat_result;
       this.setState({
-        dropData_test:(testSta == 0)?"未通过":(testSta == 1?"通过":"null") ,
-        dropData_UAT:(UATSta == 0)?"未通过":(UATSta == 1?"通过":"null"),
+        dropData_test:(testSta == 1)?"通过":"未通过" ,
+        dropData_UAT:(UATSta == 1)?"通过":"未通过",
         work_id:work_id,
       });
       console.log(this.state);

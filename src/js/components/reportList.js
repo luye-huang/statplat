@@ -380,6 +380,10 @@ export default class ReportList extends Component {
         }
         else if(Object.is(e.data.node, 5)){
           window.location.href = "index.html#/newMergeReport?work_id=" + work_id;
+          //若合板审核通过,则隐藏合板报告页面的提交按钮
+          if(Object.is(e.data.check_result, 1)){
+            window.location.href = "index.html#/newMergeReport?work_id=" + work_id + "&flag=0";
+          }
         }
       }
       //评估结论的跳转  -- 跳转到evaluationResult评估结论页面, pageTag=checkin
