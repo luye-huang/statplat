@@ -17,7 +17,8 @@ import {api} from "../api.js";
 import {dealUrl} from "../api.js";
 
 var objData = {};
-var work_id;
+var work_id,
+    flag; //flag为0 隐藏 ,即display:none
 var safeSta, //安全测试 状态
   serviceSta, //相关服务已上线 状态
   mergeSta, //合版后需求无更新 状态
@@ -89,6 +90,7 @@ export default class NewMergeReport extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
+    flag = obj["flag"];
     // console.log(work_id);
 
     //下拉菜单 - menu - 安全测试
@@ -427,10 +429,10 @@ export default class NewMergeReport extends Component {
           </Row>
         </div>
 
-        <div>
+        <div style={{ display:(flag==0?"none":"block") }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
-              <Button
+              <Button style={{ display:"none"}}
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=merge" }}
               >查看结果</Button>
             </Col>

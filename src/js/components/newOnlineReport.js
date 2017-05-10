@@ -398,7 +398,7 @@ export default class NewOnlineReport extends Component {
         <div style={{ display:(flag==0?"none":"block") }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
-              <Button
+              <Button style={{ display:"none"}}
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=online" }}
               >查看结果</Button>
             </Col>
@@ -442,9 +442,7 @@ export default class NewOnlineReport extends Component {
       */
       //安全测试 状态
       safeSta = this.state.safetest_status;
-      if( safeSta== 0){
-        this.setState({dropData_safe:"未选择"});
-      }else if(safeSta == 1){
+      if(safeSta == 1){
         this.setState({dropData_safe:"蓝灯"});
       }else if(safeSta ==2){
         this.setState({dropData_safe:"绿灯"});
@@ -453,26 +451,24 @@ export default class NewOnlineReport extends Component {
       }else if(safeSta ==4){
         this.setState({dropData_safe:"红灯"});
       }else{
-        this.setState({dropData_safe:"null"});
+        this.setState({dropData_safe:"未选择"});
       }
       //弱网测试 状态
       weakSta = this.state.rwtest_status;
-      if( weakSta == 0 ){
-        this.setState({ dropData_weak:"未通过" });
-      }else if( weakSta== 1 ){
+      if( weakSta == 1 ){
         this.setState({ dropData_weak:"通过" });
-      }else if( weakSta== 2 ){  // --- 还需验证"弱网测试"的字段设计,接口中设计的有问题 - 2017.04.26
+      }else if( weakSta == 2 ){  // --- 还需验证"弱网测试"的字段设计,接口中设计的有问题 - 2017.04.26
         this.setState({ dropData_weak:"NA" });
       }else{
-        this.setState({ dropData_weak:"null" });
+        this.setState({ dropData_weak:"未通过" });
       }
       //测试报告结论 状态
       testSta = this.state.test_result;
       //UAT验收结论 状态
       UATSta = this.state.uat_result;
       this.setState({
-        dropData_test:(testSta == 0)?"未通过":(testSta == 1?"通过":"null") ,
-        dropData_UAT:(UATSta == 0)?"未通过":(UATSta == 1?"通过":"null"),
+        dropData_test:(testSta == 1)?"通过":"未通过" ,
+        dropData_UAT:(UATSta == 1)?"通过":"未通过",
         work_id:work_id,
       });
       console.log(this.state);

@@ -277,7 +277,7 @@ export default class NewCheckInReport extends Component {
         <div>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
-              <Button
+              <Button style={{ display:"none"}}
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=checkin" }}
               >查看结果</Button>
             </Col>

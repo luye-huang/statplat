@@ -18,8 +18,7 @@ import {dealUrl} from "../api.js";
 let work_id; //每条数据的工作流work_id
 let status; //评估结论
 let data1,data2;
-let _log, //
-  user,comment;
+let rows;
 export default class CheckinReportHistoryPage extends  Component{
   constructor(){
     super();
@@ -27,8 +26,22 @@ export default class CheckinReportHistoryPage extends  Component{
       dropData: "",
       _statusResult:"待评估",
       _flow:"",  //审核流程
+      _log:"",
     };
   }
+
+  empty(){
+    return(
+      <Row class="" >
+        <Col span={6} className="test-link-css border-right-css">
+          <span>{ "无" }</span>
+        </Col>
+        <Col span={18} className="test-link-css">
+          <span>{ "无" }</span>
+        </Col>
+      </Row>
+    );
+  };
 
   render(){
     //解析从准入报告页面传过来的url,和其中的参数work_id
@@ -36,6 +49,30 @@ export default class CheckinReportHistoryPage extends  Component{
     let obj = dealUrl(url);
     work_id = obj["work_id"];
     console.log(work_id);
+
+    if(this.state._log!=undefined){
+      let count=0;
+      if(this.state._log.length>0){
+          rows = this.state._log.map( (value)=>{
+            count++;
+          return(
+            <Row class="" key={ count }>
+              <Col span={6} className="test-link-css border-right-css">
+                <span>{value.user}</span>
+              </Col>
+              <Col span={18} className="test-link-css">
+                <span>{value.comment}</span>
+              </Col>
+            </Row>
+          );
+
+        } );
+        console.log(rows);
+      }else{
+        rows = this.empty();
+        console.log(rows);
+      }
+    }
 
     return(
       <div>
@@ -249,14 +286,11 @@ export default class CheckinReportHistoryPage extends  Component{
               主要描述
             </Col>
           </Row>
-          <Row class="margin-bottom-css">
-            <Col span={6} className="test-link-css border-right-css">
-              <span>{this.state.user}</span>
-            </Col>
-            <Col span={18} className="test-link-css">
-              <span>{this.state.comment}</span>
-            </Col>
-          </Row>
+
+          <ul>
+            {rows}
+          </ul>
+
         </div>
       </div>
     );
@@ -303,19 +337,10 @@ export default class CheckinReportHistoryPage extends  Component{
       });
 
       //log记录日志
-      _log = this.state.loglist;
-      if(_log.length!=0){
-        user = _log[0].user;
-        comment = _log[0].comment;
-        this.state.user = user;
-        this.state.comment = comment;
-        this.setState({});
-      }else{ //没有log记录
-        this.state.user = "无";
-        this.state.comment = "无";
-        this.setState({});
-      }
-    });
+      this.setState({
+        _log : this.state.loglist,
+      });
 
+    });
   }
 }
