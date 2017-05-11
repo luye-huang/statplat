@@ -47,7 +47,7 @@ export default class ReportList extends Component {
     super();
     this.state = {
       name: "",
-      reporter_name: "",
+      reporter_ctx: "",
       date_begin: "2017-04-18",
       date_end: currTime,
       deps: null,
@@ -204,7 +204,7 @@ export default class ReportList extends Component {
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6}>
-            <Input addonBefore="报告人姓名" defaultValue={this.state.reporter_name} name="reporter_name"
+            <Input addonBefore="报告人ctx" defaultValue={this.state.reporter_ctx} name="reporter_ctx"
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={12}>
@@ -285,6 +285,7 @@ export default class ReportList extends Component {
       check_result = 2;
     }
     this.state.check_result = check_result;
+    debugger;
     console.log(this.state);
     //调用接口函数
     api.getReportList(this.state).then(data => {
@@ -466,7 +467,7 @@ export default class ReportList extends Component {
           {cname: "需求名称", cdata: "name"},
           {cname: "需求ID", cdata: "jira_id"},
           {cname: "项目类型", cdata: "typeStr"},
-          {cname: "报告人姓名", cdata: "tester_ctx"},
+          {cname: "报告人ctx", cdata: "tester_ctx"},
           // {cname:"节点",cdata:"nodeStr",type:"a", url:nodeUrl, params:["_nUrl"]},
           {cname: "节点", cdata: "nodeStr", style: "fakeA", action: "click", trigger: redirectTo_NodeTest},
           // {cname: "评估结论", cdata: "check_noteStr"},

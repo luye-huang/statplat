@@ -63,6 +63,78 @@ export default class NewCheckInReport extends Component {
     console.log(this.state);
   }
 
+  //比率的onClick事件
+  handleClick_Rate(e){
+    let obj = {};
+    switch(e.target.name){
+      //数量total 的onClick事件
+      case "tl_num_total":
+        if(this.state.tl_num_1 == null || this.state.tl_num_2 == null || this.state.tl_num_3 == null || this.state.tl_num_4 == null ||
+          this.state.tl_num_1 == "" || this.state.tl_num_2 == "" || this.state.tl_num_3 == "" || this.state.tl_num_4 == ""
+        ){
+          alert("请输入ass Fail Block NoRun的数量");
+        }else{
+          obj[e.target.name] = parseInt(this.state.tl_num_1)+parseInt(this.state.tl_num_2)+parseInt(this.state.tl_num_3)+parseInt(this.state.tl_num_4);
+          this.setState(obj);
+        }
+        break;
+      case "tl_rate_1":
+        if(this.state.tl_num_1 == null || this.state.tl_num_total == null ||
+          this.state.tl_num_1 == "" || this.state.tl_num_total == ""
+        ){
+          alert("请输入pass和Total数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.tl_num_1/this.state.tl_num_total)).toFixed(2);
+          this.setState(obj);
+          // console.log(this.state);
+        }
+        break;
+      case "tl_rate_2":
+        if(this.state.tl_num_2 == null || this.state.tl_num_total == null ||
+          this.state.tl_num_2 == "" || this.state.tl_num_total == ""
+        ){
+          alert("请输入Fail和Total数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.tl_num_2/this.state.tl_num_total)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "tl_rate_3":
+        if(this.state.tl_num_3 == null || this.state.tl_num_total == null ||
+          this.state.tl_num_3 == "" || this.state.tl_num_total == ""
+        ){
+          alert("请输入Block和Total数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.tl_num_3/this.state.tl_num_total)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "tl_rate_4":
+        if(this.state.tl_num_4 == null || this.state.tl_num_total == null ||
+          this.state.tl_num_4 == "" || this.state.tl_num_total == ""
+        ){
+          alert("请输入NoRun和Total数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.tl_num_4/this.state.tl_num_total)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "tl_rate_total":
+        if(this.state.tl_num_total == null ||
+          this.state.tl_num_total == ""
+        ){
+          alert("请输入Total数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.tl_num_total/this.state.tl_num_total)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      default:
+        break;
+    }
+
+  }
+
   render() {
     //从准入报告列表页,解析传过来的url中的work_id参数
     let url = window.location.href;
@@ -132,28 +204,28 @@ export default class NewCheckInReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="0.1" name="tl_rate_1" value={this.state.tl_rate_1} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
-                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>

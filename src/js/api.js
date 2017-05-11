@@ -87,7 +87,9 @@ export const api = {
 
   //获取 准入报告列表信息 -- OK
   getReportList(obj){
-    let url = domain+"workflow/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end+"&check_result="+obj.check_result
+    let url = domain+"workflow/list/?date_begin="+obj.date_begin+"&date_end="+obj.date_end+"&check_result="+obj.check_result+
+      "&name="+obj.name+"&reporter_ctx="+obj.reporter_ctx;
+      // +"&dep1_id"+obj.dep1_id+"&dep2_id"+obj.dep2_id+"&dep3_id"+obj.dep3_id;
     return fetch(url).then( response => response.json() );
   },
 
