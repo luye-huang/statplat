@@ -20,18 +20,18 @@ export default class DepartmentList extends React.Component {
     
     let defaultItem;
     if (this.props.layer === 1) {
-      defaultItem = this.props.selected || '一级部门';
+      defaultItem = this.props.selected || '全部';
     }
     else if (this.props.layer === 2) {
-      defaultItem = this.props.selected || '二级部门';
+      defaultItem = this.props.selected || '全部';
     }
     else if (this.props.layer === 3) {
-      defaultItem = this.props.selected || '三级部门';
+      defaultItem = this.props.selected || '全部';
     }
     let overlay = this.props.list ? (
       <Menu onClick={this.props.changeSubDep}>
         {this.props.list.map((item)=> {
-          console.log(item);
+          // console.log(item);
           return (
             <Menu.Item key={item.id + '@' + item.name + '@' + this.props.layer}>
               {item.name}

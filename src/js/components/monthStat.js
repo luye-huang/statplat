@@ -44,7 +44,7 @@ export default class MonthStat extends Component {
     super();
     this.state = {
       name: "",
-      reporter_name: "",
+      reporter_ctx: "",
       date_begin: "2017-04-01",
       date_end: currTime,
       deps: null,
@@ -54,10 +54,9 @@ export default class MonthStat extends Component {
       selected1: '',
       selected2: '',
       selected3: '',
-      dep1_id: "全部",
+      dep1_id: "",
       dep2_id: "",
       dep3_id: "",
-      dp1: "",
     };
   }
 
@@ -94,14 +93,14 @@ export default class MonthStat extends Component {
     const [id, depSelected, layer] = e.key.split('@');
     if (layer === '1') {
       const list = this.state.deps.dp2.filter((item)=>item.parent_id == parseInt(id))
-      this.setState({dep2_list: list, dep3_list: [], selected1: depSelected, selected2: '', selected3: ''});
+      this.setState({dep2_list: list, dep3_list: [], selected1: depSelected, selected2: '', selected3: '', dep1_id: id});
     }
     else if (layer === '2') {
       const list = this.state.deps.dp3.filter((item)=>item.parent_id == parseInt(id))
-      this.setState({dep3_list: list, selected2: depSelected, selected3: ''});
+      this.setState({dep3_list: list, selected2: depSelected, selected3: '', dep2_id: id});
     }
     else if (layer === '3') {
-      this.setState({selected3: depSelected});
+      this.setState({selected3: depSelected, dep3_id: id});
     }
   }
 
@@ -118,17 +117,6 @@ export default class MonthStat extends Component {
   }
 
   render() {
-    //下拉菜单 - menu
-    dep1_id = this.state.dp1;
-
-    const dropMenu1 = (
-      <Menu onClick={this.menu1_Onclick.bind(this)}>
-        <Menu.Item key={0}>
-          <p>{0}</p>
-        </Menu.Item>
-      </Menu>
-    );
-
     return (
       <div>
         <Row gutter={16} style={{marginBottom: 16}}>
@@ -137,7 +125,7 @@ export default class MonthStat extends Component {
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={6}>
-            <Input addonBefore="报告人姓名" defaultValue={this.state.reporter_name} name="reporter_name"
+            <Input addonBefore="报告人ctx" defaultValue={this.state.reporter_ctx} name="reporter_ctx"
                    onChange={this.handleChange.bind(this)}/>
           </Col>
           <Col span={12}>
@@ -149,15 +137,18 @@ export default class MonthStat extends Component {
           </Col>
         </Row>
         <Row gutter={16} style={{marginBottom: 16}}>
-          <Col span={6}>
+          <Col span={6} className="exam-result">
+            <span>一级部门</span>
             <DptList list={this.state.dep1_list} changeSubDep={this.changeSubDep.bind(this)} layer={1}
                      selected={this.state.selected1}/>
           </Col>
-          <Col span={6}>
+          <Col span={6} className="exam-result">
+            <span>二级部门</span>
             <DptList list={this.state.dep2_list} changeSubDep={this.changeSubDep.bind(this)} layer={2}
                      selected={this.state.selected2}/>
           </Col>
-          <Col span={6}>
+          <Col span={6} className="exam-result">
+            <span>三级部门</span>
             <DptList list={this.state.dep3_list} changeSubDep={this.changeSubDep.bind(this)} layer={3}
                      selected={this.state.selected3}/>
           </Col>
@@ -236,7 +227,7 @@ export default class MonthStat extends Component {
           {cname: "需求名称", cdata: "name"},
           {cname: "需求ID", cdata: "jira_id"},
           {cname: "项目类型", cdata: "typeStr"},
-          {cname: "报告人姓名", cdata: "tester_ctx"},
+          {cname: "报告人ctx", cdata: "tester_ctx"},
           {cname: "节点1", cdata: "nodeStr1"},
           {cname: "评估结论1", cdata: "check_noteStr1"},
           {cname: "审核次数1", cdata: "check1_count"},
@@ -257,15 +248,14 @@ export default class MonthStat extends Component {
 
   componentDidMount() {
     //获取 1/2/3级部门的初始化数据
-    api.getDepartmentData().then(data=> {
+    /*api.getDepartmentData().then(data=> {
       console.log(data);
-
       this.setState({
         dp1: data.data.dp1,
         dp2: data.data.dp2,
         dp3: data.data.dp3,
       });
-    });
+    });*/
   }
 
 }
