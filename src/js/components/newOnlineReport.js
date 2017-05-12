@@ -160,7 +160,7 @@ export default class NewOnlineReport extends Component {
       headers: {
         authorization: 'authorization-text',
       },
-      listType:"picture",
+      // listType:"picture",
       onChange(info) {
         if (info.file.status !== 'uploading') {
           safetest_filename = info.fileList[0].response.data.filename;
@@ -179,7 +179,7 @@ export default class NewOnlineReport extends Component {
       headers: {
         authorization: 'authorization-text',
       },
-      listType:"picture",
+      // listType:"picture",
       onChange(info) {
         if (info.file.status !== 'uploading') {
           rwtest_filename = info.fileList[0].response.data.filename;
@@ -198,7 +198,7 @@ export default class NewOnlineReport extends Component {
       headers: {
         authorization: 'authorization-text',
       },
-      listType:"picture",
+      // listType:"picture",
       onChange(info) {
         if (info.file.status !== 'uploading') {
           test_result_filename = info.fileList[0].response.data.filename;
@@ -217,7 +217,7 @@ export default class NewOnlineReport extends Component {
       headers: {
         authorization: 'authorization-text',
       },
-      listType:"picture",
+      // listType:"picture",
       onChange(info) {
         if (info.file.status !== 'uploading') {
           uat_result_filename = info.fileList[0].response.data.filename;
@@ -405,10 +405,10 @@ export default class NewOnlineReport extends Component {
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">安全测试</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+            <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
               style={{  }}
             >
               <div>
@@ -420,20 +420,20 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
+            <Col span={8} className="test-result-detail border-bottom-css">
               <Upload {...props1}>
                 <Button>
-                  <Icon type="upload" /> 安全测试邮件
+                  <Icon type="upload" /> 安全测试截图
                 </Button>
               </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">#弱网测试总结</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+            <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
                  style={{  }}
             >
               <div>
@@ -445,20 +445,20 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
+            <Col span={8} className="test-result-detail border-bottom-css">
               <Upload {...props2}>
                 <Button>
-                  <Icon type="upload" /> 弱网测试总结邮件
+                  <Icon type="upload" /> 弱网测试总结截图
                 </Button>
               </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">测试报告结论</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+            <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
               style={{ backgroundColor:(this.state.dropData_test=="未通过" ? "red" : (this.state.dropData_test=="通过"?"green":"white")) }}
             >
               <div>
@@ -470,20 +470,20 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
+            <Col span={8} className="test-result-detail border-bottom-css">
               <Upload {...props3}>
                 <Button>
-                  <Icon type="upload" /> 测试报告结论邮件
+                  <Icon type="upload" /> 测试报告结论截图
                 </Button>
               </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css">UAT验收结论</Col>
-            <Col span={10} className="test-result-detail border-right-css">
+            <Col span={8} className="test-result-detail border-right-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3} className="test-result-detail dropdown-list-css border-right-css"
+            <Col span={2} className="test-result-detail dropdown-list-css border-right-css"
               style={{ backgroundColor:(this.state.dropData_UAT=="未通过" ? "red" : (this.state.dropData_UAT=="通过"?"green":"white")) }}
             >
               <div>
@@ -495,10 +495,10 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail">
+            <Col span={8} className="test-result-detail">
               <Upload {...props4}>
                 <Button>
-                  <Icon type="upload" /> UAT验收结论邮件
+                  <Icon type="upload" /> UAT验收结论截图
                 </Button>
               </Upload>
             </Col>
@@ -512,7 +512,7 @@ export default class NewOnlineReport extends Component {
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=online" }}
               >查看结果</Button>
             </Col>
-            <Col span={12} className="submit-btn">
+            <Col span={24} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{ 
                         //提交 上线报告信息
@@ -522,7 +522,7 @@ export default class NewOnlineReport extends Component {
                         this.state.rwtest_file = (rwtest_filename==undefined)?"":rwtest_filename;
                         this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
                         this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
-                        debugger;
+                        
                         console.log(this.state);
                         api.postOnlineReport(this.state).then(data=>{
                           console.log(data);

@@ -288,7 +288,6 @@ export default class ReportList extends Component {
       check_result = 2;
     }
     this.state.check_result = check_result;
-    debugger;
     console.log(this.state);
     //调用接口函数
     api.getReportList(this.state).then(data => {
