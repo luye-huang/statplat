@@ -15,6 +15,7 @@ import {
   Row, Col,
   Input, Button,
   Menu, Dropdown, Icon,
+  Upload, message,
 } from "antd";
 import "../../less/newOnlineReport.less";
 import {api} from "../api.js";
@@ -26,6 +27,10 @@ var safeSta, //安全测试 状态
   weakSta, //弱网测试 状态
   testSta, //测试报告结论 状态
   UATSta; //UAT验收结论 状态
+let safetest_filename,
+  rwtest_filename,
+  test_result_filename,
+  uat_result_filename ;
 export default class NewOnlineReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -35,6 +40,10 @@ export default class NewOnlineReport extends Component {
       dropData_weak: "NA",
       dropData_test: "通过",
       dropData_UAT: "通过",
+      safetest_file:"",
+      rwtest_file:"",
+      test_result_file:"",
+      uat_result_file:"",
     };
   }
 
@@ -144,6 +153,84 @@ export default class NewOnlineReport extends Component {
         </Menu.Item>
       </Menu>
     );
+    //文件上传
+    const props1 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          safetest_filename = info.fileList[0].response.data.filename;
+          console.log(safetest_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props2 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          rwtest_filename = info.fileList[0].response.data.filename;
+          console.log(rwtest_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props3 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          test_result_filename = info.fileList[0].response.data.filename;
+          console.log(test_result_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props4 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          uat_result_filename = info.fileList[0].response.data.filename;
+          console.log(uat_result_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+
     return (
       <div>
         <Row style={{ marginBottom: 20 }}>
@@ -334,7 +421,11 @@ export default class NewOnlineReport extends Component {
               </div>
             </Col>
             <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+              <Upload {...props1}>
+                <Button>
+                  <Icon type="upload" /> 安全测试邮件
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
@@ -355,7 +446,11 @@ export default class NewOnlineReport extends Component {
               </div>
             </Col>
             <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+              <Upload {...props2}>
+                <Button>
+                  <Icon type="upload" /> 弱网测试总结邮件
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
@@ -376,7 +471,11 @@ export default class NewOnlineReport extends Component {
               </div>
             </Col>
             <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+              <Upload {...props3}>
+                <Button>
+                  <Icon type="upload" /> 测试报告结论邮件
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
@@ -397,7 +496,11 @@ export default class NewOnlineReport extends Component {
               </div>
             </Col>
             <Col span={5} className="test-result-detail">
-              <Input type="file"/>
+              <Upload {...props4}>
+                <Button>
+                  <Icon type="upload" /> UAT验收结论邮件
+                </Button>
+              </Upload>
             </Col>
           </Row>
         </div>
@@ -414,6 +517,12 @@ export default class NewOnlineReport extends Component {
                       onClick={ ()=>{ 
                         //提交 上线报告信息
                         this.getIntFromString();
+                        //文件上传
+                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
+                        this.state.rwtest_file = (rwtest_filename==undefined)?"":rwtest_filename;
+                        this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
+                        this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
+                        debugger;
                         console.log(this.state);
                         api.postOnlineReport(this.state).then(data=>{
                           console.log(data);

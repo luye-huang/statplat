@@ -30,25 +30,7 @@ import {dealUrl} from "../api.js";
 var objData = {};
 var work_id;
 let if_email; // 提测邮件 int
-
-const props = {
-  name: 'file',
-  action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
-
+let email_filename; // string
 export default class NewCheckInReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -56,6 +38,7 @@ export default class NewCheckInReport extends Component {
     this.state = {
       dropData: "未发送",
       // dropData_demo: "NA",
+      email_file:"",
     };
   }
 
@@ -262,6 +245,29 @@ export default class NewCheckInReport extends Component {
       </Menu>
     );
 
+    //提测邮件文件上传
+    const props = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          // console.log(info.file, info.fileList);
+          console.log(info.fileList[0].response);
+          email_filename = info.fileList[0].response.data.filename;
+          console.log(email_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+
     return (
       <div>
         <Row style={{ marginBottom: 20 }}>
@@ -410,14 +416,11 @@ export default class NewCheckInReport extends Component {
               </div>
             </Col>
             <Col span={10} className="test-link-css">
-              <Input id="fileId" type="file" placeholder="上传附件" name="email_file" value="" encType="multipart/form-data"
-                     onChange={ ()=>{
-                     let fileVal = document.getElementById("fileId").value;
-                      console.log(new String(fileVal));
-                      this.state.email_file = fileVal;
-                     } }
-
-              />
+              <Upload {...props}>
+                <Button>
+                  <Icon type="upload" /> 发送提测邮件
+                </Button>
+              </Upload>
             </Col>
           </Row>
 
@@ -453,6 +456,9 @@ export default class NewCheckInReport extends Component {
                       onClick={ ()=>{
                       //提交 提测报告信息
                       this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
+                      //提测文件
+                      this.state.email_file = (email_filename==undefined)?"":email_filename;
+                      debugger;
                       console.log(this.state);
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
@@ -469,13 +475,6 @@ export default class NewCheckInReport extends Component {
             </Col>
           </Row>
         </div>
-
-        <Upload {...props}>
-          <Button>
-            <Icon type="upload" /> Click to Upload
-          </Button>
-        </Upload>
-
 
       </div>
     );
