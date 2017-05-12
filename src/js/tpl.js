@@ -44,9 +44,9 @@ export default class Template extends React.Component {
               defaultOpenKeys={['sub1']}
               style={{height: '100%'}}
             >
-              <Menu.Item key="5">准入报告列表<Link to={`/reportList`}/></Menu.Item>
-              <Menu.Item key="6">月度统计表<Link to={`/monthStat`}/></Menu.Item>
-              <Menu.Item key="1">配置管理<Link to={`/settings`}/></Menu.Item>
+              <Menu.Item key="1">准入报告列表<Link to={`/reportList`}/></Menu.Item>
+              <Menu.Item key="2">月度统计表<Link to={`/monthStat`}/></Menu.Item>
+              <Menu.Item key="3">配置管理<Link to={`/settings`}/></Menu.Item>
             </Menu>
           </Sider>
           <Layout style={{padding: '0 24px 24px'}}>
