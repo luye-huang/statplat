@@ -10,6 +10,9 @@ export default class Login extends React.Component {
   }
 
   login(e) {
+    if (e.target.tagName === 'INPUT' && e.keyCode !== 13) {
+      return;
+    }
     const proxyLogin = new Proxy(localStorage, {
       set: function (target, propkey, value) {
         if (propkey === 'add') {
@@ -21,7 +24,8 @@ export default class Login extends React.Component {
     });
     console.log(localStorage);
     let param = {};
-    Array.from(e.target.parentElement.querySelectorAll('input'), function (item) {
+    const elements = e.target.parentElement.querySelectorAll('input');
+    Array.from(elements, function (item) {
       if (param.uid === undefined) {
         param.uid = item.value;
       }
@@ -42,10 +46,14 @@ export default class Login extends React.Component {
         window.location.href = "index.html#/";
       }
       else {
+        alert('用户名或密码错误!');
         proxyLogin.add = {
           uid: '',
           pwd: ''
         };
+        Array.from(elements, function (item) {
+          item.value = '';
+        });
       }
     });
   }
@@ -57,7 +65,7 @@ export default class Login extends React.Component {
         <input type="text"/>
         <br/>
         密码:<br/>
-        <input type="password"/>
+        <input type="password" onKeyDown={this.login}/>
         <br></br>
         <button onClick={this.login}>提交</button>
       </div>
