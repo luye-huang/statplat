@@ -252,7 +252,7 @@ export default class NewCheckInReport extends Component {
       headers: {
         authorization: 'authorization-text',
       },
-      listType:"picture",
+      // listType:"picture",
       onChange(info) {
         if (info.file.status !== 'uploading') {
           // console.log(info.file, info.fileList);
@@ -451,14 +451,13 @@ export default class NewCheckInReport extends Component {
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=checkin" }}
               >查看结果</Button>
             </Col>
-            <Col span={12} className="submit-btn">
+            <Col span={24} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{
                       //提交 提测报告信息
                       this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
                       //提测文件
                       this.state.email_file = (email_filename==undefined)?"":email_filename;
-                      debugger;
                       console.log(this.state);
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);

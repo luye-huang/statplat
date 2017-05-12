@@ -12,6 +12,7 @@ import {
   Row, Col,
   Input, Button,
   Menu, Dropdown, Icon,
+  Upload, message,
 } from "antd";
 import {api} from "../api.js";
 import {dealUrl} from "../api.js";
@@ -24,6 +25,11 @@ var safeSta, //安全测试 状态
   mergeSta, //合版后需求无更新 状态
   testSta, //测试报告结论 状态
   UATSta; //UAT验收结论 状态
+let safetest_filename,
+  if_online_filename,
+  test_result_filename,
+  no_change_after_merge_filename,
+  uat_result_filename;
 export default class NewMergeReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -34,6 +40,11 @@ export default class NewMergeReport extends Component {
       dropData_merge:"无变更",
       dropData_test: "通过",
       dropData_UAT: "通过",
+      safetest_file:"",
+      if_online_file:"",
+      test_result_file:"",
+      no_change_after_merge_file:"",
+      uat_result_file:"",
     };
   }
 
@@ -109,6 +120,9 @@ export default class NewMergeReport extends Component {
         <Menu.Item key={dropData_safe[3]}>
           <p>{dropData_safe[3]}</p>
         </Menu.Item>
+        <Menu.Item key={dropData_safe[4]}>
+          <p>{dropData_safe[4]}</p>
+        </Menu.Item>
       </Menu>
     );
     //下拉菜单 - menu - 相关服务已上线
@@ -159,6 +173,103 @@ export default class NewMergeReport extends Component {
         </Menu.Item>
       </Menu>
     );
+
+    //文件上传
+    const props1 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      // listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          safetest_filename = info.fileList[0].response.data.filename;
+          console.log(safetest_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props2 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      // listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          if_online_filename = info.fileList[0].response.data.filename;
+          console.log(if_online_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props3 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      // listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          no_change_after_merge_filename = info.fileList[0].response.data.filename;
+          console.log(no_change_after_merge_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props4 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      // listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          test_result_filename = info.fileList[0].response.data.filename;
+          console.log(test_result_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+    const props5 = {
+      name: 'file',
+      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      // listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          uat_result_filename = info.fileList[0].response.data.filename;
+          console.log(uat_result_filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
 
     return (
       <div>
@@ -324,10 +435,10 @@ export default class NewMergeReport extends Component {
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">安全测试</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3}
+            <Col span={2}
                  className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
                  style={{ backgroundColor:(this.state.dropData_safe=="蓝灯"?"blue":(this.state.dropData_safe=="绿灯"?"green":(this.state.dropData_safe=="黄灯"?"yellow":(this.state.dropData_safe=="红灯"?"red":"white")))) }}
             >
@@ -340,16 +451,20 @@ export default class NewMergeReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+            <Col span={8} className="test-result-detail border-bottom-css">
+              <Upload {...props1}>
+                <Button>
+                  <Icon type="upload" /> 安全测试截图
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">相关服务已上线</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3}
+            <Col span={2}
                  className="test-result-detail dropdown-list-css border-right-css border-bottom-css">
               <div>
                 <Dropdown overlay={dropMenu_service} trigger={["click"]}>
@@ -360,16 +475,20 @@ export default class NewMergeReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+            <Col span={8} className="test-result-detail border-bottom-css">
+              <Upload {...props2}>
+                <Button>
+                  <Icon type="upload" /> 相关服务已上线截图
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">合版后需求无更新</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3}
+            <Col span={2}
                  className="test-result-detail dropdown-list-css border-right-css border-bottom-css">
               <div>
                 <Dropdown overlay={dropMenu_merge} trigger={["click"]}>
@@ -380,16 +499,20 @@ export default class NewMergeReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+            <Col span={8} className="test-result-detail border-bottom-css">
+              <Upload {...props3}>
+                <Button>
+                  <Icon type="upload" /> 合版后需求无更新截图
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">测试报告结论</Col>
-            <Col span={10} className="test-result-detail border-right-css border-bottom-css">
+            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3}
+            <Col span={2}
                  className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
                  style={{ backgroundColor:(this.state.dropData_test=="未通过" ? "red" : "green") }}
             >
@@ -402,16 +525,20 @@ export default class NewMergeReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail border-bottom-css">
-              <Input type="file"/>
+            <Col span={8} className="test-result-detail border-bottom-css">
+              <Upload {...props4}>
+                <Button>
+                  <Icon type="upload" /> 测试报告结论截图
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css">UAT验收结论</Col>
-            <Col span={10} className="test-result-detail border-right-css">
+            <Col span={8} className="test-result-detail border-right-css">
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
-            <Col span={3} className="test-result-detail dropdown-list-css border-right-css"
+            <Col span={2} className="test-result-detail dropdown-list-css border-right-css"
                  style={{backgroundColor:(this.state.dropData_UAT=="未通过" ? "red" : "green") }}
             >
               <div>
@@ -423,8 +550,12 @@ export default class NewMergeReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={5} className="test-result-detail">
-              <Input type="file"/>
+            <Col span={8} className="test-result-detail">
+              <Upload {...props5}>
+                <Button>
+                  <Icon type="upload" /> UAT验收结论截图
+                </Button>
+              </Upload>
             </Col>
           </Row>
         </div>
@@ -436,11 +567,18 @@ export default class NewMergeReport extends Component {
                 onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=merge" }}
               >查看结果</Button>
             </Col>
-            <Col span={12} className="submit-btn">
+            <Col span={24} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{
                         //提交 合板报告信息
                         this.getIntFromString();
+                        //文件上传
+                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
+                        this.state.if_online_file = (if_online_filename==undefined)?"":if_online_filename;
+                        this.state.no_change_after_merge_file = (no_change_after_merge_filename==undefined)?"":no_change_after_merge_filename;
+                        this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
+                        this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
+                        // debugger;
                         console.log(this.state);
                         api.postMergeReport(this.state).then(data=>{
                           if(data.status == 200){
