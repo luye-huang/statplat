@@ -21,6 +21,7 @@ import {
   Row, Col,
   Input, Button,
   Menu, Dropdown, Icon,
+  Upload, message,
 } from "antd";
 import "../../less/newCheckInReport.less";
 import {api} from "../api.js";
@@ -29,6 +30,25 @@ import {dealUrl} from "../api.js";
 var objData = {};
 var work_id;
 let if_email; // 提测邮件 int
+
+const props = {
+  name: 'file',
+  action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+
 export default class NewCheckInReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -63,11 +83,11 @@ export default class NewCheckInReport extends Component {
     console.log(this.state);
   }
 
-  //比率的onClick事件
+  // 数量total/关闭数量total/比率/修复比率的onClick事件
   handleClick_Rate(e){
     let obj = {};
     switch(e.target.name){
-      //数量total 的onClick事件
+      //tl数量total 的onClick事件
       case "tl_num_total":
         if(this.state.tl_num_1 == null || this.state.tl_num_2 == null || this.state.tl_num_3 == null || this.state.tl_num_4 == null ||
           this.state.tl_num_1 == "" || this.state.tl_num_2 == "" || this.state.tl_num_3 == "" || this.state.tl_num_4 == ""
@@ -78,6 +98,7 @@ export default class NewCheckInReport extends Component {
           this.setState(obj);
         }
         break;
+      // tl比率 的onClick事件
       case "tl_rate_1":
         if(this.state.tl_num_1 == null || this.state.tl_num_total == null ||
           this.state.tl_num_1 == "" || this.state.tl_num_total == ""
@@ -126,6 +147,80 @@ export default class NewCheckInReport extends Component {
           alert("请输入Total数量");
         }else{
           obj[e.target.name] = (parseFloat(this.state.tl_num_total/this.state.tl_num_total)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      //jira 数量total 的onClick事件
+      case "jira_num_total":
+        if(this.state.jira_num_1 == null || this.state.jira_num_2 == null || this.state.jira_num_3 == null || this.state.jira_num_4 == null ||
+          this.state.jira_num_1 == "" || this.state.jira_num_2 == "" || this.state.jira_num_3 == "" || this.state.jira_num_4 == ""
+        ){
+          alert("请输入Block Critical Major Minor的数量");
+        }else{
+          obj[e.target.name] = parseInt(this.state.jira_num_1)+parseInt(this.state.jira_num_2)+parseInt(this.state.jira_num_3)+parseInt(this.state.jira_num_4);
+          this.setState(obj);
+        }
+        break;
+      //jira 关闭数量total 的onClick事件
+      case "jira_close_num_total":
+        if(this.state.jira_close_num_1 == null || this.state.jira_close_num_2 == null || this.state.jira_close_num_3 == null || this.state.jira_close_num_4 == null ||
+          this.state.jira_close_num_1 == "" || this.state.jira_close_num_2 == "" || this.state.jira_close_num_3 == "" || this.state.jira_close_num_4 == ""
+        ){
+          alert("请输入Block Critical Major Minor的数量");
+        }else{
+          obj[e.target.name] = parseInt(this.state.jira_close_num_1)+parseInt(this.state.jira_close_num_2)+
+                              parseInt(this.state.jira_close_num_3)+parseInt(this.state.jira_close_num_4);
+          this.setState(obj);
+        }
+        break;
+      // jira修复比率 的onClick事件
+      case "jira_repair_rate_1":
+        if(this.state.jira_close_num_1 == null || this.state.jira_num_1 == null ||
+          this.state.jira_close_num_1 == "" || this.state.jira_num_1 == ""
+        ){
+          alert("请输入Block的数量和关闭数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.jira_close_num_1/this.state.jira_num_1)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_2":
+        if(this.state.jira_close_num_2 == null || this.state.jira_num_2 == null ||
+          this.state.jira_close_num_2 == "" || this.state.jira_num_2 == ""
+        ){
+          alert("请输入Critical的数量和关闭数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.jira_close_num_2/this.state.jira_num_2)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_3":
+        if(this.state.jira_close_num_3 == null || this.state.jira_num_3 == null ||
+          this.state.jira_close_num_3 == "" || this.state.jira_num_3 == ""
+        ){
+          alert("请输入Major的数量和关闭数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.jira_close_num_3/this.state.jira_num_3)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_4":
+        if(this.state.jira_close_num_4 == null || this.state.jira_num_4 == null ||
+          this.state.jira_close_num_4 == "" || this.state.jira_num_4 == ""
+        ){
+          alert("请输入Minor的数量和关闭数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.jira_close_num_4/this.state.jira_num_4)).toFixed(2);
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_total":
+        if(this.state.jira_close_num_total == null || this.state.jira_num_total == null ||
+          this.state.jira_close_num_total == "" || this.state.jira_num_total == ""
+        ){
+          alert("请输入otal数量和关闭数量");
+        }else{
+          obj[e.target.name] = (parseFloat(this.state.jira_close_num_total/this.state.jira_num_total)).toFixed(2);
           this.setState(obj);
         }
         break;
@@ -268,7 +363,7 @@ export default class NewCheckInReport extends Component {
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>关闭数量</span></Col>
@@ -281,20 +376,20 @@ export default class NewCheckInReport extends Component {
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>修复比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4} onClick={this.handleClick_Rate.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>
@@ -315,10 +410,10 @@ export default class NewCheckInReport extends Component {
               </div>
             </Col>
             <Col span={10} className="test-link-css">
-              <Input id="fileId" type="file" placeholder="上传附件" name="email_file"
+              <Input id="fileId" type="file" placeholder="上传附件" name="email_file" value="" encType="multipart/form-data"
                      onChange={ ()=>{
                      let fileVal = document.getElementById("fileId").value;
-                      console.log(fileVal);
+                      console.log(new String(fileVal));
                       this.state.email_file = fileVal;
                      } }
 
@@ -374,6 +469,14 @@ export default class NewCheckInReport extends Component {
             </Col>
           </Row>
         </div>
+
+        <Upload {...props}>
+          <Button>
+            <Icon type="upload" /> Click to Upload
+          </Button>
+        </Upload>
+
+
       </div>
     );
   }

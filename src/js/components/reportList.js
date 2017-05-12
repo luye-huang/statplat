@@ -54,9 +54,9 @@ export default class ReportList extends Component {
       dep1_list: [],
       dep2_list: [],
       dep3_list: [],
-      dep1_name: ['dd', 'cc'],
-      dep2_name: "",
-      dep2_id: '',
+      dep1_id: "",
+      dep2_id: "",
+      dep3_id: '',
       dep3_name: "",
       selected1: '',
       selected2: '',
@@ -165,14 +165,14 @@ export default class ReportList extends Component {
     const [id, depSelected, layer] = e.key.split('@');
     if (layer === '1') {
       const list = this.state.deps.dp2.filter((item)=>item.parent_id == parseInt(id))
-      this.setState({dep2_list: list, dep3_list: [], selected1: depSelected, selected2: '', selected3: ''});
+      this.setState({dep2_list: list, dep3_list: [], selected1: depSelected, selected2: '', selected3: '', dep1_id: id});
     }
     else if (layer === '2') {
       const list = this.state.deps.dp3.filter((item)=>item.parent_id == parseInt(id))
-      this.setState({dep3_list: list, selected2: depSelected, selected3: ''});
+      this.setState({dep3_list: list, selected2: depSelected, selected3: '', dep2_id: id});
     }
     else if (layer === '3') {
-      this.setState({selected3: depSelected});
+      this.setState({selected3: depSelected, dep3_id: id});
     }
   }
 
@@ -216,15 +216,18 @@ export default class ReportList extends Component {
           </Col>
         </Row>
         <Row gutter={16} style={{marginBottom: 16}}>
-          <Col span={6}>
+          <Col span={6} className="exam-result">
+            <span>一级部门</span>
             <DptList list={this.state.dep1_list} changeSubDep={this.changeSubDep.bind(this)} layer={1}
                      selected={this.state.selected1}/>
           </Col>
-          <Col span={6}>
+          <Col span={6} className="exam-result">
+            <span>二级部门</span>
             <DptList list={this.state.dep2_list} changeSubDep={this.changeSubDep.bind(this)} layer={2}
                      selected={this.state.selected2}/>
           </Col>
-          <Col span={6}>
+          <Col span={6} className="exam-result">
+            <span>三级部门</span>
             <DptList list={this.state.dep3_list} changeSubDep={this.changeSubDep.bind(this)} layer={3}
                      selected={this.state.selected3}/>
           </Col>
