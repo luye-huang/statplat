@@ -518,12 +518,12 @@ export default class NewOnlineReport extends Component {
                         //提交 上线报告信息
                         this.getIntFromString();
                         //文件上传
-                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
-                        this.state.rwtest_file = (rwtest_filename==undefined)?"":rwtest_filename;
-                        this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
-                        this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
-                        
+                        this.setState({safetest_file : (safetest_filename==undefined)?"":safetest_filename});
+                        this.setState({rwtest_file : (rwtest_filename==undefined)?"":rwtest_filename});
+                        this.setState({test_result_file : (test_result_filename==undefined)?"":test_result_filename});
+                        this.setState({uat_result_file : (uat_result_filename==undefined)?"":uat_result_filename});
                         console.log(this.state);
+                        // debugger;
                         api.postOnlineReport(this.state).then(data=>{
                           console.log(data);
                           if(data.status == 200){
