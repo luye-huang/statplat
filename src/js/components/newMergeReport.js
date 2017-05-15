@@ -573,11 +573,11 @@ export default class NewMergeReport extends Component {
                         //提交 合板报告信息
                         this.getIntFromString();
                         //文件上传
-                        this.setState({safetest_file : (safetest_filename==undefined)?"":safetest_filename});
-                        this.setState({if_online_file : (if_online_filename==undefined)?"":if_online_filename});
-                        this.setState({no_change_after_merge_file : (no_change_after_merge_filename==undefined)?"":no_change_after_merge_filename});
-                        this.setState({test_result_file : (test_result_filename==undefined)?"":test_result_filename});
-                        this.setState({uat_result_file : (uat_result_filename==undefined)?"":uat_result_filename});
+                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
+                        this.state.if_online_file = (if_online_filename==undefined)?"":if_online_filename;
+                        this.state.no_change_after_merge_file = (no_change_after_merge_filename==undefined)?"":no_change_after_merge_filename;
+                        this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
+                        this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
                         // debugger;
                         console.log(this.state);
                         api.postMergeReport(this.state).then(data=>{
