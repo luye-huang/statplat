@@ -186,7 +186,7 @@ export default class MonthStat extends Component {
         if (arr[i].node2 == 2) {
           nodeStr2 = "上线";
         } else if (arr[i].node2 == 3) {
-          nodeStr2 = "合板";
+          nodeStr2 = "合版";
         }
         arr[i]["nodeStr1"] = nodeStr1;
         arr[i]["nodeStr2"] = nodeStr2;

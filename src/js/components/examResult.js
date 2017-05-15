@@ -11,9 +11,11 @@ import {
   Row, Col,
   Menu, Dropdown, Icon,
   Input, Button,
+  Upload, message,
 } from "antd";
 import "../../less/examResult.less";
 import {api} from "../api.js";
+import {domain} from "../api.js";
 
 //url字符串处理函数
 function dealUrl(url) {
@@ -38,6 +40,7 @@ var pageTag; //分辨上上个页面是哪一个页面 : 提测/上线/合板
 var work_id,
   flag; //flag为0 隐藏 ,即display:none
 let rows;
+let filename; // string
 export default class ExamResult extends Component {
   //状态初始化 -- 下拉列表dropdown的初始化数据
   constructor(props) {
@@ -122,6 +125,29 @@ export default class ExamResult extends Component {
       </Menu>
     );
 
+    //审核结果文件上传
+    const props = {
+      name: 'file',
+      action: domain+'base/uploadfile/',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      // listType:"picture",
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          // console.log(info.file, info.fileList);
+          console.log(info.fileList[0].response);
+          filename = info.fileList[0].response.data.filename;
+          console.log(filename);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
+
     return (
       <div>
         <div>
@@ -162,7 +188,11 @@ export default class ExamResult extends Component {
               </div>
             </Col>
             <Col span={6} className="test-link-css">
-              <Input type="file"/>
+              <Upload {...props}>
+                <Button>
+                  <Icon type="upload" /> 上传审核截图
+                </Button>
+              </Upload>
             </Col>
           </Row>
           <Row style={{ display:(flag==0?"none":"block") }} className="jira-css row-btn-css">
@@ -177,6 +207,8 @@ export default class ExamResult extends Component {
                                         //是否审核通过
                                         let if_pass = this.state.dropData=="通过" ? 1 : 0;
                                         objData["if_pass"] = if_pass;
+                                        //审核时上传的文件
+                                        objData["file"] = (filename==undefined)?"":filename;
                                         console.log(objData);
                                         if(pageTag == "checkin"){
                                             //提交 提测报告审核信息

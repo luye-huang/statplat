@@ -25,6 +25,7 @@ import {
 } from "antd";
 import "../../less/newCheckInReport.less";
 import {api} from "../api.js";
+import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
 var objData = {};
@@ -248,7 +249,7 @@ export default class NewCheckInReport extends Component {
     //提测邮件文件上传
     const props = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },

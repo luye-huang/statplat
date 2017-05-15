@@ -15,6 +15,7 @@ import {
   Upload, message,
 } from "antd";
 import {api} from "../api.js";
+import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
 var objData = {};
@@ -177,7 +178,7 @@ export default class NewMergeReport extends Component {
     //文件上传
     const props1 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -196,7 +197,7 @@ export default class NewMergeReport extends Component {
     };
     const props2 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -215,7 +216,7 @@ export default class NewMergeReport extends Component {
     };
     const props3 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -234,7 +235,7 @@ export default class NewMergeReport extends Component {
     };
     const props4 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -253,7 +254,7 @@ export default class NewMergeReport extends Component {
     };
     const props5 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },

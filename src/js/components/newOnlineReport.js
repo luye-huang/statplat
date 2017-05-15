@@ -19,6 +19,7 @@ import {
 } from "antd";
 import "../../less/newOnlineReport.less";
 import {api} from "../api.js";
+import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
 let work_id,
@@ -156,7 +157,7 @@ export default class NewOnlineReport extends Component {
     //文件上传
     const props1 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -175,7 +176,7 @@ export default class NewOnlineReport extends Component {
     };
     const props2 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -194,7 +195,7 @@ export default class NewOnlineReport extends Component {
     };
     const props3 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -213,7 +214,7 @@ export default class NewOnlineReport extends Component {
     };
     const props4 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
