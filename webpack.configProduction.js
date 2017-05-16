@@ -1,5 +1,9 @@
+/**
+ * Created by luye on 16/05/2017.
+ */
 var htmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
+var BomPlugin = require('webpack-utf8-bom');
 var path = require('path');
 
 module.exports = {
@@ -46,13 +50,20 @@ module.exports = {
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        //supresses warnings, usually from module minification
+        warnings: false
+      }
+    }),
+    new BomPlugin(true),
     new htmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
       inject: 'body',
       minify:{
-         removeComments: true,
-         //collapseWhitespace: true
+        removeComments: true,
+        //collapseWhitespace: true
       }
     })
   ]

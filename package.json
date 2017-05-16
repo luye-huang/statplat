@@ -5,7 +5,7 @@
   "main": "root.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js --progress --colors --display-module --display-reason",
+    "build": "webpack --config webpack.configProduction.js --progress --colors --display-module --display-reason",
     "start": "webpack-dev-server --hot --inline --port 8083"
   },
   "repository": {
