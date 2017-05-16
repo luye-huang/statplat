@@ -25,6 +25,7 @@ import {
 } from "antd";
 import "../../less/newCheckInReport.less";
 import {api} from "../api.js";
+import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
 var objData = {};
@@ -248,7 +249,7 @@ export default class NewCheckInReport extends Component {
     //提测邮件文件上传
     const props = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -457,9 +458,9 @@ export default class NewCheckInReport extends Component {
                       //提交 提测报告信息
                       this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
                       //提测文件
-                      this.setState({ email_file : (email_filename==undefined)?"":email_filename });
+                      this.state.email_file = (email_filename==undefined)?"":email_filename;
                       console.log(this.state);
-                      debugger;
+                      // debugger;
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
                         if(data.status == 200){

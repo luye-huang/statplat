@@ -2,7 +2,10 @@
  * Created by luye on 19/04/2017.
  */
 import $ from "jquery";
-export const domain = 'http://aeplat.intra.sit.ffan.com/';
+
+// export const domain = 'http://localhost:8083/';
+// export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
+export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
 
 export const api = {
   //login

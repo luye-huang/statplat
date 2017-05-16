@@ -19,6 +19,7 @@ import {
 } from "antd";
 import "../../less/newOnlineReport.less";
 import {api} from "../api.js";
+import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
 let work_id,
@@ -156,7 +157,7 @@ export default class NewOnlineReport extends Component {
     //文件上传
     const props1 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -175,7 +176,7 @@ export default class NewOnlineReport extends Component {
     };
     const props2 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -194,7 +195,7 @@ export default class NewOnlineReport extends Component {
     };
     const props3 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -213,7 +214,7 @@ export default class NewOnlineReport extends Component {
     };
     const props4 = {
       name: 'file',
-      action: 'http://aeplat.intra.sit.ffan.com/base/uploadfile/',
+      action: domain+'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -518,10 +519,10 @@ export default class NewOnlineReport extends Component {
                         //提交 上线报告信息
                         this.getIntFromString();
                         //文件上传
-                        this.setState({safetest_file : (safetest_filename==undefined)?"":safetest_filename});
-                        this.setState({rwtest_file : (rwtest_filename==undefined)?"":rwtest_filename});
-                        this.setState({test_result_file : (test_result_filename==undefined)?"":test_result_filename});
-                        this.setState({uat_result_file : (uat_result_filename==undefined)?"":uat_result_filename});
+                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
+                        this.state.rwtest_file = (rwtest_filename==undefined)?"":rwtest_filename;
+                        this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
+                        this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
                         console.log(this.state);
                         // debugger;
                         api.postOnlineReport(this.state).then(data=>{
