@@ -31,7 +31,7 @@ var safeSta, //安全测试 状态
 let safetest_filename,
   rwtest_filename,
   test_result_filename,
-  uat_result_filename ;
+  uat_result_filename;
 export default class NewOnlineReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -41,10 +41,10 @@ export default class NewOnlineReport extends Component {
       dropData_weak: "NA",
       dropData_test: "通过",
       dropData_UAT: "通过",
-      safetest_file:"",
-      rwtest_file:"",
-      test_result_file:"",
-      uat_result_file:"",
+      safetest_file: "",
+      rwtest_file: "",
+      test_result_file: "",
+      uat_result_file: "",
     };
   }
 
@@ -81,11 +81,29 @@ export default class NewOnlineReport extends Component {
   }
 
   //输入框 的onChange事件监听
-  handleChange(e){
+  handleChange(e) {
     let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
-    console.log(this.state);
+    this.state[e.target.name] = e.target.value;
+    if (['tl_num_1', 'tl_num_2', 'tl_num_3', 'tl_num_4'].includes(e.target.name) && this.state.tl_num_4 != undefined && this.state.tl_num_1 != undefined && this.state.tl_num_2 != undefined && this.state.tl_num_3 != undefined) {
+      const {tl_num_1, tl_num_2, tl_num_3, tl_num_4} = this.state;
+      let tl_num_total = Number.parseInt(tl_num_1) + Number.parseInt(tl_num_2) + Number.parseInt(tl_num_3) + Number.parseInt(tl_num_4);
+      debugger
+      const tl_rate_1 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_1) / tl_num_total).toFixed(2);
+      const tl_rate_2 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_2) / tl_num_total).toFixed(2);
+      const tl_rate_3 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_3) / tl_num_total).toFixed(2);
+      const tl_rate_4 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_4) / tl_num_total).toFixed(2);
+      tl_num_total = Number.isNaN(tl_num_total)? '': tl_num_total;
+      this.setState({
+        tl_num_total,
+        tl_rate_1,
+        tl_rate_2,
+        tl_rate_3,
+        tl_rate_4,
+        tl_rate_total: '100%'
+      });
+    }
   }
 
   render() {
@@ -96,7 +114,7 @@ export default class NewOnlineReport extends Component {
     console.log(work_id);
     flag = obj["flag"];
     console.log(flag);
-    
+
     //下拉菜单 - menu - 安全测试
     const dropData_safe = ["蓝灯", "绿灯", "黄灯", "红灯"];
     const dropMenu_safe = (
@@ -157,7 +175,7 @@ export default class NewOnlineReport extends Component {
     //文件上传
     const props1 = {
       name: 'file',
-      action: domain+'base/uploadfile/',
+      action: domain + 'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -176,7 +194,7 @@ export default class NewOnlineReport extends Component {
     };
     const props2 = {
       name: 'file',
-      action: domain+'base/uploadfile/',
+      action: domain + 'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -195,7 +213,7 @@ export default class NewOnlineReport extends Component {
     };
     const props3 = {
       name: 'file',
-      action: domain+'base/uploadfile/',
+      action: domain + 'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -214,7 +232,7 @@ export default class NewOnlineReport extends Component {
     };
     const props4 = {
       name: 'file',
-      action: domain+'base/uploadfile/',
+      action: domain + 'base/uploadfile/',
       headers: {
         authorization: 'authorization-text',
       },
@@ -234,7 +252,7 @@ export default class NewOnlineReport extends Component {
 
     return (
       <div>
-        <Row style={{ marginBottom: 20 }}>
+        <Row style={{marginBottom: 20}}>
           <Col span={11}></Col>
           <Col span={6} className="title-txt">上线准入报告</Col>
         </Row>
@@ -270,28 +288,38 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total}
+                         onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_2" value={this.state.tl_rate_2}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_3" value={this.state.tl_rate_3}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_4" value={this.state.tl_rate_4}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
-                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="tl_rate_total" value={this.state.tl_rate_total}
+                         onChange={this.handleChange.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>
@@ -326,54 +354,75 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="jira_num_1" value={this.state.jira_num_1}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="3" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="3" name="jira_num_2" value={this.state.jira_num_2}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_num_3" value={this.state.jira_num_3}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_num_4" value={this.state.jira_num_4}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_num_total" value={this.state.jira_num_total}
+                         onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>关闭数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total}
+                         onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>修复比率(小数)</span></Col>
+                <Col span={4}
+                     className="test-result-detail border-right-css border-bottom-css"><span>修复比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total}
+                         onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>未有解决方案</span></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="2" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="2" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input placeholder="" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4}
+                         onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
-                  <Input placeholder="" name="jira_notfinish_num_total" value={this.state.jira_notfinish_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input placeholder="" name="jira_notfinish_num_total" value={this.state.jira_notfinish_num_total}
+                         onChange={this.handleChange.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>
@@ -387,19 +436,22 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">需要测试的机型/浏览器</Col>
                 <Col span={6} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="cptest_need" value={this.state.cptest_need} onChange={this.handleChange.bind(this)}/>
+                  <Input placeholder="" name="cptest_need" value={this.state.cptest_need}
+                         onChange={this.handleChange.bind(this)}/>
                 </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">实际测试的机型/浏览器</Col>
                 <Col span={6} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="cptest_final" value={this.state.cptest_final} onChange={this.handleChange.bind(this)}/>
+                  <Input placeholder="" name="cptest_final" value={this.state.cptest_final}
+                         onChange={this.handleChange.bind(this)}/>
                 </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">百分率</Col>
                 <Col span={6} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="cptest_rate" value={this.state.cptest_rate} onChange={this.handleChange.bind(this)}/>
+                  <Input placeholder="" name="cptest_rate" value={this.state.cptest_rate}
+                         onChange={this.handleChange.bind(this)}/>
                 </Col>
               </Row>
             </Col>
@@ -410,11 +462,11 @@ export default class NewOnlineReport extends Component {
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
             <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
-              style={{  }}
+                 style={{}}
             >
               <div>
                 <Dropdown overlay={dropMenu_safe} trigger={["click"]}>
-                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
+                  <a style={{color: "black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_safe}
                     <Icon type="down"/>
                   </a>
@@ -424,7 +476,7 @@ export default class NewOnlineReport extends Component {
             <Col span={8} className="test-result-detail border-bottom-css">
               <Upload {...props1}>
                 <Button>
-                  <Icon type="upload" /> 安全测试截图
+                  <Icon type="upload"/> 安全测试截图
                 </Button>
               </Upload>
             </Col>
@@ -435,11 +487,11 @@ export default class NewOnlineReport extends Component {
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
             <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
-                 style={{  }}
+                 style={{}}
             >
               <div>
                 <Dropdown overlay={dropMenu_weak} trigger={["click"]}>
-                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
+                  <a style={{color: "black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_weak}
                     <Icon type="down"/>
                   </a>
@@ -449,7 +501,7 @@ export default class NewOnlineReport extends Component {
             <Col span={8} className="test-result-detail border-bottom-css">
               <Upload {...props2}>
                 <Button>
-                  <Icon type="upload" /> 弱网测试总结截图
+                  <Icon type="upload"/> 弱网测试总结截图
                 </Button>
               </Upload>
             </Col>
@@ -460,11 +512,11 @@ export default class NewOnlineReport extends Component {
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
             <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
-              style={{ backgroundColor:(this.state.dropData_test=="未通过" ? "red" : (this.state.dropData_test=="通过"?"green":"white")) }}
+                 style={{backgroundColor: (this.state.dropData_test == "未通过" ? "red" : (this.state.dropData_test == "通过" ? "green" : "white"))}}
             >
               <div>
                 <Dropdown overlay={dropMenu_test} trigger={["click"]}>
-                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
+                  <a style={{color: "black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_test}
                     <Icon type="down"/>
                   </a>
@@ -474,7 +526,7 @@ export default class NewOnlineReport extends Component {
             <Col span={8} className="test-result-detail border-bottom-css">
               <Upload {...props3}>
                 <Button>
-                  <Icon type="upload" /> 测试报告结论截图
+                  <Icon type="upload"/> 测试报告结论截图
                 </Button>
               </Upload>
             </Col>
@@ -485,11 +537,11 @@ export default class NewOnlineReport extends Component {
               <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
             <Col span={2} className="test-result-detail dropdown-list-css border-right-css"
-              style={{ backgroundColor:(this.state.dropData_UAT=="未通过" ? "red" : (this.state.dropData_UAT=="通过"?"green":"white")) }}
+                 style={{backgroundColor: (this.state.dropData_UAT == "未通过" ? "red" : (this.state.dropData_UAT == "通过" ? "green" : "white"))}}
             >
               <div>
                 <Dropdown overlay={dropMenu_UAT} trigger={["click"]}>
-                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
+                  <a style={{color: "black"}} className="ant-dropdown-link" href="#">
                     {this.state.dropData_UAT}
                     <Icon type="down"/>
                   </a>
@@ -499,44 +551,46 @@ export default class NewOnlineReport extends Component {
             <Col span={8} className="test-result-detail">
               <Upload {...props4}>
                 <Button>
-                  <Icon type="upload" /> UAT验收结论截图
+                  <Icon type="upload"/> UAT验收结论截图
                 </Button>
               </Upload>
             </Col>
           </Row>
         </div>
 
-        <div style={{ display:(flag==0?"none":"block") }}>
+        <div style={{display: (flag == 0 ? "none" : "block")}}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
-              <Button style={{ display:"none"}}
-                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=online" }}
+              <Button style={{display: "none"}}
+                      onClick={ ()=> {
+                        window.location.href = "index.html#/evaluationResult?flag=0&pageTag=online"
+                      }}
               >查看结果</Button>
             </Col>
             <Col span={24} className="submit-btn">
               <Button type="primary"
-                      onClick={ ()=>{ 
+                      onClick={ ()=> {
                         //提交 上线报告信息
                         this.getIntFromString();
                         //文件上传
-                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
-                        this.state.rwtest_file = (rwtest_filename==undefined)?"":rwtest_filename;
-                        this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
-                        this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
+                        this.state.safetest_file = (safetest_filename == undefined) ? "" : safetest_filename;
+                        this.state.rwtest_file = (rwtest_filename == undefined) ? "" : rwtest_filename;
+                        this.state.test_result_file = (test_result_filename == undefined) ? "" : test_result_filename;
+                        this.state.uat_result_file = (uat_result_filename == undefined) ? "" : uat_result_filename;
                         console.log(this.state);
                         // debugger;
-                        api.postOnlineReport(this.state).then(data=>{
+                        api.postOnlineReport(this.state).then(data=> {
                           console.log(data);
-                          if(data.status == 200){
+                          if (data.status == 200) {
                             console.log("online report post success");
-                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=online&work_id="+ work_id
-                          }else if(data.status == 500){
+                            window.location.href = "index.html#/evaluationResult?flag=1&pageTag=online&work_id=" + work_id
+                          } else if (data.status == 500) {
                             console.log(data.message);
                             alert(data.message);
                           }
                         });
 
-                        } }
+                      } }
               >提交</Button>
             </Col>
           </Row>
@@ -546,38 +600,38 @@ export default class NewOnlineReport extends Component {
     );
   }
 
-  getIntFromString(){
+  getIntFromString() {
     //安全测试
-    if(this.state.dropData_safe == "未选择"){
+    if (this.state.dropData_safe == "未选择") {
       this.state.safetest_status = 0;
     }
-    else if(this.state.dropData_safe == "蓝灯"){
+    else if (this.state.dropData_safe == "蓝灯") {
       this.state.safetest_status = 1;
-    }else if(this.state.dropData_safe == "绿灯"){
+    } else if (this.state.dropData_safe == "绿灯") {
       this.state.safetest_status = 2;
-    }else if(this.state.dropData_safe == "黄灯"){
+    } else if (this.state.dropData_safe == "黄灯") {
       this.state.safetest_status = 3;
-    }else if(this.state.dropData_safe == "红灯"){
+    } else if (this.state.dropData_safe == "红灯") {
       this.state.safetest_status = 4;
     }
     //弱网测试总结  -- 待定
-    if(this.state.dropData_weak == "NA"){
+    if (this.state.dropData_weak == "NA") {
       this.state.rwtest_status = 0
-    }else if(this.state.dropData_weak == "通过"){
+    } else if (this.state.dropData_weak == "通过") {
       this.state.rwtest_status = 1
-    }else if(this.state.dropData_weak == "未通过"){
+    } else if (this.state.dropData_weak == "未通过") {
       this.state.rwtest_status = 0
     }
     //测试报告结论
-    if(this.state.dropData_test == "通过"){
+    if (this.state.dropData_test == "通过") {
       this.state.test_result = 1
-    }else if(this.state.dropData_test == "未通过"){
+    } else if (this.state.dropData_test == "未通过") {
       this.state.test_result = 0
     }
     //UAT验收结论
-    if(this.state.dropData_UAT == "通过"){
+    if (this.state.dropData_UAT == "通过") {
       this.state.uat_result = 1
-    }else if(this.state.dropData_UAT == "未通过"){
+    } else if (this.state.dropData_UAT == "未通过") {
       this.state.uat_result = 0
     }
   }
@@ -591,38 +645,38 @@ export default class NewOnlineReport extends Component {
       //将数据显示在页面上
       this.state = data.data;
       /*
-        将int类型的状态数据,转换成对应的字符串类型
-      */
+       将int类型的状态数据,转换成对应的字符串类型
+       */
       //安全测试 状态
       safeSta = this.state.safetest_status;
-      if(safeSta == 1){
-        this.setState({dropData_safe:"蓝灯"});
-      }else if(safeSta ==2){
-        this.setState({dropData_safe:"绿灯"});
-      }else if(safeSta ==3){
-        this.setState({dropData_safe:"黄灯"});
-      }else if(safeSta ==4){
-        this.setState({dropData_safe:"红灯"});
-      }else{
-        this.setState({dropData_safe:"未选择"});
+      if (safeSta == 1) {
+        this.setState({dropData_safe: "蓝灯"});
+      } else if (safeSta == 2) {
+        this.setState({dropData_safe: "绿灯"});
+      } else if (safeSta == 3) {
+        this.setState({dropData_safe: "黄灯"});
+      } else if (safeSta == 4) {
+        this.setState({dropData_safe: "红灯"});
+      } else {
+        this.setState({dropData_safe: "未选择"});
       }
       //弱网测试 状态
       weakSta = this.state.rwtest_status;
-      if( weakSta == 1 ){
-        this.setState({ dropData_weak:"通过" });
-      }else if( weakSta == 2 ){  // --- 还需验证"弱网测试"的字段设计,接口中设计的有问题 - 2017.04.26
-        this.setState({ dropData_weak:"NA" });
-      }else{
-        this.setState({ dropData_weak:"未通过" });
+      if (weakSta == 1) {
+        this.setState({dropData_weak: "通过"});
+      } else if (weakSta == 2) {  // --- 还需验证"弱网测试"的字段设计,接口中设计的有问题 - 2017.04.26
+        this.setState({dropData_weak: "NA"});
+      } else {
+        this.setState({dropData_weak: "未通过"});
       }
       //测试报告结论 状态
       testSta = this.state.test_result;
       //UAT验收结论 状态
       UATSta = this.state.uat_result;
       this.setState({
-        dropData_test:(testSta == 1)?"通过":"未通过" ,
-        dropData_UAT:(UATSta == 1)?"通过":"未通过",
-        work_id:work_id,
+        dropData_test: (testSta == 1) ? "通过" : "未通过",
+        dropData_UAT: (UATSta == 1) ? "通过" : "未通过",
+        work_id: work_id,
       });
       console.log(this.state);
     });

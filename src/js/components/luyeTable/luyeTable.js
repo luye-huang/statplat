@@ -457,10 +457,10 @@ export default class LuyeTable {
     this.resetData();
     queryParams = sortBy(queryParams, 'predicate');
     queryParams.forEach(queryParam => {
+      yellowed.add(queryParam.arg1);
       switch (queryParam.predicate) {
         case "eq":
           metadata.processingData = metadata.processingData.filter(item => {
-            yellowed.add(queryParam.arg1);
             return item[queryParam.queryCol] == queryParam.arg1;
           });
           break;
@@ -475,7 +475,6 @@ export default class LuyeTable {
           break;
         case "zkw":
           metadata.processingData = metadata.processingData.filter(item => {
-            yellowed.add(queryParam.arg1);
             return item[queryParam.queryCol].includes(queryParam.arg1);
           });
           break;
