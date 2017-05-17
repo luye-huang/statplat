@@ -399,7 +399,7 @@ export default class NewOnlineReport extends Component {
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input type="number" placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input type="number" placeholder="" name="tl_num_total" value={this.state.tl_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                  <Input type="number" placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>比率(小数)</span></Col>
