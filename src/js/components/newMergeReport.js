@@ -97,6 +97,223 @@ export default class NewMergeReport extends Component {
     console.log(this.state);
   }
 
+  // 数量total/关闭数量total/比率/修复比率的onClick事件
+  handleClick_Rate(e){
+    let obj = {};
+    switch(e.target.name){
+      //tl数量total 的onClick事件
+      case "tl_num_total":
+        if(this.state.tl_num_1 === null || this.state.tl_num_2 === null || this.state.tl_num_3 === null || this.state.tl_num_4 === null ||
+          this.state.tl_num_1 === "" || this.state.tl_num_2 === "" || this.state.tl_num_3 === "" || this.state.tl_num_4 === ""
+        ){
+          message.error("请输入pass Fail Block NoRun的数量");
+        }else{
+          obj[e.target.name] = parseInt(this.state.tl_num_1)+parseInt(this.state.tl_num_2)+parseInt(this.state.tl_num_3)+parseInt(this.state.tl_num_4);
+          this.setState(obj);
+        }
+        break;
+      // tl比率 的onClick事件
+      case "tl_rate_1":
+        if(this.state.tl_num_total == 0){
+          obj[e.target.name] = 0;
+          this.setState(obj);
+        }else{
+          if(this.state.tl_num_1 === null || this.state.tl_num_total === null ||
+            this.state.tl_num_1 === "" || this.state.tl_num_total === ""
+          ){
+            message.error("请输入pass和Total数量");
+          }else{
+            obj[e.target.name] = (parseFloat(this.state.tl_num_1/this.state.tl_num_total)).toFixed(2);
+            this.setState(obj);
+            // console.log(this.state);
+          }
+        }
+        break;
+      case "tl_rate_2":
+        if(this.state.tl_num_total == 0){
+          obj[e.target.name] = 0;
+          this.setState(obj);
+        }else{
+          if(this.state.tl_num_2 === null || this.state.tl_num_total === null ||
+            this.state.tl_num_2 === "" || this.state.tl_num_total === ""
+          ){
+            message.error("请输入Fail和Total数量");
+          }else{
+            obj[e.target.name] = (parseFloat(this.state.tl_num_2/this.state.tl_num_total)).toFixed(2);
+            this.setState(obj);
+          }
+        }
+        break;
+      case "tl_rate_3":
+        if(this.state.tl_num_total == 0){
+          obj[e.target.name] = 0;
+          this.setState(obj);
+        }else{
+          if(this.state.tl_num_3 === null || this.state.tl_num_total === null ||
+            this.state.tl_num_3 === "" || this.state.tl_num_total === ""
+          ){
+            message.error("请输入Block和Total数量");
+          }else{
+            obj[e.target.name] = (parseFloat(this.state.tl_num_3/this.state.tl_num_total)).toFixed(2);
+            this.setState(obj);
+          }
+        }
+        break;
+      case "tl_rate_4":
+        if(this.state.tl_num_total == 0){
+          obj[e.target.name] = 0;
+          this.setState(obj);
+        }else{
+          if(this.state.tl_num_4 === null || this.state.tl_num_total === null ||
+            this.state.tl_num_4 === "" || this.state.tl_num_total === ""
+          ){
+            message.error("请输入NoRun和Total数量");
+          }else{
+            obj[e.target.name] = (parseFloat(this.state.tl_num_4/this.state.tl_num_total)).toFixed(2);
+            this.setState(obj);
+          }
+        }
+        break;
+      case "tl_rate_total":
+        if(this.state.tl_num_total == 0){
+          obj[e.target.name] = 0;
+          this.setState(obj);
+        }else{
+          if(this.state.tl_num_total === null ||
+            this.state.tl_num_total === ""
+          ){
+            message.error("请输入Total数量");
+          }else{
+            obj[e.target.name] = (parseFloat(this.state.tl_num_total/this.state.tl_num_total)).toFixed(2);
+            this.setState(obj);
+          }
+        }
+        break;
+      //jira 数量total 的onClick事件
+      case "jira_num_total":
+        if(this.state.jira_num_1 === null || this.state.jira_num_2 === null || this.state.jira_num_3 === null || this.state.jira_num_4 === null ||
+          this.state.jira_num_1 === "" || this.state.jira_num_2 === "" || this.state.jira_num_3 === "" || this.state.jira_num_4 === ""
+        ){
+          message.error("请输入Block Critical Major Minor的数量");
+        }else{
+          obj[e.target.name] = parseInt(this.state.jira_num_1)+parseInt(this.state.jira_num_2)+parseInt(this.state.jira_num_3)+parseInt(this.state.jira_num_4);
+          this.setState(obj);
+        }
+        break;
+      //jira 关闭数量total 的onClick事件
+      case "jira_close_num_total":
+        if(this.state.jira_close_num_1 === null || this.state.jira_close_num_2 === null || this.state.jira_close_num_3 === null || this.state.jira_close_num_4 === null ||
+          this.state.jira_close_num_1 === "" || this.state.jira_close_num_2 === "" || this.state.jira_close_num_3 === "" || this.state.jira_close_num_4 === ""
+        ){
+          message.error("请输入Block Critical Major Minor的关闭数量");
+        }else{
+
+          obj[e.target.name] = parseInt(this.state.jira_close_num_1)+parseInt(this.state.jira_close_num_2)+
+            parseInt(this.state.jira_close_num_3)+parseInt(this.state.jira_close_num_4);
+          this.setState(obj);
+        }
+        break;
+      // jira修复比率 的onClick事件
+      case "jira_repair_rate_1":
+        if(this.state.jira_close_num_1 === null || this.state.jira_num_1 === null ||
+          this.state.jira_close_num_1 === "" || this.state.jira_num_1 === ""
+        ){
+          message.error("请输入Block的数量和关闭数量");
+        }else{
+          if(this.state.jira_close_num_1 == 0 && this.state.jira_num_1 == 0){
+            obj[e.target.name] = 0;
+          }else{
+            if(this.state.jira_close_num_1 > this.state.jira_num_1){
+              message.error("Block关闭数量不合理");
+              obj[e.target.name] = ""; //置空
+            }else{
+              obj[e.target.name] = (parseFloat(this.state.jira_close_num_1/this.state.jira_num_1)).toFixed(2);
+            }
+          }
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_2":
+        if(this.state.jira_close_num_2 === null || this.state.jira_num_2 === null ||
+          this.state.jira_close_num_2 === "" || this.state.jira_num_2 === ""
+        ){
+          message.error("请输入Critical的数量和关闭数量");
+        }else{
+          if(this.state.jira_close_num_2 == 0 && this.state.jira_num_2 == 0){
+            obj[e.target.name] = 0;
+          }else{
+            if(this.state.jira_close_num_2 > this.state.jira_num_2){
+              message.error("Critical关闭数量不合理");
+              obj[e.target.name] = ""; //置空
+            }else{
+              obj[e.target.name] = (parseFloat(this.state.jira_close_num_2/this.state.jira_num_2)).toFixed(2);
+            }
+          }
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_3":
+        if(this.state.jira_close_num_3 === null || this.state.jira_num_3 === null ||
+          this.state.jira_close_num_3 === "" || this.state.jira_num_3 === ""
+        ){
+          message.error("请输入Major的数量和关闭数量");
+        }else{
+          if(this.state.jira_close_num_3 == 0 && this.state.jira_num_3 == 0){
+            obj[e.target.name] = 0;
+          }else{
+            if(this.state.jira_close_num_3 > this.state.jira_num_3){
+              message.error("Major关闭数量不合理");
+              obj[e.target.name] = ""; //置空
+            }else{
+              obj[e.target.name] = (parseFloat(this.state.jira_close_num_3/this.state.jira_num_3)).toFixed(2);
+            }
+          }
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_4":
+        if(this.state.jira_close_num_4 === null || this.state.jira_num_4 === null ||
+          this.state.jira_close_num_4 === "" || this.state.jira_num_4 === ""
+        ){
+          message.error("请输入Minor的数量和关闭数量");
+        }else{
+          if(this.state.jira_close_num_4 == 0 && this.state.jira_num_4 == 0){
+            obj[e.target.name] = 0;
+          }else{
+            if(this.state.jira_close_num_4 > this.state.jira_num_4){
+              message.error("Minor关闭数量不合理");
+              obj[e.target.name] = ""; //置空
+            }else{
+              obj[e.target.name] = (parseFloat(this.state.jira_close_num_4/this.state.jira_num_4)).toFixed(2);
+            }
+          }
+          this.setState(obj);
+        }
+        break;
+      case "jira_repair_rate_total":
+        if(this.state.jira_close_num_total === null || this.state.jira_num_total === null ||
+          this.state.jira_close_num_total === "" || this.state.jira_num_total === ""
+        ){
+          message.error("请输入Total数量和关闭数量");
+        }else{
+          if(this.state.jira_close_num_total == 0 && this.state.jira_num_total == 0){
+            obj[e.target.name] = 0;
+          }else{
+            if(this.state.jira_close_num_total > this.state.jira_num_total){
+              message.error("Total关闭数量不合理");
+              obj[e.target.name] = ""; //置空
+            }else{
+              obj[e.target.name] = (parseFloat(this.state.jira_close_num_total/this.state.jira_num_total)).toFixed(2);
+            }
+          }
+          this.setState(obj);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     //从准入报告列表页,解析传过来的url中的work_id参数
     let url = window.location.href;
@@ -309,29 +526,29 @@ export default class NewMergeReport extends Component {
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="2" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css"><Input type="number"
+                  placeholder="" name="tl_num_total" value={this.state.tl_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>比率(小数)</span></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="" name="tl_rate_2" value={this.state.tl_rate_2} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="" name="tl_rate_3" value={this.state.tl_rate_3} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="" name="tl_rate_4" value={this.state.tl_rate_4} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail"><Input
-                  placeholder="" name="tl_rate_total" value={this.state.tl_rate_total} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="2" name="tl_rate_1" value={this.state.tl_rate_1} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="" name="tl_rate_2" value={this.state.tl_rate_2} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="" name="tl_rate_3" value={this.state.tl_rate_3} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="" name="tl_rate_4" value={this.state.tl_rate_4} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail"><Input type="number"
+                  placeholder="" name="tl_rate_total" value={this.state.tl_rate_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>
@@ -366,43 +583,43 @@ export default class NewMergeReport extends Component {
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="2" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="3" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder="" name="jira_num_total" value={this.state.jira_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css"><Input type="number"
+                  placeholder="" name="jira_num_total" value={this.state.jira_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4}
                      className="test-result-detail border-right-css border-bottom-css"><span>关闭数量</span></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input
+                <Col span={4} className="test-result-detail border-right-css border-bottom-css"><Input type="number"
                   placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-bottom-css"><Input
-                  placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-bottom-css"><Input type="number"
+                  placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>修复比率(小数)</span></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css"><Input
-                  placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail"><Input
-                  placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="" name="jira_repair_rate_3" value={this.state.jira_repair_rate_3} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail border-right-css"><Input type="number"
+                  placeholder="" name="jira_repair_rate_4" value={this.state.jira_repair_rate_4} onClick={this.handleClick_Rate.bind(this)}/></Col>
+                <Col span={4} className="test-result-detail"><Input type="number"
+                  placeholder="" name="jira_repair_rate_total" value={this.state.jira_repair_rate_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
             </Col>
           </Row>

@@ -151,7 +151,7 @@ export default class newProject extends Component {
           </Row>
           <Row gutter={16} style={{marginBottom: 16}}>
             <Col span={8}>
-              <Input addonBefore="项目名称" defaultValue={this.state.name} name="name"
+              <Input addonBefore="需求名称" defaultValue={this.state.name} name="name"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
             <Col span={8}>
