@@ -84,10 +84,10 @@ export default class NewCheckInReport extends Component {
       const {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4,jira_close_num_total} = this.state;
       let jira_num_total = Number.parseInt(jira_num_1) + Number.parseInt(jira_num_2) + Number.parseInt(jira_num_3) + Number.parseInt(jira_num_4);
       let jira_repair_rate_1 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
-      let jira_repair_rate_2 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
-      let jira_repair_rate_3 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
-      let jira_repair_rate_4 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
-      let jira_repair_rate_total= parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
+      let jira_repair_rate_2 = parseFloat(parseInt(jira_close_num_2) / parseInt(jira_num_2)).toFixed(2);
+      let jira_repair_rate_3 = parseFloat(parseInt(jira_close_num_3) / parseInt(jira_num_3)).toFixed(2);
+      let jira_repair_rate_4 = parseFloat(parseInt(jira_close_num_4) / parseInt(jira_num_4)).toFixed(2);
+      let jira_repair_rate_total= parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
       this.setState({jira_num_total,jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,});
     }
 
