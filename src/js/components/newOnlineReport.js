@@ -16,7 +16,6 @@ import {
   Input, Button,
   Menu, Dropdown, Icon,
   Upload, message,
-  NumericInput,
 } from "antd";
 import "../../less/newOnlineReport.less";
 import {api} from "../api.js";
@@ -32,7 +31,7 @@ var safeSta, //安全测试 状态
 let safetest_filename,
   rwtest_filename,
   test_result_filename,
-  uat_result_filename ;
+  uat_result_filename;
 export default class NewOnlineReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
@@ -218,7 +217,7 @@ export default class NewOnlineReport extends Component {
     console.log(work_id);
     flag = obj["flag"];
     console.log(flag);
-    
+
     //下拉菜单 - menu - 安全测试
     const dropData_safe = ["蓝灯", "绿灯", "黄灯", "红灯"];
     const dropMenu_safe = (
@@ -392,15 +391,15 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="1" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="2" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="2" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="" name="tl_num_total" value={this.state.tl_num_total} onClick={this.handleClick_Rate.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>比率(小数)</span></Col>
