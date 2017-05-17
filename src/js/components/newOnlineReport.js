@@ -206,7 +206,18 @@ export default class NewOnlineReport extends Component {
       let jira_notfinish_num_total = Number.parseInt(jira_notfinish_num_1) + Number.parseInt(jira_notfinish_num_2) + Number.parseInt(jira_notfinish_num_3) + Number.parseInt(jira_notfinish_num_4);
       this.setState({jira_notfinish_num_total});
     }
-
+    //兼容性测试结果
+    // cptest_need cptest_final cptest_rate
+    if(["cptest_need","cptest_final"].includes(e.target.name) && this.state.cptest_need!=undefined && this.state.cptest_final!=undefined){
+      const {cptest_need, cptest_final} = this.state;
+      let cptest_rate;
+      if(parseInt(cptest_final) > parseInt(cptest_need)){
+        message.error("实际测试>需要测试 的浏览器个数,不合理");
+      }else{
+        cptest_rate = parseFloat( parseInt(cptest_final)/parseInt(cptest_need) ).toFixed(2);
+      }
+      this.setState({cptest_rate});
+    }
   }
 
   render() {
@@ -508,19 +519,19 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">需要测试的机型/浏览器</Col>
                 <Col span={6} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="cptest_need" value={this.state.cptest_need} onChange={this.handleChange.bind(this)}/>
+                  <Input type="number" placeholder="" name="cptest_need" value={this.state.cptest_need} onChange={this.handleChange.bind(this)}/>
                 </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">实际测试的机型/浏览器</Col>
                 <Col span={6} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="cptest_final" value={this.state.cptest_final} onChange={this.handleChange.bind(this)}/>
+                  <Input type="number" placeholder="" name="cptest_final" value={this.state.cptest_final} onChange={this.handleChange.bind(this)}/>
                 </Col>
               </Row>
               <Row>
                 <Col span={18} className="test-result-detail border-right-css border-bottom-css">百分率</Col>
                 <Col span={6} className="test-result-detail border-bottom-css">
-                  <Input placeholder="" name="cptest_rate" value={this.state.cptest_rate} onChange={this.handleChange.bind(this)}/>
+                  <Input type="number" placeholder="" name="cptest_rate" value={this.state.cptest_rate} onChange={this.handleChange.bind(this)}/>
                 </Col>
               </Row>
             </Col>

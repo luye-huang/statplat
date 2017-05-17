@@ -418,11 +418,11 @@ export default class NewCheckInReport extends Component {
                       //提测文件
                       this.state.email_file = (email_filename==undefined)?"":email_filename;
                       console.log(this.state);
-                      debugger;
-                      for(var key in this.state){
-                        if(!this.state[key])
-                        return;
-                      }
+                      // debugger;
+                      // for(var key in this.state){
+                      //   if(!this.state[key])
+                      //   return;
+                      // }
 
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
