@@ -456,9 +456,13 @@ export default class ReportList extends Component {
       //查看历史报告
       const redirectTo_CheckinReportHistory = (e)=> {
         work_id = e.data.id;
-
         window.location.href = "index.html#/checkinReportHistoryPage?work_id=" + work_id;
 
+      }
+      //查看项目信息
+      const redirectTo_ReportInfo = (e)=>{
+        work_id = e.data.id;
+        window.location.href = "index.html#/viewReportInfo?work_id=" + work_id;
       }
 
       //表格数据渲染
@@ -466,7 +470,7 @@ export default class ReportList extends Component {
         el: $("#tb-div"),
         data: arr,
         columns: [{cname: "报告ID", cdata: "id"},
-          {cname: "需求名称", cdata: "name"},
+          {cname: "需求名称", cdata: "name", style: "fakeA", action: "click", trigger: redirectTo_ReportInfo},
           {cname: "需求ID", cdata: "jira_id"},
           {cname: "项目类型", cdata: "typeStr"},
           {cname: "报告人ctx", cdata: "tester_ctx"},

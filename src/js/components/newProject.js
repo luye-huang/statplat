@@ -146,8 +146,7 @@ export default class newProject extends Component {
       <div>
         <div>
           <Row style={{marginBottom: 20}}>
-            <Col span={10}></Col>
-            <Col span={4} className="title-txt">项目信息</Col>
+            <Col span={24} className="title-txt" style={{ textAlign:"center" }}>填写项目信息</Col>
           </Row>
           <Row gutter={16} style={{marginBottom: 16}}>
             <Col span={8}>

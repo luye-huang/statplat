@@ -19,6 +19,7 @@ import NewOnlineReport from "./components/newOnlineReport.js";
 import NewMergeReport from "./components/newMergeReport.js";
 import Login from "./components/login";
 import CheckinReportHistoryPage from "./components/checkinReportHistoryPage.js";
+import ViewReportInfo from "./components/viewReportInfo.js";
 
 export default class Main extends React.Component {
   render() {
@@ -29,7 +30,8 @@ export default class Main extends React.Component {
           <Route component={ReportList} path="reportList"></Route>
           <Route component={MonthlyChart} path="monthStat"></Route>
           <Route component={CheckinReportHistoryPage} path="checkinReportHistoryPage"></Route>
-          
+          <Route component={ViewReportInfo} path="viewReportInfo"></Route>
+
           <Route component={NewProject} path="newProject"></Route>
           <Route component={NewCheckInReport} path="newCheckInReport"></Route>
           <Route component={EvaluationResult} path="evaluationResult"></Route>
