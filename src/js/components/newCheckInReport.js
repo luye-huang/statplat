@@ -104,7 +104,8 @@ export default class NewCheckInReport extends Component {
         if (jira_close_num_1 == 0 && jira_num_1 == 0) {
           jira_repair_rate_1 = 0.00;
         } else {
-          if (jira_close_num_1 > jira_num_1) {
+          debugger
+          if (parseInt(jira_close_num_1) > parseInt(jira_num_1)) {
             message.error("Block关闭数量不合理");
             jira_repair_rate_1 = "";
           } else {
@@ -118,7 +119,7 @@ export default class NewCheckInReport extends Component {
         if (jira_close_num_2 == 0 && jira_num_2 == 0) {
           jira_repair_rate_2 = 0.00;
         } else {
-          if (jira_close_num_2 > jira_num_2) {
+          if (parseInt(jira_close_num_2) > parseInt(jira_num_2)) {
             message.error("Critical关闭数量不合理");
             jira_repair_rate_2 = "";
           } else {
@@ -132,7 +133,7 @@ export default class NewCheckInReport extends Component {
         if (jira_close_num_3 == 0 && jira_num_3 == 0) {
           jira_repair_rate_3 = 0.00;
         } else {
-          if (jira_close_num_3 > jira_num_3) {
+          if (parseInt(jira_close_num_3) > parseInt(jira_num_3)) {
             message.error("Major关闭数量不合理");
             jira_repair_rate_3 = "";
           } else {
@@ -146,7 +147,7 @@ export default class NewCheckInReport extends Component {
         if (jira_close_num_4 == 0 && jira_num_4 == 0) {
           jira_repair_rate_4 = 0.00;
         } else {
-          if (jira_close_num_4 > jira_num_4) {
+          if (parseInt(jira_close_num_4) > parseInt(jira_num_4)) {
             message.error("Minor关闭数量不合理");
             jira_repair_rate_4 = "";
           } else {
@@ -160,7 +161,7 @@ export default class NewCheckInReport extends Component {
         if (jira_close_num_total == 0 && jira_num_total == 0) {
           jira_repair_rate_total = 0.00;
         } else {
-          if (jira_close_num_total > jira_num_total) {
+          if (parseInt(jira_close_num_total) > parseInt(jira_num_total)) {
             message.error("Total关闭数量不合理");
             jira_repair_rate_total = "";
           } else {
