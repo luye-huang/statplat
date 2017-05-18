@@ -1,6 +1,7 @@
 //dependencies: jq, lodash
 import {data} from './data';
 import './luyeTable.less';
+import 'babel-polyfill';
 const saver = require('file-saver');
 const $ = require('jquery');
 const deepClone = require('lodash.clonedeep');
