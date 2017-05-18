@@ -2,6 +2,7 @@
  * Created by luye on 19/04/2017.
  */
 import $ from "jquery";
+import 'whatwg-fetch';
 
 // export const domain = 'http://localhost:8083/';
 // export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境

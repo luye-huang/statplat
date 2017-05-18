@@ -51,6 +51,7 @@
     "url-loader": "^0.5.8",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1",
-    "webpack-utf8-bom": "^1.0.3"
+    "webpack-utf8-bom": "^1.0.3",
+    "whatwg-fetch": "^2.0.3"
   }
 }

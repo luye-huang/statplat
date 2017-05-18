@@ -154,7 +154,7 @@ export default class LuyeTable {
     this.wdtb.find('thead').remove();
     const tpl = String.raw`<thead><tr>
       ${this.metadata.processingColumns.map(column => `
-         <th class="${column.style == "hide" ? "hide" : ""}">${column.cname}<input type="checkbox" class="hide" ${column.style == "hide" ? "value='off'" : "checked='checked'"}/><div><div class="tangle-up arrows"></div><div class="tangle-down arrows"></div></div></th>`)
+         <th class="${column.style == "hide" ? "hide" : ""}">${column.cname}<input type="checkbox" class="hide" ${column.style == "hide" ? "value='off'" : "checked='checked'"}/><div class="${column.type === undefined || column.type === 'a' ? '' : 'hide'}"><div class="tangle-up arrows"></div><div class="tangle-down arrows"></div></div></th>`)
       }
     </tr></thead>`;
     this.wdtb.append(tpl);
@@ -195,7 +195,7 @@ export default class LuyeTable {
         const $td = $('<td></td>');
         // let td = document.createElement('td');
         if (!col.type) {
-          let tpl_txt = tr[col.cdata] === undefined? '': tr[col.cdata];
+          let tpl_txt = tr[col.cdata] === undefined ? '' : tr[col.cdata] + '';
           keywords && keywords.forEach(keyword => {
             if (tpl_txt.includes(keyword)) {
               let yellowstr = `<span class="yellowed">${keyword}</span>`;
@@ -214,6 +214,13 @@ export default class LuyeTable {
           href += rawUrl.pop();
           const tpl_a = `<a href="${href}">${col.cdata ? tr[col.cdata] : col.cname}</a>`;
           $td.append(tpl_a);
+        }
+        else if (col.type == 'btns') {
+          col.handlers.forEach(handler=> {
+            const $btn = $(`<button>${handler.btnText}</button>`);
+            $btn.on('click', $tr, handler.handler);
+            $td.append($btn);
+          })
         }
         if (col.style == 'fakeA') {
           $td.addClass('fake-a');
