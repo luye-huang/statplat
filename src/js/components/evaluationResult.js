@@ -72,6 +72,11 @@ export default class EvaluationResult extends Component {
       }else if(this.state.status == 1){
         this.state.statusResult = "蓝灯"
         isExamBtnHide = false; //蓝灯,按钮不显示
+
+        //若为上线报告,则need_check默认为1,需要审核,则"提交审核按钮显示"
+        if(this.state.need_check == 1){
+          isExamBtnHide = true; //按钮显示
+        }
       }
       else if(this.state.status == 2){
         this.state.statusResult = "绿灯"
@@ -163,10 +168,13 @@ export default class EvaluationResult extends Component {
       });
     } else if (pageTag == "online") {
       //查看上线报告的 评估结果
+      debugger
       api.getCheckreportForOnline(this.state.work_id).then(data=> {
         // console.log(data);
 
         this.state = data.data;
+        //上线报告不管是什么灯,都需要审核,所以need_check默认为1,
+        this.state.need_check = 1;
         console.log(this.state);
 
         status = this.state.status;

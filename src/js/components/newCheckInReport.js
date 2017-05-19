@@ -381,6 +381,10 @@ export default class NewCheckInReport extends Component {
                   <Icon type="upload" /> 发送提测邮件
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.email_file=="")?"":(domain+this.state.email_file)} target="_Blank">
+                  {(this.state.email_file=="" || this.state.email_file===null)?"":"查看提测邮件"}</a>
+              </span>
             </Col>
           </Row>
 
@@ -420,11 +424,22 @@ export default class NewCheckInReport extends Component {
                       this.state.email_file = (email_filename==undefined)?"":email_filename;
                       console.log(this.state);
                       // debugger;
+                      // let flag = true;
                       // for(var key in this.state){
-                      //   if(!this.state[key])
-                      //   return;
+                      //   if((typeof this.state[key])=="string"){
+                      //     if(this.state[key] == "" || this.state[key] == "NaN"){
+                      //       let v = this.state[key];
+                      //       flag = false;
+                      //       break;
+                      //     }
+                      //   }
+                      //   if(this.state[key] === null){
+                      //       let v = this.state[key];
+                      //       flag = false;
+                      //       break;
+                      //   }
                       // }
-
+                      // console.log(flag);
                       api.postCheckinReport(this.state).then(data=>{
                         console.log(data);
                         if(data.status == 200){

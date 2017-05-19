@@ -575,6 +575,10 @@ export default class NewMergeReport extends Component {
                   <Icon type="upload" /> 安全测试截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.safetest_file=="")?"":(domain+this.state.safetest_file)} target="_Blank">
+                  {(this.state.safetest_file=="" || this.state.safetest_file===null)?"":"查看安全测试截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -599,6 +603,10 @@ export default class NewMergeReport extends Component {
                   <Icon type="upload" /> 相关服务已上线截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.if_online_file=="")?"":(domain+this.state.if_online_file)} target="_Blank">
+                  {(this.state.if_online_file=="" || this.state.if_online_file===null)?"":"查看相关服务已上线截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -623,6 +631,10 @@ export default class NewMergeReport extends Component {
                   <Icon type="upload" /> 合版后需求无更新截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.no_change_after_merge_file=="")?"":(domain+this.state.no_change_after_merge_file)} target="_Blank">
+                  {(this.state.no_change_after_merge_file=="" || this.state.no_change_after_merge_file===null)?"":"查看合版后需求无更新截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -649,6 +661,10 @@ export default class NewMergeReport extends Component {
                   <Icon type="upload" /> 测试报告结论截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.test_result_file=="")?"":(domain+this.state.test_result_file)} target="_Blank">
+                  {(this.state.test_result_file=="" || this.state.test_result_file===null)?"":"查看测试报告结论截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -674,6 +690,10 @@ export default class NewMergeReport extends Component {
                   <Icon type="upload" /> UAT验收结论截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.uat_result_file=="")?"":(domain+this.state.uat_result_file)} target="_Blank">
+                  {(this.state.uat_result_file=="" || this.state.uat_result_file===null)?"":"查看UAT验收结论截图"}</a>
+              </span>
             </Col>
           </Row>
         </div>
