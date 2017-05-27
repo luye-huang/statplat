@@ -18,7 +18,6 @@ import {api} from "../api.js";
 import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
-var objData = {};
 var work_id,
     flag; //flag为0 隐藏 ,即display:none
 var safeSta, //安全测试 状态
@@ -702,7 +701,7 @@ export default class NewMergeReport extends Component {
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
               <Button style={{ display:"none"}}
-                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=merge" }}
+                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=merge"; }}
               >查看结果</Button>
             </Col>
             <Col span={24} className="submit-btn">
@@ -722,13 +721,13 @@ export default class NewMergeReport extends Component {
                           if(data.status == 200){
                             console.log("merge report post success");
                             console.log(data);
-                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge&work_id=" + work_id
+                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge&work_id=" + work_id;
                           }else if(data.status == 500){
                             console.log(data.message);
                             alert(data.message);
                           }
                         });
-                        } }
+                      } }
               >提交</Button>
             </Col>
           </Row>
@@ -765,15 +764,15 @@ export default class NewMergeReport extends Component {
     }
     //测试报告结论
     if(this.state.dropData_test == "通过"){
-      this.state.test_result = 1
+      this.state.test_result = 1;
     }else if(this.state.dropData_test == "未通过"){
-      this.state.test_result = 0
+      this.state.test_result = 0;
     }
     //UAT验收结论
     if(this.state.dropData_UAT == "通过"){
-      this.state.uat_result = 1
+      this.state.uat_result = 1;
     }else if(this.state.dropData_UAT == "未通过"){
-      this.state.uat_result = 0
+      this.state.uat_result = 0;
     }
   }
 
