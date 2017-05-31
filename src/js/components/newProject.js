@@ -149,17 +149,23 @@ export default class newProject extends Component {
             <Col span={24} className="title-txt" style={{ textAlign:"center" }}>填写项目信息</Col>
           </Row>
           <Row gutter={16} style={{marginBottom: 16}}>
-            <Col span={8}>
+            <Col span={12}>
+              <Input addonBefore="需求ID" placeholder="Jira ID" defaultValue={this.state.jira_id} name="jira_id"
+                     onChange={this.handleChange.bind(this)}/>
+            </Col>
+            <Col span={12}>
               <Input addonBefore="需求名称" defaultValue={this.state.name} name="name"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
-            <Col span={8}>
-              <Input addonBefore="需求ID" defaultValue={this.state.jira_id} name="jira_id"
+          </Row>
+          <Row gutter={16} style={{marginBottom: 16}}>
+            <Col span={12}>
+              <Input addonBefore="版本" placeholder="版本名称" defaultValue={this.state.name} name="name"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
-            <Col span={8} className="exam-result">
-              <span>项目类型</span>
-              <div>
+            <Col span={12} className="exam-result">
+              <span className="width-css">项目类型</span>
+              <div className="width-div-css">
                 <Dropdown overlay={dropMenu} trigger={["click"]}>
                   <a className="ant-dropdown-link" href="#">
                     {this.state.dropData}
@@ -171,8 +177,8 @@ export default class newProject extends Component {
           </Row>
           <Row gutter={16} style={{marginBottom: 40}}>
             <Col span={12}>
-              <span className="date-submit">测试周期</span>
-              <div className="div-date-submit">
+              <span className="date-css ">测试周期</span>
+              <div className="div-date-css">
                 <RangePicker defaultValue={[null, null]} onChange={this.onChange.bind(this)} name="dateSubmit"/>
               </div>
             </Col>
