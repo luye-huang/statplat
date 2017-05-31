@@ -559,6 +559,10 @@ export default class NewOnlineReport extends Component {
                   <Icon type="upload" /> 安全测试截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.safetest_file=="")?"":(domain+this.state.safetest_file)} target="_Blank">
+                  {(this.state.safetest_file=="" || this.state.safetest_file=== null)?"":"查看安全测试截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -584,6 +588,10 @@ export default class NewOnlineReport extends Component {
                   <Icon type="upload" /> 弱网测试总结截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.rwtest_file=="")?"":(domain+this.state.rwtest_file)} target="_Blank">
+                  {(this.state.rwtest_file=="" || this.state.rwtest_file===null)?"":"查看弱网测试总结截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -609,6 +617,10 @@ export default class NewOnlineReport extends Component {
                   <Icon type="upload" /> 测试报告结论截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.test_result_file=="")?"":(domain+this.state.test_result_file)} target="_Blank">
+                  {(this.state.test_result_file=="" || this.state.test_result_file=== null)?"":"查看测试报告结论截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row>
@@ -634,6 +646,10 @@ export default class NewOnlineReport extends Component {
                   <Icon type="upload" /> UAT验收结论截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.uat_result_file=="")?"":(domain+this.state.uat_result_file)} target="_Blank">
+                  {(this.state.uat_result_file=="" || this.state.uat_result_file=== null)?"":"查看UAT验收结论截图"}</a>
+              </span>
             </Col>
           </Row>
         </div>

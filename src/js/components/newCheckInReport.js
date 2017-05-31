@@ -28,7 +28,6 @@ import {api} from "../api.js";
 import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
-var objData = {};
 var work_id;
 let if_email; // 提测邮件 int
 let email_filename; // string
@@ -104,7 +103,7 @@ export default class NewCheckInReport extends Component {
         if (jira_close_num_1 == 0 && jira_num_1 == 0) {
           jira_repair_rate_1 = 0.00;
         } else {
-          debugger
+          debugger;
           if (parseInt(jira_close_num_1) > parseInt(jira_num_1)) {
             message.error("Block关闭数量不合理");
             jira_repair_rate_1 = "";
@@ -381,6 +380,10 @@ export default class NewCheckInReport extends Component {
                   <Icon type="upload" /> 发送提测邮件
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state.email_file=="")?"":(domain+this.state.email_file)} target="_Blank">
+                  {(this.state.email_file=="" || this.state.email_file===null)?"":"查看提测邮件"}</a>
+              </span>
             </Col>
           </Row>
 
@@ -408,33 +411,44 @@ export default class NewCheckInReport extends Component {
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
               <Button style={{ display:"none"}}
-                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=checkin" }}
+                onClick={ ()=>{ window.location.href="index.html#/evaluationResult?flag=0&pageTag=checkin"; }}
               >查看结果</Button>
             </Col>
             <Col span={24} className="submit-btn">
               <Button type="primary"
                       onClick={ ()=>{
                       //提交 提测报告信息
-                      this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
+                        this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
                       //提测文件
-                      this.state.email_file = (email_filename==undefined)?"":email_filename;
-                      console.log(this.state);
+                        this.state.email_file = (email_filename==undefined)?"":email_filename;
+                        console.log(this.state);
                       // debugger;
+                      // let flag = true;
                       // for(var key in this.state){
-                      //   if(!this.state[key])
-                      //   return;
+                      //   if((typeof this.state[key])=="string"){
+                      //     if(this.state[key] == "" || this.state[key] == "NaN"){
+                      //       let v = this.state[key];
+                      //       flag = false;
+                      //       break;
+                      //     }
+                      //   }
+                      //   if(this.state[key] === null){
+                      //       let v = this.state[key];
+                      //       flag = false;
+                      //       break;
+                      //   }
                       // }
-
-                      api.postCheckinReport(this.state).then(data=>{
-                        console.log(data);
-                        if(data.status == 200){
-                          console.log("checkin report post success");
-                          window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
-                        }else if(data.status == 500){
-                          console.log(data.message);
-                          alert(data.message);
-                        }
-                      });
+                      // console.log(flag);
+                        api.postCheckinReport(this.state).then(data=>{
+                          console.log(data);
+                          if(data.status == 200){
+                            console.log("checkin report post success");
+                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
+                          }else if(data.status == 500){
+                            console.log(data.message);
+                            alert (data.message);
+                          }
+                        });
                       } }
               >提交</Button>
             </Col>
@@ -450,8 +464,6 @@ export default class NewCheckInReport extends Component {
     api.getCheckinReport_Jira(work_id).then(data=> {
       console.log("checkin report get jira success");
       console.log(data);
-      // objData = data.data;
-      // objData["work_id"] = work_id;
       console.log(work_id);
 
       //将获取到的数据显示到页面上

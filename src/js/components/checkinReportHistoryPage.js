@@ -14,6 +14,7 @@ import {
 import "../../less/checkinReportHistoryPage.less";
 import {api} from "../api.js";
 import {dealUrl} from "../api.js";
+import {domain} from "../api.js";
 
 let work_id; //每条数据的工作流work_id
 let status; //评估结论
@@ -231,7 +232,8 @@ export default class CheckinReportHistoryPage extends Component {
               {this.state.dropData}
             </Col>
             <Col span={10} className="test-link-css">
-              { this.state.email_file }
+              <a href={ (this.state.email_file=="")?"":(domain+this.state.email_file) } target="_Blank">
+                { (this.state.email_file=="")?"":"查看提测邮件" }</a>
             </Col>
           </Row>
         </div>
