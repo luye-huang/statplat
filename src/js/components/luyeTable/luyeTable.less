@@ -21,7 +21,8 @@
 .txt-align {
   text-align: center;
 }
-.table-cell{
+
+.table-cell {
   padding: 8px;
   line-height: 1.42857143;
   vertical-align: top;
@@ -31,6 +32,7 @@
 //table parameter
 table {
   .txt-align;
+  position: relative;
   margin-top: 20px;
   background-color: transparent;
   //background-color: #fff;
@@ -38,6 +40,14 @@ table {
   max-width: 100%;
   margin-bottom: 20px;
   border-collapse: collapse;
+  button {
+    color: #fff;
+    height: 30px;
+    background-color: #286090;
+    border-radius: 4px;
+    margin: 0 4px;
+    padding: 0 4px;
+  }
   thead {
     th {
       .txt-align();
@@ -50,7 +60,7 @@ table {
       }
       div {
         display: inline-block;
-        &{
+        & {
           position: relative;
         }
         //min-width: 18px;
@@ -95,6 +105,25 @@ table {
       }
     }
   }
+  .detail-modal {
+    position: absolute;
+    top: 0;
+    left: 40%;
+    margin: 10px;
+    padding: 16px;
+    background-color: yellow;
+    border-radius: 4px;
+    .modal-content {
+      display: flex;
+      flex-flow: column;
+      align-items: flex-end;
+      div{
+        input{
+          margin: 4px;
+        }
+      }
+    }
+  }
 }
 
 .left-board {
@@ -115,7 +144,7 @@ table {
   margin-bottom: 4px;
   button {
     color: #fff;
-    height: 30px;
+    height: 28px;
     background-color: #286090;
     border-color: #204d74;
     border-radius: 4px;
