@@ -471,7 +471,7 @@ export default class NewOnlineReport extends Component {
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">安全测试</Col>
             <Col span={18} className="test-result-detail border-bottom-css"
-                 style={{ backgroundColor:(this.state.dropData_safe=="蓝灯"?"blue":(this.state.dropData_safe=="绿灯"?"green":(this.state.dropData_safe=="黄灯"?"yellow":(this.state.dropData_safe=="红灯"?"red":"white")))) }}
+                 style={{ backgroundColor:(this.state.dropData_safe=="blue"?"blue":(this.state.dropData_safe=="green"?"green":(this.state.dropData_safe=="yellow"?"yellow":(this.state.dropData_safe=="red"?"red":"white")))) }}
             >
               <span>{this.state.dropData_safe}</span>
             </Col>
@@ -633,7 +633,8 @@ export default class NewOnlineReport extends Component {
       /*
         将int类型的状态数据,转换成对应的字符串类型
       */
-      //安全测试 状态
+      
+      /*//安全测试 状态
       safeSta = this.state.safetest_status;
       if(safeSta == 1){
         this.setState({dropData_safe:"蓝灯"});
@@ -645,7 +646,7 @@ export default class NewOnlineReport extends Component {
         this.setState({dropData_safe:"红灯"});
       }else{
         this.setState({dropData_safe:"未选择"});
-      }
+      }*/
       //弱网测试 状态
       weakSta = this.state.rwtest_status;
       if( weakSta == 1 ){
@@ -665,22 +666,43 @@ export default class NewOnlineReport extends Component {
         work_id:work_id,
       });
       console.log(this.state);
-    });
 
-    //获取安全测试结果
-    let jira_id = work_id.split(",");
-    api.getSafeTestResult(jira_id).then(data => {
-      console.log(data);
-      if(data.status == 200){
-        data.data.map(ele => {
-          if(ele.status == 200){
-            console.log(ele.result); // 蓝/绿/黄/红
-          }else if(ele.status == 404){
-            console.log(ele.msg);
-          }
-        });
+      //获取安全测试结果 -- 需要的参数 jira_id
+      let arr_jira_id = [], //参数为string数组
+        jira_id;
+      jira_id = this.state.jira_id;
+      console.log(jira_id);
+      if(jira_id != undefined){
+        arr_jira_id.push(jira_id);
+        if(jira_id.includes(",")){
+          arr_jira_id = [];
+          arr_jira_id = jira_id.split(",");
+        }
       }
-    });
+      //发送请求 -- 获取安全测试结果
+      api.getSafeTestResult(arr_jira_id).then(data => {
+        console.log(data);
+        if(data.status == 200){
+          data.data.map(ele => {
+            if(ele.status == 200){
+              console.log(ele.result); // 蓝/绿/黄/红
+              this.setState({
+                dropData_safe : ele.result,
+              });
+            }
 
+            if(this.state.dropData_safe === undefined){
+              if (ele.status == 404) {
+                console.log(ele.msg);
+                this.setState({
+                  dropData_safe: "无"
+                });
+              }
+            }
+          });
+        }
+      });
+      
+    });
   }
 }
