@@ -353,11 +353,14 @@ export default class LuyeTable {
       const $tr = $this.closest('tr');
       const data = $tr.data('rowData');
       const $modal = $(`<div class="detail-modal">编辑<div class="modal-content"></div><div class="bottom-row"><button class="modal-edit">确定</button><button class="modal-close">关闭</button></div></div>`);
-      $modal.find('.modal-edit').data('data', data).data('row', $this.closest('tr'));
+      $modal.find('.modal-edit').data('row', $this.closest('tr'));
       that.wdtb.append($modal);
+      //to edit editted values
+      const changedTd = Array.from($tr.children()).filter((td)=>td.hasAttribute('data-index'));
       that.metadata.processingColumns.forEach((item, index)=> {
         if (!item.type) {
-          $modal.find('.modal-content').append(`<div><span>${item.cname}</span><input index="${index}" value="${data[item.cdata]}"/></div>`);
+          console.log(changedTd[index]);
+          $modal.find('.modal-content').append(`<div><span>${item.cname}</span><input index="${index}" value="${changedTd[index]===undefined?data[item.cdata]:changedTd[index].innerHTML}"/></div>`);
           $tr.children()[index].dataset.index = index;
         }
       });
@@ -365,11 +368,12 @@ export default class LuyeTable {
       that.param.handlerDelete($(this).closest('tr').data('rowData'));
       $(this).closest('tr').remove();
     }).delegate('.modal-edit', 'click', function () {
-      const {data, row} = $(this).data();
+      const row = $(this).data('row');
       const inputs = $(this).closest('.detail-modal').find('input');
       Array.from(row.children(), (td)=> {
         if (td.dataset.index !== undefined) {
           td.innerHTML = inputs[td.dataset.index].value;
+          // td.setAttribute('index', )
         }
       });
       that.param.handlerEdit($(this).data('data'));
@@ -550,4 +554,3 @@ export default class LuyeTable {
     this.param.el.empty();
   }
 }
-
