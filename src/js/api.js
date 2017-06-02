@@ -5,8 +5,8 @@ import $ from "jquery";
 import 'whatwg-fetch';
 
 // export const domain = 'http://localhost:8083/';
-// export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
-export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
+export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
+// export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
 
 export const api = {
   //login
@@ -288,9 +288,15 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //get1，2，3级部门的初始化数据   base/depdict
-  getDepartmentData(){
-    let url = domain + "base/depdict";
+  //根据需求id,查询需求名字 /jiraissue , 参数为string数组
+  getSummaryFromId(jira_id){
+    let url = domain + "jiraissue?id_to_summary=[" + jira_id + "]";
+    return fetch(url).then( response => response.json() );
+  },
+
+  //获取上线/合板页面的安全测试的结果 /scanner/project_score  , 参数为string数组
+  getSafeTestResult(jira_id){
+    let url = domain + "scanner/project_score?jira_id=[" + jira_id + "]";
     return fetch(url).then( response => response.json() );
   }
 

@@ -28,32 +28,20 @@ var safeSta, //安全测试 状态
   weakSta, //弱网测试 状态
   testSta, //测试报告结论 状态
   UATSta; //UAT验收结论 状态
-let safetest_filename,
-  rwtest_filename,
-  test_result_filename,
+let test_result_filename,
   uat_result_filename;
 export default class NewOnlineReport extends Component {
   //状态初始化 -- 下拉列表dropdown
   constructor(props) {
     super();
     this.state = {
-      dropData_safe: "蓝灯",
+      dropData_safe: "",
       dropData_weak: "NA",
       dropData_test: "通过",
       dropData_UAT: "通过",
-      safetest_file:"",
-      rwtest_file:"",
       test_result_file:"",
       uat_result_file:"",
     };
-  }
-
-  //下拉列表-事件处理 -- 安全测试
-  menuOnclick_safe(e) {
-    console.log('click', e.key);
-    this.setState({
-      dropData_safe: e.key,
-    });
   }
 
   //下拉列表-事件处理 -- #弱网测试总结
@@ -229,24 +217,6 @@ export default class NewOnlineReport extends Component {
     flag = obj["flag"];
     console.log(flag);
 
-    //下拉菜单 - menu - 安全测试
-    const dropData_safe = ["蓝灯", "绿灯", "黄灯", "红灯"];
-    const dropMenu_safe = (
-      <Menu onClick={this.menuOnclick_safe.bind(this)}>
-        <Menu.Item key={dropData_safe[0]}>
-          <p>{dropData_safe[0]}</p>
-        </Menu.Item>
-        <Menu.Item key={dropData_safe[1]}>
-          <p>{dropData_safe[1]}</p>
-        </Menu.Item>
-        <Menu.Item key={dropData_safe[2]}>
-          <p>{dropData_safe[2]}</p>
-        </Menu.Item>
-        <Menu.Item key={dropData_safe[3]}>
-          <p>{dropData_safe[3]}</p>
-        </Menu.Item>
-      </Menu>
-    );
     //下拉菜单 - menu - #弱网测试总结
     const dropData_weak = ["NA", "通过", "未通过"];
     const dropMenu_weak = (
@@ -287,44 +257,6 @@ export default class NewOnlineReport extends Component {
       </Menu>
     );
     //文件上传
-    const props1 = {
-      name: 'file',
-      action: domain+'base/uploadfile/',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      // listType:"picture",
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          safetest_filename = info.fileList[0].response.data.filename;
-          console.log(safetest_filename);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
-    const props2 = {
-      name: 'file',
-      action: domain+'base/uploadfile/',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      // listType:"picture",
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          rwtest_filename = info.fileList[0].response.data.filename;
-          console.log(rwtest_filename);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
     const props3 = {
       name: 'file',
       action: domain+'base/uploadfile/',
@@ -538,39 +470,15 @@ export default class NewOnlineReport extends Component {
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">安全测试</Col>
-            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
-              <Input placeholder="简单描述总结测试内容以及结果"/>
-            </Col>
-            <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
-              style={{  }}
+            <Col span={18} className="test-result-detail border-bottom-css"
+                 style={{ backgroundColor:(this.state.dropData_safe=="蓝灯"?"blue":(this.state.dropData_safe=="绿灯"?"green":(this.state.dropData_safe=="黄灯"?"yellow":(this.state.dropData_safe=="红灯"?"red":"white")))) }}
             >
-              <div>
-                <Dropdown overlay={dropMenu_safe} trigger={["click"]}>
-                  <a style={{color:"black"}} className="ant-dropdown-link" href="#">
-                    {this.state.dropData_safe}
-                    <Icon type="down"/>
-                  </a>
-                </Dropdown>
-              </div>
-            </Col>
-            <Col span={8} className="test-result-detail border-bottom-css">
-              <Upload {...props1}>
-                <Button>
-                  <Icon type="upload" /> 安全测试截图
-                </Button>
-              </Upload>
-              <span>
-                <a href={(this.state.safetest_file=="")?"":(domain+this.state.safetest_file)} target="_Blank">
-                  {(this.state.safetest_file=="" || this.state.safetest_file=== null)?"":"查看安全测试截图"}</a>
-              </span>
+              <span>{this.state.dropData_safe}</span>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">#弱网测试总结</Col>
-            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
-              <Input placeholder="简单描述总结测试内容以及结果"/>
-            </Col>
-            <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+            <Col span={9} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
                  style={{  }}
             >
               <div>
@@ -582,24 +490,13 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={8} className="test-result-detail border-bottom-css">
-              <Upload {...props2}>
-                <Button>
-                  <Icon type="upload" /> 弱网测试总结截图
-                </Button>
-              </Upload>
-              <span>
-                <a href={(this.state.rwtest_file=="")?"":(domain+this.state.rwtest_file)} target="_Blank">
-                  {(this.state.rwtest_file=="" || this.state.rwtest_file===null)?"":"查看弱网测试总结截图"}</a>
-              </span>
+            <Col span={9} className="test-result-detail border-bottom-css">
+              <Input placeholder="简单描述总结测试内容以及结果"/>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">测试报告结论</Col>
-            <Col span={8} className="test-result-detail border-right-css border-bottom-css">
-              <Input placeholder="简单描述总结测试内容以及结果"/>
-            </Col>
-            <Col span={2} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
+            <Col span={9} className="test-result-detail dropdown-list-css border-right-css border-bottom-css"
               style={{ backgroundColor:(this.state.dropData_test=="未通过" ? "red" : (this.state.dropData_test=="通过"?"green":"white")) }}
             >
               <div>
@@ -611,7 +508,7 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={8} className="test-result-detail border-bottom-css">
+            <Col span={9} className="test-result-detail border-bottom-css">
               <Upload {...props3}>
                 <Button>
                   <Icon type="upload" /> 测试报告结论截图
@@ -625,10 +522,7 @@ export default class NewOnlineReport extends Component {
           </Row>
           <Row>
             <Col span={6} className="test-result-detail border-right-css">UAT验收结论</Col>
-            <Col span={8} className="test-result-detail border-right-css">
-              <Input placeholder="简单描述总结测试内容以及结果"/>
-            </Col>
-            <Col span={2} className="test-result-detail dropdown-list-css border-right-css"
+            <Col span={9} className="test-result-detail dropdown-list-css border-right-css"
               style={{ backgroundColor:(this.state.dropData_UAT=="未通过" ? "red" : (this.state.dropData_UAT=="通过"?"green":"white")) }}
             >
               <div>
@@ -640,7 +534,7 @@ export default class NewOnlineReport extends Component {
                 </Dropdown>
               </div>
             </Col>
-            <Col span={8} className="test-result-detail">
+            <Col span={9} className="test-result-detail">
               <Upload {...props4}>
                 <Button>
                   <Icon type="upload" /> UAT验收结论截图
@@ -667,8 +561,6 @@ export default class NewOnlineReport extends Component {
                         //提交 上线报告信息
                         this.getIntFromString();
                         //文件上传
-                        this.state.safetest_file = (safetest_filename==undefined)?"":safetest_filename;
-                        this.state.rwtest_file = (rwtest_filename==undefined)?"":rwtest_filename;
                         this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
                         this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
                         console.log(this.state);
@@ -774,5 +666,21 @@ export default class NewOnlineReport extends Component {
       });
       console.log(this.state);
     });
+
+    //获取安全测试结果
+    let jira_id = work_id.split(",");
+    api.getSafeTestResult(jira_id).then(data => {
+      console.log(data);
+      if(data.status == 200){
+        data.data.map(ele => {
+          if(ele.status == 200){
+            console.log(ele.result); // 蓝/绿/黄/红
+          }else if(ele.status == 404){
+            console.log(ele.msg);
+          }
+        });
+      }
+    });
+
   }
 }

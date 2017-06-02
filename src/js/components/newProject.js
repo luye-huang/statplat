@@ -126,6 +126,28 @@ export default class newProject extends Component {
     //更改状态
     this.setState(obj);
     // console.log(this.state);
+    this.state[e.target.name] = e.target.value;
+    if(["jira_id"].includes(e.target.name) && this.state.jira_id!=undefined){
+      const {jira_id} = this.state;
+      let name,arr_jira_id=[];
+      arr_jira_id.push(jira_id);
+      if(jira_id.includes(",")){
+        arr_jira_id = [];
+        arr_jira_id = jira_id.split(",");
+      }
+      console.log(arr_jira_id);
+      api.getSummaryFromId(arr_jira_id).then(data => {
+        console.log(data);
+        if(data.status == 200){
+          name = data.data.map(ele => {
+            return ele.summary;
+          });
+          name = name.join(";"); //将数组转换成字符串显示
+          console.log(name);
+          this.setState({name});
+        }
+      });
+    }
   }
 
   render() {
@@ -150,17 +172,17 @@ export default class newProject extends Component {
           </Row>
           <Row gutter={16} style={{marginBottom: 16}}>
             <Col span={12}>
-              <Input addonBefore="需求ID" placeholder="Jira ID" defaultValue={this.state.jira_id} name="jira_id"
+              <Input addonBefore="需求ID" placeholder="Jira ID (多个需求ID用 英文逗号, 隔开)" defaultValue={this.state.jira_id} name="jira_id"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
             <Col span={12}>
-              <Input addonBefore="需求名称" defaultValue={this.state.name} name="name"
+              <Input addonBefore="需求名称" defaultValue={this.state.name} name="name" value={this.state.name}
                      onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
           <Row gutter={16} style={{marginBottom: 16}}>
             <Col span={12}>
-              <Input addonBefore="版本" placeholder="版本名称" defaultValue={this.state.name} name="name"
+              <Input addonBefore="版本" placeholder="版本名称" defaultValue={this.state.version} name="version"
                      onChange={this.handleChange.bind(this)}/>
             </Col>
             <Col span={12} className="exam-result">
