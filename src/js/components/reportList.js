@@ -165,7 +165,14 @@ export default class ReportList extends Component {
     const [id, depSelected, layer] = e.key.split('@');
     if (layer === '1') {
       const list = this.state.deps.dp2.filter((item)=>item.parent_id == parseInt(id))
-      this.setState({dep2_list: list, dep3_list: [], selected1: depSelected, selected2: '', selected3: '', dep1_id: id});
+      this.setState({
+        dep2_list: list,
+        dep3_list: [],
+        selected1: depSelected,
+        selected2: '',
+        selected3: '',
+        dep1_id: id
+      });
     }
     else if (layer === '2') {
       const list = this.state.deps.dp3.filter((item)=>item.parent_id == parseInt(id))
@@ -293,7 +300,6 @@ export default class ReportList extends Component {
     api.getReportList(this.state).then(data => {
       console.log("reportList get success");
       console.log(data);
-      console.log(data.data);
       let arr = data.data;
       let typeStr = "", nodeStr = "",
         check_noteStr = "", check_resultStr = "",
@@ -460,10 +466,29 @@ export default class ReportList extends Component {
 
       }
       //查看项目信息
-      const redirectTo_ReportInfo = (e)=>{
+      const redirectTo_ReportInfo = (e)=> {
         work_id = e.data.id;
         window.location.href = "index.html#/viewReportInfo?work_id=" + work_id;
       }
+
+      const editRow = function () {
+        console.log(1);
+      }
+      const deleteRow = (e)=> {
+        console.log(this);
+      }
+
+      const addRow = (a)=> {
+        console.log(a);
+        console.log(this);
+      }
+
+      const handlerDelete = (arg)=>{
+        console.log(arg);
+      };
+      const handlerEdit = (arg)=>{
+        console.log(arg);
+      };
 
       //表格数据渲染
       var tbParam = {
@@ -491,8 +516,20 @@ export default class ReportList extends Component {
             action: "click",
             trigger: redirectTo_CheckinReportHistory
           },
+          // {
+          //   cname: '管理',
+          //   type: 'btns',
+          //   handlers: [{btnText: '查看', handler: addRow}, {btnText: '编辑', handler: editRow}, {btnText: '删除', handler: deleteRow}]
+          // },
+          {
+            cname: '管理',
+            type: 'management'
+
+          }
         ],
         managePageSize: true,
+        handlerEdit: handlerEdit,
+        handlerDelete: handlerDelete
       };
       let tb = new LuyeTable(tbParam);
 
