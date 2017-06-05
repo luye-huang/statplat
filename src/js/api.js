@@ -5,6 +5,12 @@ import $ from "jquery";
 import 'whatwg-fetch';
 
 // export const domain = 'http://localhost:8083/';
+
+/*
+  (后台加了权限控制后,
+        本地访问 测试环境 上的post接口,报错404,所以本地无法进行post相关的接口调试.
+        本地访问 正式环境 上的post接口就有问题了,报错403,所以本地无法调试post接口,调试post相关的接口请在 正式环境 上调试)
+ */
 // export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
 export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
 
