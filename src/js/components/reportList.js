@@ -521,11 +521,11 @@ export default class ReportList extends Component {
           //   type: 'btns',
           //   handlers: [{btnText: '查看', handler: addRow}, {btnText: '编辑', handler: editRow}, {btnText: '删除', handler: deleteRow}]
           // },
-          {
+          /*{
             cname: '管理',
             type: 'management'
 
-          }
+          }*/
         ],
         managePageSize: true,
         handlerEdit: handlerEdit,
