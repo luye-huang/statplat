@@ -257,6 +257,7 @@ export default class NewMergeReport extends Component {
     );
 
     //文件上传
+    var _this = this;
     const props4 = {
       name: 'file',
       action: domain+'base/uploadfile/',
@@ -268,6 +269,9 @@ export default class NewMergeReport extends Component {
         if (info.file.status !== 'uploading') {
           test_result_filename = info.fileList[0].response.data.filename;
           console.log(test_result_filename);
+          _this.setState({
+            test_result_file:test_result_filename
+          });
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
@@ -287,6 +291,9 @@ export default class NewMergeReport extends Component {
         if (info.file.status !== 'uploading') {
           uat_result_filename = info.fileList[0].response.data.filename;
           console.log(uat_result_filename);
+          _this.setState({
+            uat_result_file:uat_result_filename
+          });
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
@@ -572,7 +579,15 @@ export default class NewMergeReport extends Component {
                         this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
                         this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
                         // debugger;
+
+                        // jira_id
+                        let jira_id = this.state.jira_id;
+                        if((typeof jira_id) == "object"){ // jira_id若为数组,则转换为字符串
+                          jira_id = jira_id.join(",");
+                        this.state.jira_id = jira_id;
+                        }
                         console.log(this.state);
+
                         api.postMergeReport(this.state).then(data=>{
                           if(data.status == 200){
                             console.log("merge report post success");
@@ -595,15 +610,16 @@ export default class NewMergeReport extends Component {
 
   getIntFromString(){
     //安全测试
-    if(this.state.dropData_safe == "未选择"){
+    if(this.state.dropData_safe == "无"){
       this.state.safetest_status = 0;
-    }else if(this.state.dropData_safe == "蓝灯"){
+    }
+    else if(this.state.dropData_safe == "blue"){
       this.state.safetest_status = 1;
-    }else if(this.state.dropData_safe == "绿灯"){
+    }else if(this.state.dropData_safe == "green"){
       this.state.safetest_status = 2;
-    }else if(this.state.dropData_safe == "黄灯"){
+    }else if(this.state.dropData_safe == "yellow"){
       this.state.safetest_status = 3;
-    }else if(this.state.dropData_safe == "红灯"){
+    }else if(this.state.dropData_safe == "red"){
       this.state.safetest_status = 4;
     }
     //相关服务已上线

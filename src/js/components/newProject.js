@@ -90,12 +90,12 @@ export default class newProject extends Component {
         window.location = 'index.html#/reportList';
       }
       //获取 项目信息
-      api.getNewProject(data.data.id).then(data=>{
+      /*api.getNewProject(data.data.id).then(data=>{
         console.log(data);
         if(data.status === 200){
           console.log("new project get success");
         }
-      });
+      });*/
     });
 
     this.setState({
