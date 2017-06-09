@@ -74,9 +74,9 @@ export default class EvaluationResult extends Component {
         isExamBtnHide = false; //蓝灯,按钮不显示
 
         //若为上线报告,则need_check默认为1,需要审核,则"提交审核按钮显示"
-        if(this.state.need_check == 1){
+        /*if(this.state.need_check == 1){
           isExamBtnHide = true; //按钮显示
-        }
+        }*/
       }
       else if(this.state.status == 2){
         this.state.statusResult = "绿灯"
@@ -174,7 +174,7 @@ export default class EvaluationResult extends Component {
 
         this.state = data.data;
         //上线报告不管是什么灯,都需要审核,所以need_check默认为1,
-        this.state.need_check = 1;
+        // this.state.need_check = 1;
         console.log(this.state);
 
         status = this.state.status;
