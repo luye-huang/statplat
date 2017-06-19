@@ -4,7 +4,7 @@
 import $ from "jquery";
 import 'whatwg-fetch';
 
-// export const domain = 'http://localhost:8083/';
+// export const domain = 'http://localhost:8082/';
 
 /*
   (后台加了权限控制后,
@@ -304,7 +304,15 @@ export const api = {
   getSafeTestResult(jira_id){
     let url = domain + "scanner/project_score?jira_id=[" + jira_id + "]";
     return fetch(url).then( response => response.json() );
-  }
+  },
+
+  //获取该平台的计算 “红、绿、黄、蓝” 颜色指标的配置
+  getConfigOfColorStandard(){
+    let url = domain + "manager/config/1";
+    return fetch(url).then( response => response.json() );
+  },
+
+  //
 
 }
 
