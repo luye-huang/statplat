@@ -223,12 +223,6 @@ export default class LuyeTable {
             $td.append($btn);
           })
         }
-        else if (col.type === 'management') {
-          const that = this;
-          that.param.management = true;
-          $td.addClass('row-management').append(`<button class="row-view">查看</button><button class="row-edit">编辑</button><button class="row-delete">删除</button>`);
-          // $td.delegate(that.attachRowManagementEvents);
-        }
         if (col.style === 'fakeA') {
           $td.addClass('fake-a');
         }
@@ -254,7 +248,6 @@ export default class LuyeTable {
     });
     console.timeEnd('end');
     this.wdtb.append($body);
-    this.param.management && this.delegateTablebodyEvents();
   }
 
   renderPages() {
@@ -331,55 +324,6 @@ export default class LuyeTable {
         $(this).attr('checked', 'checked');
         $(this).val('on');
       }
-    });
-  }
-
-  delegateTablebodyEvents() {
-    const that = this;
-    this.wdtb.delegate('.row-view', 'click', function () {
-      $('.detail-modal').remove();
-      const $this = $(this);
-      const data = $this.closest('tr').data('rowData');
-      const $modal = $(`<div class="detail-modal">查看<div class="modal-content"></div><div class="bottom-row"><button class="modal-close">关闭</button></div></div>`);
-      that.wdtb.append($modal);
-      that.metadata.processingColumns.forEach((item)=> {
-        if (!item.type) {
-          $modal.find('.modal-content').append(`<div><span>${item.cname}</span><input value="${data[item.cdata]}" readonly/></div>`);
-        }
-      });
-    }).delegate('.row-edit', 'click', function () {
-      $('.detail-modal').remove();
-      const $this = $(this);
-      const $tr = $this.closest('tr');
-      const data = $tr.data('rowData');
-      const $modal = $(`<div class="detail-modal">编辑<div class="modal-content"></div><div class="bottom-row"><button class="modal-edit">确定</button><button class="modal-close">关闭</button></div></div>`);
-      $modal.find('.modal-edit').data('row', $this.closest('tr'));
-      that.wdtb.append($modal);
-      //to edit editted values
-      const changedTd = Array.from($tr.children()).filter((td)=>td.hasAttribute('data-index'));
-      that.metadata.processingColumns.forEach((item, index)=> {
-        if (!item.type) {
-          console.log(changedTd[index]);
-          $modal.find('.modal-content').append(`<div><span>${item.cname}</span><input index="${index}" value="${changedTd[index]===undefined?data[item.cdata]:changedTd[index].innerHTML}"/></div>`);
-          $tr.children()[index].dataset.index = index;
-        }
-      });
-    }).delegate('.row-delete', 'click', function () {
-      that.param.handlerDelete($(this).closest('tr').data('rowData'));
-      $(this).closest('tr').remove();
-    }).delegate('.modal-edit', 'click', function () {
-      const row = $(this).data('row');
-      const inputs = $(this).closest('.detail-modal').find('input');
-      Array.from(row.children(), (td)=> {
-        if (td.dataset.index !== undefined) {
-          td.innerHTML = inputs[td.dataset.index].value;
-          // td.setAttribute('index', )
-        }
-      });
-      that.param.handlerEdit($(this).data('data'));
-      $(this).closest('.detail-modal').remove();
-    }).delegate('.modal-close', 'click', function () {
-      $(this).closest('.detail-modal').remove();
     });
   }
 
