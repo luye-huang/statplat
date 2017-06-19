@@ -48,6 +48,7 @@ export default class ExamResult extends Component {
     this.state = {
       dropData: "通过",
       reporter_ctx: "",
+      _file:""
     };
   }
 
@@ -126,6 +127,7 @@ export default class ExamResult extends Component {
     );
 
     //审核结果文件上传
+    var _this = this;
     const props = {
       name: 'file',
       action: domain+'base/uploadfile/',
@@ -139,6 +141,9 @@ export default class ExamResult extends Component {
           console.log(info.fileList[0].response);
           filename = info.fileList[0].response.data.filename;
           console.log(filename);
+          _this.setState({
+            _file:filename
+          });
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
@@ -193,6 +198,10 @@ export default class ExamResult extends Component {
                   <Icon type="upload" /> 上传审核截图
                 </Button>
               </Upload>
+              <span>
+                <a href={(this.state._file=="")?"":(domain+this.state._file)} target="_Blank">
+                  {(this.state._file=="" || this.state._file===null)?"":"查看审核截图"}</a>
+              </span>
             </Col>
           </Row>
           <Row style={{ display:(flag==0?"none":"block") }} className="jira-css row-btn-css">

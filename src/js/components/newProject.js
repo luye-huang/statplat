@@ -24,6 +24,7 @@ import $ from "jquery";
 //时间日期选择
 const {MonthPicker, RangePicker} = DatePicker;
 
+let arr_jira_id=[];
 export default class newProject extends Component {
   //初始化状态
   constructor(props) {
@@ -54,6 +55,7 @@ export default class newProject extends Component {
     //项目类型
     this.state.type = (this.state.dropData=="App类")?0:1;
     console.log(this.state); // 已经获取到新建项目的字段信息
+
     if(this.state.name ==""){
       alert("请输入完整项目信息");
     }else if(this.state.jira_id ==""){
@@ -78,25 +80,23 @@ export default class newProject extends Component {
   handleOk(e) {
     console.trace();
     console.log(e);
-
-    console.log("new project submit info");
-    console.log(this.state);
-
     //提交 新建项目信息
     api.postNewProject(this.state).then(data=>{
-      console.log("new project post success");
-      console.log(data.data);
-      console.log(data.data.id);
-
+      console.log(data);
+      if(data.status === 200){
+        console.log("new project post success");
+        console.log(data.data);
+        //点击弹框中的 "是" -- 跳转到"准入报告列表"页
+        window.location = 'index.html#/reportList';
+      }
       //获取 项目信息
-      api.getNewProject(data.data.id).then(data=>{
-        console.log("new project get success");
+      /*api.getNewProject(data.data.id).then(data=>{
         console.log(data);
-      });
+        if(data.status === 200){
+          console.log("new project get success");
+        }
+      });*/
     });
-
-    //点击弹框中的 "是" -- 跳转到"准入报告列表"页
-    window.location = 'index.html#/reportList';
 
     this.setState({
       visible: false,
@@ -129,13 +129,18 @@ export default class newProject extends Component {
     this.state[e.target.name] = e.target.value;
     if(["jira_id"].includes(e.target.name) && this.state.jira_id!=undefined){
       const {jira_id} = this.state;
-      let name,arr_jira_id=[];
+      let name;
+      arr_jira_id = []; //数组的arr_jira_id,要在这里置空
       arr_jira_id.push(jira_id);
       if(jira_id.includes(",")){
-        arr_jira_id = [];
+        arr_jira_id = []
         arr_jira_id = jira_id.split(",");
       }
       console.log(arr_jira_id);
+      obj["jira_id"] = arr_jira_id;
+      this.setState(obj);
+      console.log(this.state);
+
       api.getSummaryFromId(arr_jira_id).then(data => {
         console.log(data);
         if(data.status == 200){

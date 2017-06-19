@@ -215,7 +215,7 @@ export default class NewOnlineReport extends Component {
     work_id = obj["work_id"];
     console.log(work_id);
     flag = obj["flag"];
-    console.log(flag);
+    // console.log(flag);
 
     //下拉菜单 - menu - #弱网测试总结
     const dropData_weak = ["NA", "通过", "未通过"];
@@ -257,6 +257,7 @@ export default class NewOnlineReport extends Component {
       </Menu>
     );
     //文件上传
+    var _this = this;
     const props3 = {
       name: 'file',
       action: domain+'base/uploadfile/',
@@ -268,6 +269,9 @@ export default class NewOnlineReport extends Component {
         if (info.file.status !== 'uploading') {
           test_result_filename = info.fileList[0].response.data.filename;
           console.log(test_result_filename);
+          _this.setState({
+            test_result_file:test_result_filename
+          });
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
@@ -287,6 +291,9 @@ export default class NewOnlineReport extends Component {
         if (info.file.status !== 'uploading') {
           uat_result_filename = info.fileList[0].response.data.filename;
           console.log(uat_result_filename);
+          _this.setState({
+            uat_result_file:uat_result_filename
+          });
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
@@ -471,7 +478,7 @@ export default class NewOnlineReport extends Component {
           <Row>
             <Col span={6} className="test-result-detail border-right-css border-bottom-css">安全测试</Col>
             <Col span={18} className="test-result-detail border-bottom-css"
-                 style={{ backgroundColor:(this.state.dropData_safe=="蓝灯"?"blue":(this.state.dropData_safe=="绿灯"?"green":(this.state.dropData_safe=="黄灯"?"yellow":(this.state.dropData_safe=="红灯"?"red":"white")))) }}
+                 style={{ backgroundColor:(this.state.dropData_safe=="blue"?"blue":(this.state.dropData_safe=="green"?"green":(this.state.dropData_safe=="yellow"?"yellow":(this.state.dropData_safe=="red"?"red":"white")))) }}
             >
               <span>{this.state.dropData_safe}</span>
             </Col>
@@ -563,7 +570,15 @@ export default class NewOnlineReport extends Component {
                         //文件上传
                         this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
                         this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
+
+                        // jira_id
+                        let jira_id = this.state.jira_id;
+                        if((typeof jira_id) == "object"){ // jira_id若为数组,则转换为字符串
+                          jira_id = jira_id.join(",");
+                        this.state.jira_id = jira_id;
+                        }
                         console.log(this.state);
+
                         // debugger;
                         api.postOnlineReport(this.state).then(data=>{
                           console.log(data);
@@ -588,16 +603,16 @@ export default class NewOnlineReport extends Component {
 
   getIntFromString(){
     //安全测试
-    if(this.state.dropData_safe == "未选择"){
+    if(this.state.dropData_safe == "无"){
       this.state.safetest_status = 0;
     }
-    else if(this.state.dropData_safe == "蓝灯"){
+    else if(this.state.dropData_safe == "blue"){
       this.state.safetest_status = 1;
-    }else if(this.state.dropData_safe == "绿灯"){
+    }else if(this.state.dropData_safe == "green"){
       this.state.safetest_status = 2;
-    }else if(this.state.dropData_safe == "黄灯"){
+    }else if(this.state.dropData_safe == "yellow"){
       this.state.safetest_status = 3;
-    }else if(this.state.dropData_safe == "红灯"){
+    }else if(this.state.dropData_safe == "red"){
       this.state.safetest_status = 4;
     }
     //弱网测试总结  -- 待定
@@ -606,7 +621,7 @@ export default class NewOnlineReport extends Component {
     }else if(this.state.dropData_weak == "通过"){
       this.state.rwtest_status = 1
     }else if(this.state.dropData_weak == "未通过"){
-      this.state.rwtest_status = 0
+      this.state.rwtest_status = 2
     }
     //测试报告结论
     if(this.state.dropData_test == "通过"){
@@ -633,7 +648,8 @@ export default class NewOnlineReport extends Component {
       /*
         将int类型的状态数据,转换成对应的字符串类型
       */
-      //安全测试 状态
+      
+      /*//安全测试 状态
       safeSta = this.state.safetest_status;
       if(safeSta == 1){
         this.setState({dropData_safe:"蓝灯"});
@@ -645,7 +661,7 @@ export default class NewOnlineReport extends Component {
         this.setState({dropData_safe:"红灯"});
       }else{
         this.setState({dropData_safe:"未选择"});
-      }
+      }*/
       //弱网测试 状态
       weakSta = this.state.rwtest_status;
       if( weakSta == 1 ){
@@ -665,22 +681,43 @@ export default class NewOnlineReport extends Component {
         work_id:work_id,
       });
       console.log(this.state);
-    });
 
-    //获取安全测试结果
-    let jira_id = work_id.split(",");
-    api.getSafeTestResult(jira_id).then(data => {
-      console.log(data);
-      if(data.status == 200){
-        data.data.map(ele => {
-          if(ele.status == 200){
-            console.log(ele.result); // 蓝/绿/黄/红
-          }else if(ele.status == 404){
-            console.log(ele.msg);
-          }
-        });
+      //获取安全测试结果 -- 需要的参数 jira_id
+      let arr_jira_id = [], //参数为string数组
+        jira_id;
+      jira_id = this.state.jira_id;
+      console.log(jira_id);
+      if(jira_id != undefined){
+        arr_jira_id.push(jira_id);
+        if(jira_id.includes(",")){
+          arr_jira_id = [];
+          arr_jira_id = jira_id.split(",");
+        }
       }
-    });
+      //发送请求 -- 获取安全测试结果
+      api.getSafeTestResult(arr_jira_id).then(data => {
+        console.log(data);
+        if(data.status == 200){
+          data.data.map(ele => {
+            if(ele.status == 200){
+              console.log(ele.result); // 蓝/绿/黄/红
+              this.setState({
+                dropData_safe : ele.result,
+              });
+            }
 
+            if(this.state.dropData_safe === undefined){
+              if (ele.status == 404) {
+                console.log(ele.msg);
+                this.setState({
+                  dropData_safe: "无"
+                });
+              }
+            }
+          });
+        }
+      });
+      
+    });
   }
 }

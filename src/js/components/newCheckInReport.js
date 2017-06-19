@@ -205,6 +205,7 @@ export default class NewCheckInReport extends Component {
     );
 
     //提测邮件文件上传
+    var _this = this;
     const props = {
       name: 'file',
       action: domain+'base/uploadfile/',
@@ -218,6 +219,9 @@ export default class NewCheckInReport extends Component {
           console.log(info.fileList[0].response);
           email_filename = info.fileList[0].response.data.filename;
           console.log(email_filename);
+          _this.setState({
+            email_file:email_filename
+          });
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
@@ -382,7 +386,7 @@ export default class NewCheckInReport extends Component {
               </Upload>
               <span>
                 <a href={(this.state.email_file=="")?"":(domain+this.state.email_file)} target="_Blank">
-                  {(this.state.email_file=="" || this.state.email_file===null)?"":"查看提测邮件"}</a>
+                  {(this.state.email_file=="" || this.state.email_file===null)?"":"查看提测邮件截图"}</a>
               </span>
             </Col>
           </Row>
@@ -421,6 +425,13 @@ export default class NewCheckInReport extends Component {
                         this.state.if_email = (this.state.dropData == "已发送")? 1 : 0 ;
                       //提测文件
                         this.state.email_file = (email_filename==undefined)?"":email_filename;
+
+                        // jira_id
+                        let jira_id = this.state.jira_id;
+                        if((typeof jira_id) == "object"){ // jira_id若为数组,则转换为字符串
+                          jira_id = jira_id.join(",");
+                        this.state.jira_id = jira_id;
+                        }
                         console.log(this.state);
                       // debugger;
                       // let flag = true;

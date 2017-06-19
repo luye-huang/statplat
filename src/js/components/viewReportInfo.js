@@ -83,6 +83,8 @@ export default class ViewReportInfo extends Component{
       if(data.status == 200){
         console.log("project info get success");
         console.log(data.data);
+        let jira_id = data.data.jira_id;
+        data.data["jira_id"] = jira_id.join(",");
         this.setState(data.data);
       }
     });
