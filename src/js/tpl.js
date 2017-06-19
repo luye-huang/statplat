@@ -20,6 +20,7 @@ export default class Template extends React.Component {
 
   componentWillMount() {
     if(!localStorage.getItem('uid'))window.location.href="index.html#/login";
+    window.location.href="index.html#/reportList";
   }
 
   render() {
