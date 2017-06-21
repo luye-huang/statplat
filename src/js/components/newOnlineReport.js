@@ -287,9 +287,9 @@ export default class NewOnlineReport extends Component {
         cptest_rate = parseFloat( parseInt(cptest_final)/parseInt(cptest_need) ).toFixed(2);
       }
       console.log(444444);
-      let cptest_rate_color = cptest_rate==colorConfigData.cptest_rate.blue[1]/100?"green":
+      let cptest_rate_color = cptest_rate==colorConfigData.cptest_rate.green[1]/100?"green":
             ( ((cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
-              cptest_rate<colorConfigData.cptest_rate.green[1]/100)?"yellow":
+              cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
                 (cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
             ) ;
       this.setState({cptest_rate,
@@ -487,26 +487,26 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
                   <Input type="number" placeholder="" name="jira_num_total" value={this.state.jira_num_total} onClick={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>关闭数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
                   <Input type="number" placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
@@ -526,13 +526,13 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>未有解决方案</span></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="填入数量" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="填入数量" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="填入数量" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="填入数量" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
                   <Input type="number" placeholder="" name="jira_notfinish_num_total" value={this.state.jira_notfinish_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
@@ -728,6 +728,18 @@ export default class NewOnlineReport extends Component {
   }
 
   componentDidMount() {
+    //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
+    api.getConfigOfColorStandard().then(data => {
+      console.log(data);
+      if(data.status === 200){
+        colorConfigData = data.data[0].json.online_config;
+        console.log(colorConfigData); // online_config
+
+      }else{
+        alert("请求颜色配置数据失败");
+      }
+    });
+
     //新建上线报告前,获取上线的jira数据
     api.getOnlineReport_Jira(work_id).then(data=> {
       console.log("online report get jira success");
@@ -738,58 +750,70 @@ export default class NewOnlineReport extends Component {
 
       //pass_rate_color
       let pass_rate_color="",test_norunrate_color="",b_repairrate_color="",c_repairrate_color="",
-        major_repairrate_color,minor_repairrate_color;
-      if(this.state.tl_rate_1!=null){
-        pass_rate_color = ((this.state.tl_rate_1==colorConfigData.pass_rate.blue[1]/100)?"blue":
-            ((this.state.tl_rate_1>colorConfigData.pass_rate.green[0]/100)||(this.state.tl_rate_1==colorConfigData.pass_rate.green[0]/100)?"green":
-              (((this.state.tl_rate_1>colorConfigData.pass_rate.yellow[0]/100||this.state.tl_rate_1==colorConfigData.pass_rate.yellow[0]/100)&&
-              (this.state.tl_rate_1<colorConfigData.pass_rate.yellow[1]/100||this.state.tl_rate_1==colorConfigData.pass_rate.yellow[1]/100))?"yellow":
-                (this.state.tl_rate_1<colorConfigData.pass_rate.red[1]/100?"red":"")))
-
-        );
-      }
-      if(this.state.tl_rate_4!=null){
-        test_norunrate_color = this.state.tl_rate_4==0.00?"green":(this.state.tl_rate_4>0.00?"red":"");
-      }
-      //修复比率-颜色判断
+        major_repairrate_color,minor_repairrate_color,cptest_rate_color;
       console.log(3333333);
-      if(this.state.jira_num_1==0 && this.state.jira_close_num_1==0){
-        this.state.jira_repair_rate_1="";
-        b_repairrate_color = "green";
+      if(colorConfigData!=undefined){
+        if(this.state.tl_rate_1!=null){
+          pass_rate_color = ((this.state.tl_rate_1==colorConfigData.pass_rate.blue[1]/100)?"blue":
+              ((this.state.tl_rate_1>colorConfigData.pass_rate.green[0]/100)||(this.state.tl_rate_1==colorConfigData.pass_rate.green[0]/100)?"green":
+                (((this.state.tl_rate_1>colorConfigData.pass_rate.yellow[0]/100||this.state.tl_rate_1==colorConfigData.pass_rate.yellow[0]/100)&&
+                (this.state.tl_rate_1<colorConfigData.pass_rate.yellow[1]/100||this.state.tl_rate_1==colorConfigData.pass_rate.yellow[1]/100))?"yellow":
+                  (this.state.tl_rate_1<colorConfigData.pass_rate.red[1]/100?"red":"")))
+
+          );
+        }
+        if(this.state.tl_rate_4!=null){
+          test_norunrate_color = this.state.tl_rate_4==0.00?"green":(this.state.tl_rate_4>0.00?"red":"");
+        }
+        //修复比率-颜色判断
+        if(this.state.jira_num_1==0 && this.state.jira_close_num_1==0){
+          this.state.jira_repair_rate_1="";
+          b_repairrate_color = "green";
+        }else{
+          b_repairrate_color = ((this.state.jira_repair_rate_1== 1.00|| this.state.jira_repair_rate_1=="")?"green":(this.state.jira_repair_rate_1<1.00?"red":""));
+        }
+        if(this.state.jira_num_2==0 && this.state.jira_close_num_2==0){
+          this.state.jira_repair_rate_2="";
+          c_repairrate_color = "green";
+        }else{
+          c_repairrate_color = ((this.state.jira_repair_rate_2== 1.00|| this.state.jira_repair_rate_2=="")?"green":(this.state.jira_repair_rate_2<1.00?"red":""));
+        }
+        if(this.state.jira_num_3==0 && this.state.jira_close_num_3==0) {
+          this.state.jira_repair_rate_3 = "";
+          major_repairrate_color = "green";
+        }else{
+          major_repairrate_color = this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
+            ( (this.state.jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100|| this.state.jira_repair_rate_3=="")?"green":
+                ( ((this.state.jira_repair_rate_3>colorConfigData.mm_repaire_rate.yellow[0]/100|| this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
+                this.state.jira_repair_rate_3<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
+                  (this.state.jira_repair_rate_3<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
+            ) ;
+        }
+        if(this.state.jira_num_4==0 && this.state.jira_close_num_4==0) {
+          this.state.jira_repair_rate_4 = "";
+          minor_repairrate_color = "green";
+        }else{
+          minor_repairrate_color = this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
+            ( (this.state.jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100|| this.state.jira_repair_rate_4=="")?"green":
+                ( ((this.state.jira_repair_rate_4>colorConfigData.mm_repaire_rate.yellow[0]/100|| this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
+                this.state.jira_repair_rate_4<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
+                  (this.state.jira_repair_rate_4<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
+            ) ;
+        }
+        if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
+          this.state.jira_repair_rate_total = "";
+        }
+        if(this.state.cptest_rate!=null){
+          cptest_rate_color = this.state.cptest_rate==colorConfigData.cptest_rate.green[1]/100?"green":
+            ( ((this.state.cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
+              this.state.cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
+                (this.state.cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
+            ) ;
+        }
       }else{
-        b_repairrate_color = ((this.state.jira_repair_rate_1== 1.00|| this.state.jira_repair_rate_1=="")?"green":(this.state.jira_repair_rate_1<1.00?"red":""));
+        alert("获取颜色配置数据失败");
       }
-      if(this.state.jira_num_2==0 && this.state.jira_close_num_2==0){
-        this.state.jira_repair_rate_2="";
-        c_repairrate_color = "green";
-      }else{
-        c_repairrate_color = ((this.state.jira_repair_rate_2== 1.00|| this.state.jira_repair_rate_2=="")?"green":(this.state.jira_repair_rate_2<1.00?"red":""));
-      }
-      if(this.state.jira_num_3==0 && this.state.jira_close_num_3==0) {
-        this.state.jira_repair_rate_3 = "";
-        major_repairrate_color = "green";
-      }else{
-        major_repairrate_color = this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
-          ( (this.state.jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100|| this.state.jira_repair_rate_3=="")?"green":
-              ( ((this.state.jira_repair_rate_3>colorConfigData.mm_repaire_rate.yellow[0]/100|| this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
-              this.state.jira_repair_rate_3<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
-                (this.state.jira_repair_rate_3<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
-          ) ;
-      }
-      if(this.state.jira_num_4==0 && this.state.jira_close_num_4==0) {
-        this.state.jira_repair_rate_4 = "";
-        minor_repairrate_color = "green";
-      }else{
-        minor_repairrate_color = this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
-          ( (this.state.jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100|| this.state.jira_repair_rate_4=="")?"green":
-              ( ((this.state.jira_repair_rate_4>colorConfigData.mm_repaire_rate.yellow[0]/100|| this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
-              this.state.jira_repair_rate_4<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
-                (this.state.jira_repair_rate_4<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
-          ) ;
-      }
-      if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
-        this.state.jira_repair_rate_total = "";
-      }
+
       /*
         将int类型的状态数据,转换成对应的字符串类型
       */
@@ -823,7 +847,7 @@ export default class NewOnlineReport extends Component {
       this.setState({
         //颜色显示
         pass_rate_color,test_norunrate_color,
-        b_repairrate_color,c_repairrate_color,major_repairrate_color,minor_repairrate_color,
+        b_repairrate_color,c_repairrate_color,major_repairrate_color,minor_repairrate_color,cptest_rate_color,
         dropData_test:(testSta == 1)?"通过":"未通过" ,
         dropData_UAT:(UATSta == 1)?"通过":"未通过",
         work_id:work_id,
@@ -866,18 +890,6 @@ export default class NewOnlineReport extends Component {
         }
       });
 
-      //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
-      api.getConfigOfColorStandard().then(data => {
-        console.log(data);
-        if(data.status === 200){
-          colorConfigData = data.data[0].json.online_config;
-          console.log(colorConfigData); // online_config
-
-        }else{
-          alert("请求颜色配置数据失败");
-        }
-      });
-      
     });
   }
 }

@@ -68,7 +68,7 @@ export default class NewCheckInReport extends Component {
     if (['tl_num_1', 'tl_num_2', 'tl_num_3', 'tl_num_4'].includes(e.target.name) && this.state.tl_num_4 != undefined && this.state.tl_num_1 != undefined && this.state.tl_num_2 != undefined && this.state.tl_num_3 != undefined) {
       const {tl_num_1, tl_num_2, tl_num_3, tl_num_4} = this.state;
       let tl_num_total = Number.parseInt(tl_num_1) + Number.parseInt(tl_num_2) + Number.parseInt(tl_num_3) + Number.parseInt(tl_num_4);
-      //debugger
+
       const tl_rate_1 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_1) / tl_num_total).toFixed(2);
       const tl_rate_2 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_2) / tl_num_total).toFixed(2);
       const tl_rate_3 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_3) / tl_num_total).toFixed(2);
@@ -76,7 +76,7 @@ export default class NewCheckInReport extends Component {
       const tl_rate_total = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_total) / tl_num_total).toFixed(2);
       tl_num_total = Number.isNaN(tl_num_total)? '': tl_num_total;
 
-      debugger;
+      //debugger;
       // console.log(111111);
       //pass_rate_color
       let pass_rate_color = ((tl_rate_1==colorConfigData.smoketest_passrate.blue[1]/100)?"blue":
@@ -94,39 +94,39 @@ export default class NewCheckInReport extends Component {
     if(['jira_num_1', 'jira_num_2', 'jira_num_3', 'jira_num_4'].includes(e.target.name)
       && this.state.jira_num_1 != undefined && this.state.jira_num_2 != undefined && this.state.jira_num_3 != undefined && this.state.jira_num_4 != undefined
     ){
-      debugger;
+      //debugger;
       console.log(22222);
       const {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4,jira_close_num_total} = this.state;
       let jira_num_total = Number.parseInt(jira_num_1) + Number.parseInt(jira_num_2) + Number.parseInt(jira_num_3) + Number.parseInt(jira_num_4);
       let jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4,jira_repair_rate_total;
 
       if(jira_close_num_1 == 0 && jira_num_1 == 0){
-        jira_repair_rate_1 = 0.00;
+        jira_repair_rate_1 = "";
       }else{
         jira_repair_rate_1 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
       }
       if(jira_close_num_2 == 0 && jira_num_2 == 0){
-        jira_repair_rate_2 = 0.00;
+        jira_repair_rate_2 = "";
       }else{
         jira_repair_rate_2 = parseFloat(parseInt(jira_close_num_2) / parseInt(jira_num_2)).toFixed(2);
       }
       if(jira_close_num_3 == 0 && jira_num_3 == 0){
-        jira_repair_rate_3 = 0.00;
+        jira_repair_rate_3 = "";
       }else{
         jira_repair_rate_3 = parseFloat(parseInt(jira_close_num_3) / parseInt(jira_num_3)).toFixed(2);
       }
       if(jira_close_num_4 == 0 && jira_num_4 == 0){
-        jira_repair_rate_4 = 0.00;
+        jira_repair_rate_4 = "";
       }else{
         jira_repair_rate_4 = parseFloat(parseInt(jira_close_num_4) / parseInt(jira_num_4)).toFixed(2);
       }
       if(jira_close_num_total == 0 && jira_num_total == 0){
-        jira_repair_rate_total = 0.00;
+        jira_repair_rate_total = "";
       }else{
         jira_repair_rate_total= parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
       }
-      let block_repairrate = (jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100?"green":
-          (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"")
+      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100 || jira_repair_rate_1=="")?"green":
+          (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
 
       this.setState({jira_num_total,jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
             block_repairrate
@@ -136,19 +136,20 @@ export default class NewCheckInReport extends Component {
     if(['jira_close_num_1', 'jira_close_num_2', 'jira_close_num_3', 'jira_close_num_4'].includes(e.target.name)
       && this.state.jira_close_num_1 != undefined && this.state.jira_close_num_2 != undefined && this.state.jira_close_num_3 != undefined && this.state.jira_close_num_4 != undefined
     ){
-      debugger;
-      const {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_num_total, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4} = this.state;
+      //debugger;
+      let {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_num_total, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4} = this.state;
       let jira_close_num_total = Number.parseInt(jira_close_num_1)+Number.parseInt(jira_close_num_2)+Number.parseInt(jira_close_num_3)+Number.parseInt(jira_close_num_4);
       let jira_repair_rate_1,jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total;
       if (jira_close_num_1 === "" || jira_num_1 === "" || jira_close_num_1 === null || jira_num_1 === null) {
         jira_repair_rate_1 = "";
       } else {
         if (jira_close_num_1 == 0 && jira_num_1 == 0) {
-          jira_repair_rate_1 = 0.00;
+          jira_repair_rate_1 = "";
         } else {
-          debugger;
           if (parseInt(jira_close_num_1) > parseInt(jira_num_1)) {
             message.error("Block关闭数量不合理");
+            jira_close_num_1 = "";
+            this.setState({jira_close_num_1});
             jira_repair_rate_1 = "";
           } else {
             jira_repair_rate_1 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
@@ -159,10 +160,12 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_2 = "";
       } else {
         if (jira_close_num_2 == 0 && jira_num_2 == 0) {
-          jira_repair_rate_2 = 0.00;
+          jira_repair_rate_2 = "";
         } else {
           if (parseInt(jira_close_num_2) > parseInt(jira_num_2)) {
             message.error("Critical关闭数量不合理");
+            jira_close_num_2 = "";
+            this.setState({jira_close_num_2});
             jira_repair_rate_2 = "";
           } else {
             jira_repair_rate_2 = parseFloat(parseInt(jira_close_num_2) / parseInt(jira_num_2)).toFixed(2);
@@ -173,10 +176,12 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_3 = "";
       } else {
         if (jira_close_num_3 == 0 && jira_num_3 == 0) {
-          jira_repair_rate_3 = 0.00;
+          jira_repair_rate_3 = "";
         } else {
           if (parseInt(jira_close_num_3) > parseInt(jira_num_3)) {
             message.error("Major关闭数量不合理");
+            jira_close_num_3 = "";
+            this.setState({jira_close_num_3});
             jira_repair_rate_3 = "";
           } else {
             jira_repair_rate_3 = parseFloat(parseInt(jira_close_num_3) / parseInt(jira_num_3)).toFixed(2);
@@ -187,10 +192,12 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_4 = "";
       } else {
         if (jira_close_num_4 == 0 && jira_num_4 == 0) {
-          jira_repair_rate_4 = 0.00;
+          jira_repair_rate_4 = "";
         } else {
           if (parseInt(jira_close_num_4) > parseInt(jira_num_4)) {
             message.error("Minor关闭数量不合理");
+            jira_close_num_4 = "";
+            this.setState({jira_close_num_4});
             jira_repair_rate_4 = "";
           } else {
             jira_repair_rate_4 = parseFloat(parseInt(jira_close_num_4) / parseInt(jira_num_4)).toFixed(2);
@@ -201,17 +208,19 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_total = "";
       } else {
         if (jira_close_num_total == 0 && jira_num_total == 0) {
-          jira_repair_rate_total = 0.00;
+          jira_repair_rate_total = "";
         } else {
           if (parseInt(jira_close_num_total) > parseInt(jira_num_total)) {
-            message.error("Total关闭数量不合理");
+            //message.error("Total关闭数量不合理");
+            jira_close_num_total = "";
+            this.setState({jira_close_num_total});
             jira_repair_rate_total = "";
           } else {
             jira_repair_rate_total = parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
           }
         }
       }
-      let block_repairrate = (jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100?"green":
+      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100 || jira_repair_rate_1=="")?"green":
         (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
       this.setState({jira_close_num_total,jira_repair_rate_1, jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
                     block_repairrate
@@ -315,13 +324,13 @@ export default class NewCheckInReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="tl_num_1" value={this.state.tl_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="tl_num_2" value={this.state.tl_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="tl_num_3" value={this.state.tl_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="填入数量" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="tl_num_4" value={this.state.tl_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
                   <Input type="number" placeholder="" name="tl_num_total" value={this.state.tl_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
@@ -372,33 +381,33 @@ export default class NewCheckInReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="2" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_1" value={this.state.jira_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="3" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_2" value={this.state.jira_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_3" value={this.state.jira_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_num_4" value={this.state.jira_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
                   <Input type="number" placeholder="" name="jira_num_total" value={this.state.jira_num_total} onClick={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>关闭数量</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="1" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_1" value={this.state.jira_close_num_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="2" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_2" value={this.state.jira_close_num_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_3" value={this.state.jira_close_num_3} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input type="number" placeholder="" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input type="number" placeholder="*填入数量" name="jira_close_num_4" value={this.state.jira_close_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-bottom-css">
                   <Input type="number" placeholder="" name="jira_close_num_total" value={this.state.jira_close_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
               <Row>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css"><span>修复比率(小数)</span></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
-                  <Input style={{ backgroundColor: this.state.block_repairrate }} type="number" placeholder="2" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input style={{ backgroundColor: this.state.block_repairrate }} type="number" placeholder="" name="jira_repair_rate_1" value={this.state.jira_repair_rate_1} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
                   <Input type="number" placeholder="" name="jira_repair_rate_2" value={this.state.jira_repair_rate_2} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail border-right-css border-bottom-css">
@@ -519,44 +528,6 @@ export default class NewCheckInReport extends Component {
   }
 
   componentDidMount() {
-    //新建提测报告前,获取提测的jira数据
-    api.getCheckinReport_Jira(work_id).then(data=> {
-      console.log("checkin report get jira success");
-      console.log(data);
-      console.log(work_id);
-
-      //将获取到的数据显示到页面上
-      this.state = data.data;
-
-      //pass_rate_color
-      let pass_rate_color="",test_norunrate_color="",block_repairrate="";
-      if(this.state.tl_rate_1!=null){
-        pass_rate_color = ((this.state.tl_rate_1==colorConfigData.smoketest_passrate.blue[1]/100)?"blue":
-            ((this.state.tl_rate_1>colorConfigData.smoketest_passrate.green[0]/100)||(this.state.tl_rate_1==colorConfigData.smoketest_passrate.green[0]/100)?"green":
-              (((this.state.tl_rate_1>colorConfigData.smoketest_passrate.yellow[0]/100||this.state.tl_rate_1==colorConfigData.smoketest_passrate.yellow[0]/100)&&
-              (this.state.tl_rate_1<colorConfigData.smoketest_passrate.yellow[1]/100||this.state.tl_rate_1==colorConfigData.smoketest_passrate.yellow[1]/100))?"yellow":
-                (this.state.tl_rate_1<colorConfigData.smoketest_passrate.red[1]/100?"red":"")))
-
-        );
-      }
-      if(this.state.tl_rate_4!=null){
-        test_norunrate_color = this.state.tl_rate_4==0.00?"green":(this.state.tl_rate_4>0.00?"red":"");
-      }
-      if(this.state.jira_repair_rate_1!=null){
-        block_repairrate = (this.state.jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100?"green":
-          (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
-      }
-      this.setState({
-        //颜色显示
-        pass_rate_color,test_norunrate_color,block_repairrate,
-        //提测邮件
-        dropData:(data.data.if_email==1)?"已发送":"未发送",
-        work_id:work_id,
-        if_email:(this.state.dropData == "已发送")? 1 : 0 ,
-      });
-      console.log(this.state);
-    });
-
     //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
     api.getConfigOfColorStandard().then(data => {
       console.log(data);
@@ -568,6 +539,54 @@ export default class NewCheckInReport extends Component {
         alert("请求颜色配置数据失败");
       }
     });
+    
+    //新建提测报告前,获取提测的jira数据
+    api.getCheckinReport_Jira(work_id).then(data=> {
+      console.log("checkin report get jira success");
+      console.log(data);
+      console.log(work_id);
 
+      //将获取到的数据显示到页面上
+      this.state = data.data;
+
+      //pass_rate_color
+      let pass_rate_color="",test_norunrate_color="",block_repairrate="";
+      if(colorConfigData!=undefined){
+        if(this.state.tl_rate_1!=null){
+          pass_rate_color = ((this.state.tl_rate_1==colorConfigData.smoketest_passrate.blue[1]/100)?"blue":
+              ((this.state.tl_rate_1>colorConfigData.smoketest_passrate.green[0]/100)||(this.state.tl_rate_1==colorConfigData.smoketest_passrate.green[0]/100)?"green":
+                (((this.state.tl_rate_1>colorConfigData.smoketest_passrate.yellow[0]/100||this.state.tl_rate_1==colorConfigData.smoketest_passrate.yellow[0]/100)&&
+                (this.state.tl_rate_1<colorConfigData.smoketest_passrate.yellow[1]/100||this.state.tl_rate_1==colorConfigData.smoketest_passrate.yellow[1]/100))?"yellow":
+                  (this.state.tl_rate_1<colorConfigData.smoketest_passrate.red[1]/100?"red":"")))
+
+          );
+        }
+        if(this.state.tl_rate_4!=null){
+          test_norunrate_color = this.state.tl_rate_4==0.00?"green":(this.state.tl_rate_4>0.00?"red":"");
+        }
+        if(this.state.jira_num_1!=null){
+          if(this.state.jira_num_1==0 && this.state.jira_close_num_1==0){
+            this.state.jira_repair_rate_1="";
+            block_repairrate = "green";
+          }else{
+            block_repairrate = ((this.state.jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100 || this.state.jira_repair_rate_1=="")?"green":
+              (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
+          }
+        }
+      }else{
+        alert("获取颜色配置数据失败");
+      }
+
+      this.setState({
+        //颜色显示
+        pass_rate_color,test_norunrate_color,block_repairrate,
+        //提测邮件
+        dropData:(data.data.if_email==1)?"已发送":"未发送",
+        work_id:work_id,
+        if_email:(this.state.dropData == "已发送")? 1 : 0 ,
+      });
+      console.log(this.state);
+    });
+    
   }
 }

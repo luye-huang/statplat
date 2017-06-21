@@ -168,7 +168,7 @@ export default class EvaluationResult extends Component {
       });
     } else if (pageTag == "online") {
       //查看上线报告的 评估结果
-      debugger
+      //debugger
       api.getCheckreportForOnline(this.state.work_id).then(data=> {
         // console.log(data);
 
