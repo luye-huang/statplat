@@ -101,32 +101,33 @@ export default class NewCheckInReport extends Component {
       let jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4,jira_repair_rate_total;
 
       if(jira_close_num_1 == 0 && jira_num_1 == 0){
-        jira_repair_rate_1 = "";
+        jira_repair_rate_1 = "1.00";
       }else{
         jira_repair_rate_1 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
       }
       if(jira_close_num_2 == 0 && jira_num_2 == 0){
-        jira_repair_rate_2 = "";
+        jira_repair_rate_2 = "1.00";
       }else{
         jira_repair_rate_2 = parseFloat(parseInt(jira_close_num_2) / parseInt(jira_num_2)).toFixed(2);
       }
       if(jira_close_num_3 == 0 && jira_num_3 == 0){
-        jira_repair_rate_3 = "";
+        jira_repair_rate_3 = "1.00";
       }else{
         jira_repair_rate_3 = parseFloat(parseInt(jira_close_num_3) / parseInt(jira_num_3)).toFixed(2);
       }
       if(jira_close_num_4 == 0 && jira_num_4 == 0){
-        jira_repair_rate_4 = "";
+        jira_repair_rate_4 = "1.00";
       }else{
         jira_repair_rate_4 = parseFloat(parseInt(jira_close_num_4) / parseInt(jira_num_4)).toFixed(2);
       }
       if(jira_close_num_total == 0 && jira_num_total == 0){
-        jira_repair_rate_total = "";
+        jira_repair_rate_total = "1.00";
       }else{
         jira_repair_rate_total= parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
       }
-      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100 || jira_repair_rate_1=="")?"green":
-          (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
+
+      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
+        (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100||(jira_repair_rate_1==0))?"red":"");
 
       this.setState({jira_num_total,jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
             block_repairrate
@@ -144,7 +145,7 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_1 = "";
       } else {
         if (jira_close_num_1 == 0 && jira_num_1 == 0) {
-          jira_repair_rate_1 = "";
+          jira_repair_rate_1 = "1.00";
         } else {
           if (parseInt(jira_close_num_1) > parseInt(jira_num_1)) {
             message.error("Block关闭数量不合理");
@@ -160,7 +161,7 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_2 = "";
       } else {
         if (jira_close_num_2 == 0 && jira_num_2 == 0) {
-          jira_repair_rate_2 = "";
+          jira_repair_rate_2 = "1.00";
         } else {
           if (parseInt(jira_close_num_2) > parseInt(jira_num_2)) {
             message.error("Critical关闭数量不合理");
@@ -176,7 +177,7 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_3 = "";
       } else {
         if (jira_close_num_3 == 0 && jira_num_3 == 0) {
-          jira_repair_rate_3 = "";
+          jira_repair_rate_3 = "1.00";
         } else {
           if (parseInt(jira_close_num_3) > parseInt(jira_num_3)) {
             message.error("Major关闭数量不合理");
@@ -192,7 +193,7 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_4 = "";
       } else {
         if (jira_close_num_4 == 0 && jira_num_4 == 0) {
-          jira_repair_rate_4 = "";
+          jira_repair_rate_4 = "1.00";
         } else {
           if (parseInt(jira_close_num_4) > parseInt(jira_num_4)) {
             message.error("Minor关闭数量不合理");
@@ -208,7 +209,7 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_total = "";
       } else {
         if (jira_close_num_total == 0 && jira_num_total == 0) {
-          jira_repair_rate_total = "";
+          jira_repair_rate_total = "1.00";
         } else {
           if (parseInt(jira_close_num_total) > parseInt(jira_num_total)) {
             //message.error("Total关闭数量不合理");
@@ -220,8 +221,8 @@ export default class NewCheckInReport extends Component {
           }
         }
       }
-      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100 || jira_repair_rate_1=="")?"green":
-        (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
+      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
+        (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100||(jira_repair_rate_1==0))?"red":"");
       this.setState({jira_close_num_total,jira_repair_rate_1, jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
                     block_repairrate
       });
@@ -448,6 +449,14 @@ export default class NewCheckInReport extends Component {
             </Col>
           </Row>
 
+          <Row style={{ marginTop: 10 }}>
+            <Col span={24}>
+              注：最终结果取准入项中最低成绩，例如准入项中如果有一项为红灯，则整体结果为红灯; 所以只有当准入项均为绿灯时，整体才为绿灯;
+                  当整体结果为绿灯时，并且有至少一颗蓝灯则整体升级为蓝灯.
+
+            </Col>
+          </Row>
+
           <Row style={{ display:"none" }}>
             <Col span={6} className="test-link-css border-right-css">
               Demo演示
@@ -566,11 +575,31 @@ export default class NewCheckInReport extends Component {
         }
         if(this.state.jira_num_1!=null){
           if(this.state.jira_num_1==0 && this.state.jira_close_num_1==0){
-            this.state.jira_repair_rate_1="";
+            this.state.jira_repair_rate_1=1.00;
             block_repairrate = "green";
           }else{
-            block_repairrate = ((this.state.jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100 || this.state.jira_repair_rate_1=="")?"green":
-              (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)?"red":"");
+            block_repairrate = ((this.state.jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
+              (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100||this.state.jira_repair_rate_1==0.00)?"red":"");
+          }
+        }
+        if(this.state.jira_num_2!=null){
+          if(this.state.jira_num_2==0 && this.state.jira_close_num_2==0){
+            this.state.jira_repair_rate_2=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+          }
+        }
+        if(this.state.jira_num_3!=null){
+          if(this.state.jira_num_3==0 && this.state.jira_close_num_3==0){
+            this.state.jira_repair_rate_3=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+          }
+        }
+        if(this.state.jira_num_4!=null){
+          if(this.state.jira_num_4==0 && this.state.jira_close_num_4==0){
+            this.state.jira_repair_rate_4=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+          }
+        }
+        if(this.state.jira_num_total!=null){
+          if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
+            this.state.jira_repair_rate_total=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
           }
         }
       }else{
