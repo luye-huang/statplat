@@ -114,41 +114,41 @@ export default class NewOnlineReport extends Component {
       let jira_num_total = Number.parseInt(jira_num_1) + Number.parseInt(jira_num_2) + Number.parseInt(jira_num_3) + Number.parseInt(jira_num_4);
       let jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4,jira_repair_rate_total;
       if(jira_close_num_1 == 0 && jira_num_1 == 0){
-        jira_repair_rate_1 = "";
+        jira_repair_rate_1 = "1.00";
       }else{
         jira_repair_rate_1 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
       }
       if(jira_close_num_2 == 0 && jira_num_2 == 0){
-        jira_repair_rate_2 = "";
+        jira_repair_rate_2 = "1.00";
       }else{
         jira_repair_rate_2 = parseFloat(parseInt(jira_close_num_2) / parseInt(jira_num_2)).toFixed(2);
       }
       if(jira_close_num_3 == 0 && jira_num_3 == 0){
-        jira_repair_rate_3 = "";
+        jira_repair_rate_3 = "1.00";
       }else{
         jira_repair_rate_3 = parseFloat(parseInt(jira_close_num_3) / parseInt(jira_num_3)).toFixed(2);
       }
       if(jira_close_num_4 == 0 && jira_num_4 == 0){
-        jira_repair_rate_4 = "";
+        jira_repair_rate_4 = "1.00";
       }else{
         jira_repair_rate_4 = parseFloat(parseInt(jira_close_num_4) / parseInt(jira_num_4)).toFixed(2);
       }
       if(jira_close_num_total == 0 && jira_num_total == 0){
-        jira_repair_rate_total = "";
+        jira_repair_rate_total = "1.00";
       }else{
         jira_repair_rate_total= parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
       }
-      let b_repairrate_color = ((jira_repair_rate_1== 1.00 || jira_repair_rate_1=="")?"green":(jira_repair_rate_1<1.00?"red":""));
-      let c_repairrate_color = ((jira_repair_rate_2== 1.00 || jira_repair_rate_2=="")?"green":(jira_repair_rate_2<1.00?"red":""));
+      let b_repairrate_color = ((jira_repair_rate_1== 1.00)?"green":(jira_repair_rate_1<1.00?"red":""));
+      let c_repairrate_color = ((jira_repair_rate_2== 1.00)?"green":(jira_repair_rate_2<1.00?"red":""));
       //mm_repaire_rate
       let major_repairrate_color = jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
-        ( (jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3=="")?"green":
+        ( (jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100)?"green":
           ( ((jira_repair_rate_3>colorConfigData.mm_repaire_rate.yellow[0]/100|| jira_repair_rate_3==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
               jira_repair_rate_3<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
                (jira_repair_rate_3<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
         ) ;
       let minor_repairrate_color = jira_repair_rate_4==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
-        ( (jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_4=="")?"green":
+        ( (jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100)?"green":
             ( ((jira_repair_rate_4>colorConfigData.mm_repaire_rate.yellow[0]/100|| jira_repair_rate_4==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
             jira_repair_rate_4<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
               (jira_repair_rate_4<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
@@ -171,7 +171,7 @@ export default class NewOnlineReport extends Component {
         jira_repair_rate_1 = "";
       } else {
         if (jira_close_num_1 == 0 && jira_num_1 == 0) {
-          jira_repair_rate_1 = "";
+          jira_repair_rate_1 = "1.00";
         } else {
           if (parseInt(jira_close_num_1) > parseInt(jira_num_1)) {
             message.error("Block关闭数量不合理");
@@ -187,7 +187,7 @@ export default class NewOnlineReport extends Component {
         jira_repair_rate_2 = "";
       } else {
         if (jira_close_num_2 == 0 && jira_num_2 == 0) {
-          jira_repair_rate_2 = "";
+          jira_repair_rate_2 = "1.00";
         } else {
           if (parseInt(jira_close_num_2) > parseInt(jira_num_2)) {
             message.error("Critical关闭数量不合理");
@@ -203,7 +203,7 @@ export default class NewOnlineReport extends Component {
         jira_repair_rate_3 = "";
       } else {
         if (jira_close_num_3 == 0 && jira_num_3 == 0) {
-          jira_repair_rate_3 = "";
+          jira_repair_rate_3 = "1.00";
         } else {
           if (parseInt(jira_close_num_3) > parseInt(jira_num_3)) {
             message.error("Major关闭数量不合理");
@@ -219,7 +219,7 @@ export default class NewOnlineReport extends Component {
         jira_repair_rate_4 = "";
       } else {
         if (jira_close_num_4 == 0 && jira_num_4 == 0) {
-          jira_repair_rate_4 = "";
+          jira_repair_rate_4 = "1.00";
         } else {
           if (parseInt(jira_close_num_4) > parseInt(jira_num_4)) {
             message.error("Minor关闭数量不合理");
@@ -235,7 +235,7 @@ export default class NewOnlineReport extends Component {
         jira_repair_rate_total = "";
       } else {
         if (jira_close_num_total == 0 && jira_num_total == 0) {
-          jira_repair_rate_total = "";
+          jira_repair_rate_total = "1.00";
         } else {
           if (parseInt(jira_close_num_total) > parseInt(jira_num_total)) {
             //message.error("Total关闭数量不合理");
@@ -247,17 +247,17 @@ export default class NewOnlineReport extends Component {
           }
         }
       }
-      let b_repairrate_color = ((jira_repair_rate_1== 1.00 || jira_repair_rate_1=="")?"green":(jira_repair_rate_1<1.00?"red":""));
-      let c_repairrate_color = ((jira_repair_rate_2== 1.00 || jira_repair_rate_2=="")?"green":(jira_repair_rate_2<1.00?"red":""));
+      let b_repairrate_color = ((jira_repair_rate_1== 1.00)?"green":(jira_repair_rate_1<1.00?"red":""));
+      let c_repairrate_color = ((jira_repair_rate_2== 1.00)?"green":(jira_repair_rate_2<1.00?"red":""));
       //mm_repaire_rate
       let major_repairrate_color = jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
-        ( (jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3=="")?"green":
+        ( (jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100)?"green":
             ( ((jira_repair_rate_3>colorConfigData.mm_repaire_rate.yellow[0]/100|| jira_repair_rate_3==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
             jira_repair_rate_3<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
               (jira_repair_rate_3<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
         ) ;
       let minor_repairrate_color = jira_repair_rate_4==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
-        ( (jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_4=="")?"green":
+        ( (jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100)?"green":
             ( ((jira_repair_rate_4>colorConfigData.mm_repaire_rate.yellow[0]/100|| jira_repair_rate_4==colorConfigData.mm_repaire_rate.yellow[0]/100)&&
             jira_repair_rate_4<colorConfigData.mm_repaire_rate.yellow[1]/100))?"yellow":
               (jira_repair_rate_4<colorConfigData.mm_repaire_rate.red[1]/100?"red":"")
@@ -645,6 +645,14 @@ export default class NewOnlineReport extends Component {
           </Row>
         </div>
 
+        <Row style={{ marginTop: 10 }}>
+          <Col span={24}>
+            注：最终结果取准入项中最低成绩，例如准入项中如果有一项为红灯，则整体结果为红灯; 所以只有当准入项均为绿灯时，整体才为绿灯;
+            当整体结果为绿灯时，并且有至少一颗蓝灯则整体升级为蓝灯.
+
+          </Col>
+        </Row>
+
         <div style={{ display:(flag==0?"none":"block") }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
@@ -767,20 +775,20 @@ export default class NewOnlineReport extends Component {
         }
         //修复比率-颜色判断
         if(this.state.jira_num_1==0 && this.state.jira_close_num_1==0){
-          this.state.jira_repair_rate_1="";
+          this.state.jira_repair_rate_1="1.00";
           b_repairrate_color = "green";
         }else{
-          b_repairrate_color = ((this.state.jira_repair_rate_1== 1.00|| this.state.jira_repair_rate_1=="")?"green":(this.state.jira_repair_rate_1<1.00?"red":""));
+          b_repairrate_color = ((this.state.jira_repair_rate_1== 1.00)?"green":(this.state.jira_repair_rate_1<1.00?"red":""));
         }
         if(this.state.jira_num_2==0 && this.state.jira_close_num_2==0){
-          this.state.jira_repair_rate_2="";
+          this.state.jira_repair_rate_2="1.00";
           c_repairrate_color = "green";
         }else{
-          c_repairrate_color = ((this.state.jira_repair_rate_2== 1.00|| this.state.jira_repair_rate_2=="")?"green":(this.state.jira_repair_rate_2<1.00?"red":""));
+          c_repairrate_color = ((this.state.jira_repair_rate_2== 1.00)?"green":(this.state.jira_repair_rate_2<1.00?"red":""));
         }
         if(this.state.jira_num_3==0 && this.state.jira_close_num_3==0) {
-          this.state.jira_repair_rate_3 = "";
-          major_repairrate_color = "green";
+          this.state.jira_repair_rate_3 = "1.00";
+          major_repairrate_color = "blue";
         }else{
           major_repairrate_color = this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
             ( (this.state.jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || this.state.jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100|| this.state.jira_repair_rate_3=="")?"green":
@@ -790,8 +798,8 @@ export default class NewOnlineReport extends Component {
             ) ;
         }
         if(this.state.jira_num_4==0 && this.state.jira_close_num_4==0) {
-          this.state.jira_repair_rate_4 = "";
-          minor_repairrate_color = "green";
+          this.state.jira_repair_rate_4 = "1.00";
+          minor_repairrate_color = "blue";
         }else{
           minor_repairrate_color = this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
             ( (this.state.jira_repair_rate_4>colorConfigData.mm_repaire_rate.green[0]/100 || this.state.jira_repair_rate_4==colorConfigData.mm_repaire_rate.green[0]/100|| this.state.jira_repair_rate_4=="")?"green":
@@ -801,7 +809,7 @@ export default class NewOnlineReport extends Component {
             ) ;
         }
         if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
-          this.state.jira_repair_rate_total = "";
+          this.state.jira_repair_rate_total = "1.00";
         }
         if(this.state.cptest_rate!=null){
           cptest_rate_color = this.state.cptest_rate==colorConfigData.cptest_rate.green[1]/100?"green":

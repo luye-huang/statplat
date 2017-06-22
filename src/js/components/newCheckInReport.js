@@ -100,7 +100,7 @@ export default class NewCheckInReport extends Component {
       let jira_num_total = Number.parseInt(jira_num_1) + Number.parseInt(jira_num_2) + Number.parseInt(jira_num_3) + Number.parseInt(jira_num_4);
       let jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4,jira_repair_rate_total;
 
-      if(jira_close_num_1 == 0 && jira_num_1 == 0){
+      if(parseInt(jira_close_num_1) == 0 && parseInt(jira_num_1) == 0){
         jira_repair_rate_1 = "1.00";
       }else{
         jira_repair_rate_1 = parseFloat(parseInt(jira_close_num_1) / parseInt(jira_num_1)).toFixed(2);
@@ -221,8 +221,9 @@ export default class NewCheckInReport extends Component {
           }
         }
       }
+      console.log(jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100);
       let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
-        (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100||(jira_repair_rate_1==0))?"red":"");
+        ((jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)||(jira_repair_rate_1==0))?"red":"");
       this.setState({jira_close_num_total,jira_repair_rate_1, jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
                     block_repairrate
       });

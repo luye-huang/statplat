@@ -63,7 +63,7 @@ export default class EvaluationResult extends Component {
     console.log(isHide);
 
     //评估结论
-    debugger;
+    //debugger;
     if(this.state.status!=undefined){
       if(this.state.status == 0){
         this.state.statusResult = "未选择"
