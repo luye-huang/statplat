@@ -23,7 +23,7 @@ import ViewReportInfo from "./components/viewReportInfo.js";
 
 export default class Main extends React.Component {
   render() {
-    document.title = 'zrzc';
+    document.title = '准入质量保障平台';
     return (
       <Router history={hashHistory}>
         <Route component={Template} path="/">
