@@ -36,7 +36,7 @@ export default class Template extends React.Component {
                 <div className="logo"></div>
               </Col>
               <Col span={6} offset={12}>
-                <Col span={6} offset={12}>
+                <Col span={8} offset={10}>
                   <span style={{ color:"white" }}>{this.state.login_info}</span>
                 </Col>
                 <Col span={6}>
