@@ -45,7 +45,6 @@ export default class NewCheckInReport extends Component {
 
   //下拉列表-事件处理 -- 提测邮件
   menuOnclick(e) {
-    console.log('click', e.key);
     this.setState({
       dropData: e.key,
     });
@@ -53,7 +52,6 @@ export default class NewCheckInReport extends Component {
 
   //下拉列表-事件处理 -- demo演示
   menuOnclickDemo(e) {
-    console.log('click', e.key);
     this.setState({
       dropData_demo: e.key,
     });
@@ -76,8 +74,6 @@ export default class NewCheckInReport extends Component {
       const tl_rate_total = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_total) / tl_num_total).toFixed(2);
       tl_num_total = Number.isNaN(tl_num_total)? '': tl_num_total;
 
-      //debugger;
-      // console.log(111111);
       //pass_rate_color
       let pass_rate_color = ((tl_rate_1==colorConfigData.smoketest_passrate.blue[1]/100)?"blue":
           ((tl_rate_1>colorConfigData.smoketest_passrate.green[0]/100)||(tl_rate_1==colorConfigData.smoketest_passrate.green[0]/100)?"green":
@@ -94,8 +90,6 @@ export default class NewCheckInReport extends Component {
     if(['jira_num_1', 'jira_num_2', 'jira_num_3', 'jira_num_4'].includes(e.target.name)
       && this.state.jira_num_1 != undefined && this.state.jira_num_2 != undefined && this.state.jira_num_3 != undefined && this.state.jira_num_4 != undefined
     ){
-      //debugger;
-      console.log(22222);
       const {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4,jira_close_num_total} = this.state;
       let jira_num_total = Number.parseInt(jira_num_1) + Number.parseInt(jira_num_2) + Number.parseInt(jira_num_3) + Number.parseInt(jira_num_4);
       let jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4,jira_repair_rate_total;
@@ -126,8 +120,18 @@ export default class NewCheckInReport extends Component {
         jira_repair_rate_total= parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
       }
 
-      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
-        (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100||(jira_repair_rate_1==0))?"red":"");
+      //Block问题修复率
+      let block_repairrate;
+      if(colorConfigData.block_repairrate.blue!=undefined){ //有蓝/黄灯
+        block_repairrate = (jira_repair_rate_1==colorConfigData.block_repairrate.blue[1]/100)?"blue":
+          (((jira_repair_rate_1>colorConfigData.block_repairrate.green[0]/100&&jira_repair_rate_1<colorConfigData.block_repairrate.green[1]/100)||jira_repair_rate_1==colorConfigData.block_repairrate.green[0]/100)?"green":
+            ((jira_repair_rate_1>colorConfigData.block_repairrate.yellow[0]/100&&jira_repair_rate_1<colorConfigData.block_repairrate.yellow[1]/100)||jira_repair_rate_1==colorConfigData.block_repairrate.yellow[0]/100)?"yellow":
+              (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100?"red":""));
+
+      }else{ //没有蓝/黄灯,只有绿 红灯
+        block_repairrate = (((jira_repair_rate_1>colorConfigData.block_repairrate.green[0]/100&&jira_repair_rate_1<colorConfigData.block_repairrate.green[1]/100)||jira_repair_rate_1==colorConfigData.block_repairrate.green[0]/100)?"green":
+          (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100?"red":""));
+      }
 
       this.setState({jira_num_total,jira_repair_rate_1,jira_repair_rate_2,jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
             block_repairrate
@@ -137,7 +141,6 @@ export default class NewCheckInReport extends Component {
     if(['jira_close_num_1', 'jira_close_num_2', 'jira_close_num_3', 'jira_close_num_4'].includes(e.target.name)
       && this.state.jira_close_num_1 != undefined && this.state.jira_close_num_2 != undefined && this.state.jira_close_num_3 != undefined && this.state.jira_close_num_4 != undefined
     ){
-      //debugger;
       let {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_num_total, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4} = this.state;
       let jira_close_num_total = Number.parseInt(jira_close_num_1)+Number.parseInt(jira_close_num_2)+Number.parseInt(jira_close_num_3)+Number.parseInt(jira_close_num_4);
       let jira_repair_rate_1,jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total;
@@ -221,9 +224,20 @@ export default class NewCheckInReport extends Component {
           }
         }
       }
-      console.log(jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100);
-      let block_repairrate = ((jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
-        ((jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100)||(jira_repair_rate_1==0))?"red":"");
+
+      //Block问题修复率
+      let block_repairrate;
+      if(colorConfigData.block_repairrate.blue!=undefined){ //有蓝/黄灯
+        block_repairrate = (jira_repair_rate_1==colorConfigData.block_repairrate.blue[1]/100)?"blue":
+          (((jira_repair_rate_1>colorConfigData.block_repairrate.green[0]/100&&jira_repair_rate_1<colorConfigData.block_repairrate.green[1]/100)||jira_repair_rate_1==colorConfigData.block_repairrate.green[0]/100)?"green":
+            ((jira_repair_rate_1>colorConfigData.block_repairrate.yellow[0]/100&&jira_repair_rate_1<colorConfigData.block_repairrate.yellow[1]/100)||jira_repair_rate_1==colorConfigData.block_repairrate.yellow[0]/100)?"yellow":
+              (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100?"red":""));
+
+      }else{ //没有蓝/黄灯,只有绿 红灯
+        block_repairrate = (((jira_repair_rate_1>colorConfigData.block_repairrate.green[0]/100&&jira_repair_rate_1<colorConfigData.block_repairrate.green[1]/100)||jira_repair_rate_1==colorConfigData.block_repairrate.green[0]/100)?"green":
+          (jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100?"red":""));
+      }
+
       this.setState({jira_close_num_total,jira_repair_rate_1, jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total,
                     block_repairrate
       });
@@ -235,7 +249,6 @@ export default class NewCheckInReport extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
-    console.log(work_id);
 
     //下拉菜单 - menu - 提测邮件
     const dropData = ["已发送", "未发送"];
@@ -274,9 +287,7 @@ export default class NewCheckInReport extends Component {
       onChange(info) {
         if (info.file.status !== 'uploading') {
           // console.log(info.file, info.fileList);
-          console.log(info.fileList[0].response);
           email_filename = info.fileList[0].response.data.filename;
-          console.log(email_filename);
           _this.setState({
             email_file:email_filename
           });
@@ -499,31 +510,10 @@ export default class NewCheckInReport extends Component {
                           jira_id = jira_id.join(",");
                         this.state.jira_id = jira_id;
                         }
-                        console.log(this.state);
-                      // debugger;
-                      // let flag = true;
-                      // for(var key in this.state){
-                      //   if((typeof this.state[key])=="string"){
-                      //     if(this.state[key] == "" || this.state[key] == "NaN"){
-                      //       let v = this.state[key];
-                      //       flag = false;
-                      //       break;
-                      //     }
-                      //   }
-                      //   if(this.state[key] === null){
-                      //       let v = this.state[key];
-                      //       flag = false;
-                      //       break;
-                      //   }
-                      // }
-                      // console.log(flag);
                         api.postCheckinReport(this.state).then(data=>{
-                          console.log(data);
                           if(data.status == 200){
-                            console.log("checkin report post success");
                             window.location.href="index.html#/evaluationResult?flag=1&pageTag=checkin&work_id="+ work_id;
                           }else if(data.status == 500){
-                            console.log(data.message);
                             alert (data.message);
                           }
                         });
@@ -540,11 +530,8 @@ export default class NewCheckInReport extends Component {
   componentDidMount() {
     //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
     api.getConfigOfColorStandard().then(data => {
-      console.log(data);
       if(data.status === 200){
         colorConfigData = data.data[0].json.checkin_config;
-        console.log(colorConfigData); // checkin_config
-
       }else{
         alert("请求颜色配置数据失败");
       }
@@ -552,13 +539,9 @@ export default class NewCheckInReport extends Component {
     
     //新建提测报告前,获取提测的jira数据
     api.getCheckinReport_Jira(work_id).then(data=> {
-      console.log("checkin report get jira success");
       console.log(data);
-      console.log(work_id);
-
       //将获取到的数据显示到页面上
       this.state = data.data;
-
       //pass_rate_color
       let pass_rate_color="",test_norunrate_color="",block_repairrate="";
       if(colorConfigData!=undefined){
@@ -579,8 +562,17 @@ export default class NewCheckInReport extends Component {
             this.state.jira_repair_rate_1=1.00;
             block_repairrate = "green";
           }else{
-            block_repairrate = ((this.state.jira_repair_rate_1== colorConfigData.block_repairrate.green[1]/100)?"green":
-              (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100||this.state.jira_repair_rate_1==0.00)?"red":"");
+            //Block问题修复率
+            if(colorConfigData.block_repairrate.blue!=undefined){ //有蓝/黄灯
+              block_repairrate = (this.state.jira_repair_rate_1==colorConfigData.block_repairrate.blue[1]/100)?"blue":
+                (((this.state.jira_repair_rate_1>colorConfigData.block_repairrate.green[0]/100&&this.state.jira_repair_rate_1<colorConfigData.block_repairrate.green[1]/100)||this.state.jira_repair_rate_1==colorConfigData.block_repairrate.green[0]/100)?"green":
+                  ((this.state.jira_repair_rate_1>colorConfigData.block_repairrate.yellow[0]/100||this.state.jira_repair_rate_1==colorConfigData.block_repairrate.yellow[0]/100)&&this.state.jira_repair_rate_1<colorConfigData.block_repairrate.yellow[1]/100)?"yellow":
+                    (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100?"red":""));
+
+            }else{ //没有蓝/黄灯,只有绿 红灯
+              block_repairrate = (((this.state.jira_repair_rate_1>colorConfigData.block_repairrate.green[0]/100&&this.state.jira_repair_rate_1<colorConfigData.block_repairrate.green[1]/100)||this.state.jira_repair_rate_1==colorConfigData.block_repairrate.green[0]/100)?"green":
+                (this.state.jira_repair_rate_1<colorConfigData.block_repairrate.red[1]/100?"red":""));
+            }
           }
         }
         if(this.state.jira_num_2!=null){
@@ -615,7 +607,6 @@ export default class NewCheckInReport extends Component {
         work_id:work_id,
         if_email:(this.state.dropData == "已发送")? 1 : 0 ,
       });
-      console.log(this.state);
     });
     
   }

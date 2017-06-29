@@ -7,9 +7,7 @@ import 'whatwg-fetch';
 // export const domain = 'http://localhost:8082/';
 
 /*
-  (后台加了权限控制后,
-        本地访问 测试环境 上的post接口,提示:"该请求需要先登录, 并有相应权限",所以本地无法进行post相关的接口调试.
-        本地访问 正式环境 上的post接口就有问题了,报错403,所以本地无法调试post接口,调试post相关的接口请在 正式环境 上调试)
+
  */
 export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
 // export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
@@ -312,7 +310,25 @@ export const api = {
     return fetch(url).then( response => response.json() );
   },
 
-  //
+  //修改项目信息   /workflow/work/284
+  postEditProjectInfo(obj){
+    let url = domain+"workflow/work/" + obj.work_id;
+    return $.ajax({
+      type:"put",
+      url:url,
+      dataType:"json",
+      data:obj,
+      error:function (data) {
+        console.log(data.status);
+        console.log(data.statusText);
+        console.log(data.responseText);
+      },
+      success:function (data) {
+        console.log("success");
+        console.log(data);
+      }
+    });
+  }
 
 }
 

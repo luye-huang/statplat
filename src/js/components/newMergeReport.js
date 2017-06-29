@@ -45,7 +45,6 @@ export default class NewMergeReport extends Component {
 
   //下拉列表-事件处理 -- 相关服务已上线
   menuOnclick_service(e) {
-    console.log('click', e.key);
     this.setState({
       dropData_service: e.key,
     });
@@ -53,7 +52,6 @@ export default class NewMergeReport extends Component {
 
   //下拉列表-事件处理 -- 合版后需求无更新
   menuOnclick_merge(e) {
-    console.log('click', e.key);
     this.setState({
       dropData_merge: e.key,
     });
@@ -61,7 +59,6 @@ export default class NewMergeReport extends Component {
 
   //下拉列表-事件处理 -- 测试报告结论
   menuOnclick_test(e) {
-    console.log('click', e.key);
     this.setState({
       dropData_test: e.key,
     });
@@ -69,7 +66,6 @@ export default class NewMergeReport extends Component {
 
   //下拉列表-事件处理 -- UAT验收结论
   menuOnclick_UAT(e) {
-    console.log('click', e.key);
     this.setState({
       dropData_UAT: e.key,
     });
@@ -84,7 +80,7 @@ export default class NewMergeReport extends Component {
     if (['tl_num_1', 'tl_num_2', 'tl_num_3', 'tl_num_4'].includes(e.target.name) && this.state.tl_num_4 != undefined && this.state.tl_num_1 != undefined && this.state.tl_num_2 != undefined && this.state.tl_num_3 != undefined) {
       const {tl_num_1, tl_num_2, tl_num_3, tl_num_4} = this.state;
       let tl_num_total = Number.parseInt(tl_num_1) + Number.parseInt(tl_num_2) + Number.parseInt(tl_num_3) + Number.parseInt(tl_num_4);
-      //debugger
+      
       const tl_rate_1 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_1) / tl_num_total).toFixed(2);
       const tl_rate_2 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_2) / tl_num_total).toFixed(2);
       const tl_rate_3 = Number.isNaN(tl_num_total) ? '' : parseFloat(Number.parseInt(tl_num_3) / tl_num_total).toFixed(2);
@@ -99,8 +95,20 @@ export default class NewMergeReport extends Component {
               (tl_rate_1<colorConfigData.pass_rate.red[1]/100?"red":"")))
 
       );
-      let test_norunrate_color = tl_rate_4==0.00?"green":(tl_rate_4>0.00?"red":"");
+      //测试用例-执行率 = (1-未执行率)
+      let test_norunrate_color;
+      if(colorConfigData.execute_rate.blue!=undefined){ //有蓝灯
+        test_norunrate_color = ((1-tl_rate_4)==colorConfigData.execute_rate.blue[1]/100)?"blue":
+          ((((1-tl_rate_4)>colorConfigData.execute_rate.green[0]/100&&(1-tl_rate_4)<colorConfigData.execute_rate.green[1]/100)||(1-tl_rate_4)==colorConfigData.execute_rate.green[0]/100)?"green":
+            ((((1-tl_rate_4)>colorConfigData.execute_rate.yellow[0]/100&& (1-tl_rate_4)<colorConfigData.execute_rate.yellow[1]/100)||(1-tl_rate_4)==colorConfigData.execute_rate.yellow[0]/100)?"yellow":
+                ((1-tl_rate_4)<colorConfigData.execute_rate.red[1]/100?"red":"")
+            ));
 
+      }else{ //没有蓝灯,只有绿 红灯
+        test_norunrate_color = (((1-tl_rate_4)>colorConfigData.execute_rate.green[0]/100&&(1-tl_rate_4)<colorConfigData.execute_rate.green[1]/100)||(1-tl_rate_4)==colorConfigData.execute_rate.green[0]/100)?"green":
+          ((1-tl_rate_4)<colorConfigData.execute_rate.red[1]/100?"red":"");
+      }
+      
       this.setState({tl_num_total,tl_rate_1,tl_rate_2, tl_rate_3,tl_rate_4, tl_rate_total,
           pass_rate_color,test_norunrate_color,
       });
@@ -137,8 +145,25 @@ export default class NewMergeReport extends Component {
       }else{
         jira_repair_rate_total= parseFloat(parseInt(jira_close_num_total) / parseInt(jira_num_total)).toFixed(2);
       }
-      let b_repairrate_color = ((jira_repair_rate_1== 1.00)?"green":(jira_repair_rate_1<1.00?"red":""));
-      let c_repairrate_color = ((jira_repair_rate_2== 1.00)?"green":(jira_repair_rate_2<1.00?"red":""));
+      //Block and critical的问题修复率
+      let b_repairrate_color,c_repairrate_color;
+      if(colorConfigData.bc_repaire_rate.blue!=undefined){ //有蓝/黄灯
+        b_repairrate_color = (jira_repair_rate_1==colorConfigData.bc_repaire_rate.blue[1]/100)?"blue":
+          (((jira_repair_rate_1>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_1<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_1==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+            ((jira_repair_rate_1>colorConfigData.bc_repaire_rate.yellow[0]/100&&jira_repair_rate_1<colorConfigData.bc_repaire_rate.yellow[1]/100)||jira_repair_rate_1==colorConfigData.bc_repaire_rate.yellow[0]/100)?"yellow":
+            (jira_repair_rate_1<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+        c_repairrate_color = (jira_repair_rate_2==colorConfigData.bc_repaire_rate.blue[1]/100)?"blue":
+          (((jira_repair_rate_2>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_2<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_2==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+            ((jira_repair_rate_2>colorConfigData.bc_repaire_rate.yellow[0]/100&&jira_repair_rate_2<colorConfigData.bc_repaire_rate.yellow[1]/100)||jira_repair_rate_2==colorConfigData.bc_repaire_rate.yellow[0]/100)?"yellow":
+              (jira_repair_rate_2<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+
+      }else{ //没有蓝/黄灯,只有绿 红灯
+        b_repairrate_color = (((jira_repair_rate_1>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_1<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_1==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+          (jira_repair_rate_1<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+        c_repairrate_color = (((jira_repair_rate_2>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_2<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_2==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+          (jira_repair_rate_2<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+      }
+
       //mm_repaire_rate
       let major_repairrate_color = jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
         ( (jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100)?"green":
@@ -161,7 +186,7 @@ export default class NewMergeReport extends Component {
     if(['jira_close_num_1', 'jira_close_num_2', 'jira_close_num_3', 'jira_close_num_4'].includes(e.target.name)
       && this.state.jira_close_num_1 != undefined && this.state.jira_close_num_2 != undefined && this.state.jira_close_num_3 != undefined && this.state.jira_close_num_4 != undefined
     ){
-      // debugger;
+      
       let {jira_num_1, jira_num_2, jira_num_3, jira_num_4, jira_num_total, jira_close_num_1, jira_close_num_2, jira_close_num_3, jira_close_num_4} = this.state;
       let jira_close_num_total = Number.parseInt(jira_close_num_1)+Number.parseInt(jira_close_num_2)+Number.parseInt(jira_close_num_3)+Number.parseInt(jira_close_num_4);
       let jira_repair_rate_1,jira_repair_rate_2, jira_repair_rate_3,jira_repair_rate_4, jira_repair_rate_total;
@@ -245,9 +270,25 @@ export default class NewMergeReport extends Component {
           }
         }
       }
+      //Block and critical的问题修复率
+      let b_repairrate_color,c_repairrate_color;
+      if(colorConfigData.bc_repaire_rate.blue!=undefined){ //有蓝/黄灯
+        b_repairrate_color = (jira_repair_rate_1==colorConfigData.bc_repaire_rate.blue[1]/100)?"blue":
+          (((jira_repair_rate_1>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_1<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_1==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+            ((jira_repair_rate_1>colorConfigData.bc_repaire_rate.yellow[0]/100&&jira_repair_rate_1<colorConfigData.bc_repaire_rate.yellow[1]/100)||jira_repair_rate_1==colorConfigData.bc_repaire_rate.yellow[0]/100)?"yellow":
+              (jira_repair_rate_1<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+        c_repairrate_color = (jira_repair_rate_2==colorConfigData.bc_repaire_rate.blue[1]/100)?"blue":
+          (((jira_repair_rate_2>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_2<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_2==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+            ((jira_repair_rate_2>colorConfigData.bc_repaire_rate.yellow[0]/100&&jira_repair_rate_2<colorConfigData.bc_repaire_rate.yellow[1]/100)||jira_repair_rate_2==colorConfigData.bc_repaire_rate.yellow[0]/100)?"yellow":
+              (jira_repair_rate_2<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
 
-      let b_repairrate_color = ((jira_repair_rate_1== 1.00)?"green":(jira_repair_rate_1<1.00?"red":""));
-      let c_repairrate_color = ((jira_repair_rate_2== 1.00)?"green":(jira_repair_rate_2<1.00?"red":""));
+      }else{ //没有蓝/黄灯,只有绿 红灯
+        b_repairrate_color = (((jira_repair_rate_1>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_1<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_1==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+          (jira_repair_rate_1<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+        c_repairrate_color = (((jira_repair_rate_2>colorConfigData.bc_repaire_rate.green[0]/100&&jira_repair_rate_2<colorConfigData.bc_repaire_rate.green[1]/100)||jira_repair_rate_2==colorConfigData.bc_repaire_rate.green[0]/100)?"green":
+          (jira_repair_rate_2<colorConfigData.bc_repaire_rate.red[1]/100?"red":""));
+      }
+
       //mm_repaire_rate
       let major_repairrate_color = jira_repair_rate_3==colorConfigData.mm_repaire_rate.blue[1]/100?"blue":
         ( (jira_repair_rate_3>colorConfigData.mm_repaire_rate.green[0]/100 || jira_repair_rate_3==colorConfigData.mm_repaire_rate.green[0]/100)?"green":
@@ -296,8 +337,7 @@ export default class NewMergeReport extends Component {
     let obj = dealUrl(url);
     work_id = obj["work_id"];
     flag = obj["flag"];
-    // console.log(work_id);
-
+    
     //下拉菜单 - menu - 相关服务已上线
     const dropData_service = ["未上线", "已上线"];
     const dropMenu_service = (
@@ -359,7 +399,6 @@ export default class NewMergeReport extends Component {
       onChange(info) {
         if (info.file.status !== 'uploading') {
           test_result_filename = info.fileList[0].response.data.filename;
-          console.log(test_result_filename);
           _this.setState({
             test_result_file:test_result_filename
           });
@@ -381,7 +420,6 @@ export default class NewMergeReport extends Component {
       onChange(info) {
         if (info.file.status !== 'uploading') {
           uat_result_filename = info.fileList[0].response.data.filename;
-          console.log(uat_result_filename);
           _this.setState({
             uat_result_file:uat_result_filename
           });
@@ -677,23 +715,19 @@ export default class NewMergeReport extends Component {
                         //文件上传
                         this.state.test_result_file = (test_result_filename==undefined)?"":test_result_filename;
                         this.state.uat_result_file = (uat_result_filename==undefined)?"":uat_result_filename;
-                        // debugger;
-
-                        // jira_id
+                        
                         let jira_id = this.state.jira_id;
                         if((typeof jira_id) == "object"){ // jira_id若为数组,则转换为字符串
                           jira_id = jira_id.join(",");
                         this.state.jira_id = jira_id;
                         }
-                        console.log(this.state);
-
+                        
                         api.postMergeReport(this.state).then(data=>{
                           if(data.status == 200){
-                            console.log("merge report post success");
+                            //console.log("merge report post success");
                             console.log(data);
                             window.location.href="index.html#/evaluationResult?flag=1&pageTag=merge&work_id=" + work_id;
                           }else if(data.status == 500){
-                            console.log(data.message);
                             alert(data.message);
                           }
                         });
@@ -753,8 +787,6 @@ export default class NewMergeReport extends Component {
       console.log(data);
       if(data.status === 200){
         colorConfigData = data.data[0].json.merge_config;
-        console.log(colorConfigData); // merge_config
-
       }else{
         alert("请求颜色配置数据失败");
       }
@@ -762,16 +794,13 @@ export default class NewMergeReport extends Component {
 
     //新建合板报告前,获取合板的jira数据
     api.getMergeReport_Jira(work_id).then(data=> {
-      console.log("merge report get jira success");
-      console.log(data);
-      console.log(work_id);
+      //console.log("merge report get jira success");
       //将获取的数据显示在合板页面中
       this.state = data.data;
 
       //pass_rate_color
       let pass_rate_color="",test_norunrate_color="",b_repairrate_color="",c_repairrate_color="",
         major_repairrate_color,minor_repairrate_color,cptest_rate_color;
-      console.log(3333333);
       if(colorConfigData!=undefined){
         if(this.state.tl_rate_1!=null){
           pass_rate_color = ((this.state.tl_rate_1==colorConfigData.pass_rate.blue[1]/100)?"blue":
@@ -783,20 +812,57 @@ export default class NewMergeReport extends Component {
           );
         }
         if(this.state.tl_rate_4!=null){
-          test_norunrate_color = this.state.tl_rate_4==0.00?"green":(this.state.tl_rate_4>0.00?"red":"");
+          //测试-执行率
+          if(colorConfigData.execute_rate.blue!=undefined){ //有蓝灯
+            test_norunrate_color = ((1-this.state.tl_rate_4)==colorConfigData.execute_rate.blue[1]/100)?"blue":
+              ((((1-this.state.tl_rate_4)>colorConfigData.execute_rate.green[0]/100&&(1-this.state.tl_rate_4)<colorConfigData.execute_rate.green[1]/100)||(1-this.state.tl_rate_4)==colorConfigData.execute_rate.green[0]/100)?"green":
+                ((((1-this.state.tl_rate_4)>colorConfigData.execute_rate.yellow[0]/100&& (1-this.state.tl_rate_4)<colorConfigData.execute_rate.yellow[1]/100)||(1-this.state.tl_rate_4)==colorConfigData.execute_rate.yellow[0]/100)?"yellow":
+                    ((1-this.state.tl_rate_4)<colorConfigData.execute_rate.red[1]/100?"red":"")
+                ));
+
+          }else{ //没有蓝/黄灯,只有绿/红灯
+            test_norunrate_color = (((1-this.state.tl_rate_4)>colorConfigData.execute_rate.green[0]/100&&(1-this.state.tl_rate_4)<colorConfigData.execute_rate.green[1]/100)||(1-this.state.tl_rate_4)==colorConfigData.execute_rate.green[0]/100)?"green":
+              ((1-this.state.tl_rate_4)<colorConfigData.execute_rate.red[1]/100?"red":"");
+          }
         }
         //修复比率-颜色判断
         if(this.state.jira_num_1==0 && this.state.jira_close_num_1==0){
           this.state.jira_repair_rate_1="1.00";
-          b_repairrate_color = "green";
-        }else{
-          b_repairrate_color = ((this.state.jira_repair_rate_1== 1.00)?"green":(this.state.jira_repair_rate_1<1.00?"red":""));
+          if(colorConfigData.bc_repaire_rate.blue != undefined){
+            b_repairrate_color = "blue";
+          }else{
+            b_repairrate_color = "green";
+          }
+        }else {
+          if (colorConfigData.bc_repaire_rate.blue != undefined) { //有蓝/黄 / 绿/红灯
+            b_repairrate_color = (this.state.jira_repair_rate_1 == colorConfigData.bc_repaire_rate.blue[1] / 100) ? "blue" :
+              (((this.state.jira_repair_rate_1 > colorConfigData.bc_repaire_rate.green[0] / 100 && this.state.jira_repair_rate_1 < colorConfigData.bc_repaire_rate.green[1] / 100) || this.state.jira_repair_rate_1 == colorConfigData.bc_repaire_rate.green[0] / 100) ? "green" :
+                ((this.state.jira_repair_rate_1 > colorConfigData.bc_repaire_rate.yellow[0] / 100 && this.state.jira_repair_rate_1 < colorConfigData.bc_repaire_rate.yellow[1] / 100) || this.state.jira_repair_rate_1 == colorConfigData.bc_repaire_rate.yellow[0] / 100) ? "yellow" :
+                  (this.state.jira_repair_rate_1 < colorConfigData.bc_repaire_rate.red[1] / 100 ? "red" : ""));
+
+          } else { //没有蓝/黄灯,只有绿/红灯
+            b_repairrate_color = (((this.state.jira_repair_rate_1 > colorConfigData.bc_repaire_rate.green[0] / 100 && this.state.jira_repair_rate_1 < colorConfigData.bc_repaire_rate.green[1] / 100) || this.state.jira_repair_rate_1 == colorConfigData.bc_repaire_rate.green[0] / 100) ? "green" :
+              (this.state.jira_repair_rate_1 < colorConfigData.bc_repaire_rate.red[1] / 100 ? "red" : ""));
+          }
         }
         if(this.state.jira_num_2==0 && this.state.jira_close_num_2==0){
           this.state.jira_repair_rate_2="1.00";
-          c_repairrate_color = "green";
-        }else{
-          c_repairrate_color = ((this.state.jira_repair_rate_2== 1.00)?"green":(this.state.jira_repair_rate_2<1.00?"red":""));
+          if(colorConfigData.bc_repaire_rate.blue != undefined){
+            c_repairrate_color = "blue";
+          }else{
+            c_repairrate_color = "green";
+          }
+        }else {
+          if (colorConfigData.bc_repaire_rate.blue != undefined) { //有蓝/黄灯
+            c_repairrate_color = (this.state.jira_repair_rate_2 == colorConfigData.bc_repaire_rate.blue[1] / 100) ? "blue" :
+              (((this.state.jira_repair_rate_2 > colorConfigData.bc_repaire_rate.green[0] / 100 && this.state.jira_repair_rate_2 < colorConfigData.bc_repaire_rate.green[1] / 100) || this.state.jira_repair_rate_2 == colorConfigData.bc_repaire_rate.green[0] / 100) ? "green" :
+                ((this.state.jira_repair_rate_2 > colorConfigData.bc_repaire_rate.yellow[0] / 100 && this.state.jira_repair_rate_2 < colorConfigData.bc_repaire_rate.yellow[1] / 100) || this.state.jira_repair_rate_2 == colorConfigData.bc_repaire_rate.yellow[0] / 100) ? "yellow" :
+                  (this.state.jira_repair_rate_2 < colorConfigData.bc_repaire_rate.red[1] / 100 ? "red" : ""));
+
+          } else { //没有蓝/黄灯,只有绿/红灯
+            c_repairrate_color = (((this.state.jira_repair_rate_2 > colorConfigData.bc_repaire_rate.green[0] / 100 && this.state.jira_repair_rate_2 < colorConfigData.bc_repaire_rate.green[1] / 100) || this.state.jira_repair_rate_2 == colorConfigData.bc_repaire_rate.green[0] / 100) ? "green" :
+              (this.state.jira_repair_rate_2 < colorConfigData.bc_repaire_rate.red[1] / 100 ? "red" : ""));
+          }
         }
         if(this.state.jira_num_3==0 && this.state.jira_close_num_3==0) {
           this.state.jira_repair_rate_3 = "1.00";
@@ -868,13 +934,11 @@ export default class NewMergeReport extends Component {
         dropData_UAT:(UATSta == 0)?"未通过":"通过" ,
         work_id:work_id,
       });
-      console.log(this.state);
-
+      
       //获取安全测试结果 -- 需要的参数 jira_id
       let arr_jira_id = [], //参数为string数组
         jira_id;
       jira_id = this.state.jira_id;
-      console.log(jira_id);
       if(jira_id != undefined){
         arr_jira_id.push(jira_id);
         if(jira_id.includes(",")){
@@ -888,14 +952,13 @@ export default class NewMergeReport extends Component {
         if(data.status == 200){
           data.data.map(ele => {
             if(ele.status == 200){
-              console.log(ele.result); // 蓝/绿/黄/红
+              //console.log(ele.result); // 蓝/绿/黄/红
               this.setState({
                 dropData_safe : ele.result,
               });
             }
             if(this.state.dropData_safe === undefined){
               if (ele.status == 404) {
-                console.log(ele.msg);
                 this.setState({
                   dropData_safe: "无"
                 });
