@@ -23,10 +23,7 @@ import LuyeTable from "./luyeTable/luyeTable.js";
 
 //时间日期选择
 const {MonthPicker, RangePicker} = DatePicker;
-function onChange(date, dateString) {
-  console.log(date);
-  console.log(dateString);
-}
+
 //获取当前时间
 function getNowTime(date) {
   let y, m, d;
@@ -84,8 +81,6 @@ export default class ReportList extends Component {
 
   //时间日期选择  -- 提交时间事件处理
   onChange(date, dateString) {
-    console.log(date);
-    console.log(dateString);
     //更改提交时间的状态
     this.setState({
       date_begin: dateString[0],
@@ -95,7 +90,6 @@ export default class ReportList extends Component {
 
   //下拉列表-事件处理
   menuOnclick(e) {
-    console.log('click', e.key);
     this.setState({
       dropData: e.key,
     });
@@ -105,9 +99,8 @@ export default class ReportList extends Component {
   handleChange(e) {
     var obj = {};
     obj[e.target.name] = e.target.value;
-    //
     this.setState(obj);
-    console.log(this.state);
+    
     this.state.dep2_name = Math.random() * 100;
     this.state.dep1_overlay = (<div>{[2, 3, 5, 5].map(function (item) {
       <div>{item}</div>
@@ -295,10 +288,8 @@ export default class ReportList extends Component {
       check_result = 2;
     }
     this.state.check_result = check_result;
-    console.log(this.state);
     //调用接口函数
     api.getReportList(this.state).then(data => {
-      console.log("reportList get success");
       console.log(data);
       let arr = data.data;
       let typeStr = "", nodeStr = "",
@@ -362,13 +353,11 @@ export default class ReportList extends Component {
         }
         arr[i]["check_resultStr"] = check_resultStr;
       }
-      ;
-      console.log(arr);
+      
       //节点的跳转
       const redirectTo_NodeTest = (e)=> {
         //取到对应的工作流id
         work_id = e.data.id;
-        console.log(work_id);
         //提测报告
         if (Object.is(e.data.node, 0)) {
           this.setState({checkinModal: true}); //显示提测对话框
@@ -468,7 +457,8 @@ export default class ReportList extends Component {
       //查看项目信息
       const redirectTo_ReportInfo = (e)=> {
         work_id = e.data.id;
-        window.location.href = "index.html#/viewReportInfo?work_id=" + work_id;
+        let node = e.data.node;
+        window.location.href = "index.html#/viewReportInfo?work_id=" + work_id + "&node=" + node;
       }
 
       const editRow = function () {

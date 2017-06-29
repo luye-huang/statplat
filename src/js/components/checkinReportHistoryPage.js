@@ -49,8 +49,7 @@ export default class CheckinReportHistoryPage extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
-    console.log(work_id);
-
+    
     if (this.state._log != undefined) {
       let count = 0;
       if (this.state._log.length > 0) {
@@ -68,10 +67,8 @@ export default class CheckinReportHistoryPage extends Component {
           );
 
         });
-        console.log(rows);
       } else {
         rows = this.empty();
-        console.log(rows);
       }
     }
 
@@ -302,18 +299,15 @@ export default class CheckinReportHistoryPage extends Component {
     let flow;
     //获取提测报告的信息
     api.getCheckinReport_Jira(work_id).then(data=> {
-      console.log(data);
       data1 = data.data;
 
     });
     //获取评估结果和审核结果即log记录日志
     api.getCheckreportForCheckin(work_id).then(data=> {
-      console.log("审核结果即log记录日志");
+      //console.log("审核结果即log记录日志");
       console.log(data);
       data2 = data.data;
       this.state = Object.assign({}, data1, data2);
-      console.log(this.state);
-
       status = this.state.status;
       //评估结论
       if (status == 0) {

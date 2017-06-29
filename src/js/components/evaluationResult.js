@@ -24,8 +24,6 @@ function dealUrl(url) {
   let first = url.indexOf("?");
   let _str = url.substr(first + 1, url.length); //截取问号?之后的内容
   let _arr = _str.split("&"); //用&分割字符串
-  // console.log(_arr);
-
   let newObj = {};
   for (let i = 0; i < _arr.length; i++) {
     //将_arr数组中的字符串元素,用=分割成字符串数组,并选择第2个元素
@@ -54,13 +52,10 @@ export default class EvaluationResult extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     pageTag = obj["pageTag"];
-    console.log(pageTag);
     work_id = obj["work_id"];
     this.state.work_id = work_id;
-    console.log(this.state.work_id);
     let flag = obj["flag"];
     let isHide = flag==0?"none":"block";
-    console.log(isHide);
 
     //评估结论
     //debugger;
@@ -90,7 +85,6 @@ export default class EvaluationResult extends Component {
         this.state.statusResult = "红灯"
         isExamBtnHide = true; //按钮显示
       }
-      console.log(isExamBtnHide);
     }
 
     return (
@@ -154,12 +148,8 @@ export default class EvaluationResult extends Component {
     if (pageTag == "checkin") {
       //查看提测报告的 评估结果
       api.getCheckreportForCheckin(this.state.work_id).then(data=> {
-        // console.log(data);
         this.state = data.data;
-        console.log(this.state);
-
         status = this.state.status;
-        console.log(status);
         flow = this.state.flow;
         this.setState({
           _flow:flow!=undefined?this.state.flow.join("->"):"无", //审核流程
@@ -170,15 +160,10 @@ export default class EvaluationResult extends Component {
       //查看上线报告的 评估结果
       //debugger
       api.getCheckreportForOnline(this.state.work_id).then(data=> {
-        // console.log(data);
-
         this.state = data.data;
         //上线报告不管是什么灯,都需要审核,所以need_check默认为1,
         // this.state.need_check = 1;
-        console.log(this.state);
-
         status = this.state.status;
-        console.log(status);
         flow = this.state.flow;
         this.setState({
           _flow:flow!=undefined?this.state.flow.join("->"):"无", //审核流程
@@ -187,12 +172,8 @@ export default class EvaluationResult extends Component {
     } else if (pageTag == "merge") {
       //查看合板报告的 评估结果
       api.getCheckreportForMerge(this.state.work_id).then(data=> {
-        // console.log(data);
         this.state = data.data;
-        console.log(this.state);
-
         status = this.state.status;
-        console.log(status);
         flow = this.state.flow;
         this.setState({
           _flow:flow!=undefined?this.state.flow.join("->"):"无", //审核流程

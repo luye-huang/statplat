@@ -62,8 +62,6 @@ export default class MonthStat extends Component {
 
   //时间日期选择
   onChange(date, dateString) {
-    console.log(date);
-    console.log(dateString);
     //更改提交时间的状态
     this.setState({
       date_begin: dateString[0],
@@ -76,19 +74,16 @@ export default class MonthStat extends Component {
     var obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
-    console.log(this.state);
   }
 
   //下拉列表-事件处理 1
   menu1_Onclick(e) {
-    console.log('click', e.key);
     this.setState({
       dep1_id: e.key,
     });
   }
 
   changeSubDep(e) {
-    console.log(e);
     //pid is the id needed for ajax request
     const [id, depSelected, layer] = e.key.split('@');
     if (layer === '1') {
@@ -165,12 +160,9 @@ export default class MonthStat extends Component {
   }
 
   getMonthTbData() {
-    console.log(this.state);
     //调用接口函数
     api.getMonthStatList(this.state).then(data=> {
-      console.log("MonthStatList get success");
       console.log(data);
-
       let arr = data.data;
       let typeStr = "",
         nodeStr1 = "", nodeStr2 = "",
@@ -218,7 +210,7 @@ export default class MonthStat extends Component {
         }
         arr[i]["check_noteStr2"] = check_noteStr2;
       }
-      console.log(arr);
+      
       //表格数据渲染
       var tbParam = {
         el: $("#tb-div"),
@@ -247,15 +239,7 @@ export default class MonthStat extends Component {
   }
 
   componentDidMount() {
-    //获取 1/2/3级部门的初始化数据
-    /*api.getDepartmentData().then(data=> {
-      console.log(data);
-      this.setState({
-        dp1: data.data.dp1,
-        dp2: data.data.dp2,
-        dp3: data.data.dp3,
-      });
-    });*/
+    
   }
 
 }

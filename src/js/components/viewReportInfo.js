@@ -4,19 +4,29 @@
 
 import React ,{Component} from "react";
 import {
-  Input,
+  Button,Input,
   Row, Col,
 } from "antd";
 import {api} from "../api.js";
 import {dealUrl} from "../api.js";
 
 let work_id; //每条数据的工作流work_id
+let node; //节点
+let _date_begin, _date_end;
 export default class ViewReportInfo extends Component{
   constructor() {
     super();
     this.state = {
-
+      inputState:"",
+      projectType:"",
+      testPeriod:"",
     };
+  }
+
+  handleChange(e){
+    let obj = {};
+    obj[e.target.name] = e.target.value;
+    this.setState( obj );
   }
 
   render(){
@@ -24,8 +34,8 @@ export default class ViewReportInfo extends Component{
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
-    console.log(work_id);
-
+    node = obj["node"];
+    
     return(
       <div>
         <Row style={{marginBottom: 20}}>
@@ -34,34 +44,47 @@ export default class ViewReportInfo extends Component{
         <div>
           <Row>
             <Col span={6} className="test-link-css border-right-css border-bottom-css">
-              需求名称
+              *需求名称
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              {this.state.name}
+              <Input placeholder="输入需求名称" name="name" value={this.state.name}
+                     onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-link-css border-right-css border-bottom-css">
-              需求ID
+              *需求ID
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              {this.state.jira_id}
+              <Input placeholder="输入需求ID" name="jira_id" value={this.state.jira_id}
+                     onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-link-css border-right-css border-bottom-css">
-              项目类型
+              版本
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              <span>{this.state.type==0?"App类":"非App类"}</span>
+              <Input placeholder="输入版本" name="version" value={this.state.version!=null?this.state.version:"无"}
+                     onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
           <Row>
             <Col span={6} className="test-link-css border-right-css border-bottom-css">
-              测试周期
+              *项目类型
             </Col>
             <Col span={18} className="test-link-css border-bottom-css">
-              {this.state.date_begin + "  --  "+ this.state.date_end}
+              <Input placeholder="输入项目类型 , 示例 : App类 或 非App类" name="projectType" value={this.state.projectType}
+                     onChange={this.handleChange.bind(this)}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="test-link-css border-right-css border-bottom-css">
+              *测试周期
+            </Col>
+            <Col span={18} className="test-link-css border-bottom-css">
+              <Input placeholder="输入测试周期 , 示例 : 2017-06-22 - 2017-06-23" name="testPeriod" value={this.state.testPeriod}
+                     onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
           <Row>
@@ -69,23 +92,46 @@ export default class ViewReportInfo extends Component{
               测试人员
             </Col>
             <Col span={18} className="test-link-css">
-              <span>{this.state.testers}</span>
+              <Input placeholder="输入测试人员" name="testers" value={this.state.testers}
+                     onChange={this.handleChange.bind(this)}/>
             </Col>
           </Row>
         </div>
+
+        <Row style={{ marginTop:25 }}>
+          <Col span={12} offset={6}>
+            <Button type="primary" style={{ display:(node==0)?"block":"none" }}
+                    onClick={
+                        ()=>{
+                          window.location = "index.html#/newProject?work_id=" + work_id + "&_date_begin=" + _date_begin + "&_date_end=" + _date_end;
+                        }
+                     }
+            >编辑</Button>
+          </Col>
+          <Col span={6} >
+            <Button onClick={ ()=>{ window.location="index.html#/reportList" } }>关闭</Button>
+          </Col>
+        </Row>
+        
       </div>
     );
   }
-
-  componentDidMount(){
+  
+  componentDidMount() {
     //获取 项目信息
-    api.getNewProject(work_id).then(data=>{
-      if(data.status == 200){
-        console.log("project info get success");
+    api.getNewProject(work_id).then(data=> {
+      if (data.status == 200) {
         console.log(data.data);
+        _date_begin = data.data.date_begin;
+        _date_end = data.data.date_end;
         let jira_id = data.data.jira_id;
         data.data["jira_id"] = jira_id.join(",");
         this.setState(data.data);
+        this.setState({
+          work_id: work_id,
+          projectType: data.data.type == 0 ? "App类" : "非App类",
+          testPeriod: data.data.date_begin + "  -  " + data.data.date_end,
+        });
       }
     });
 

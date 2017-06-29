@@ -23,8 +23,6 @@ function dealUrl(url) {
   let first = url.indexOf("?");
   let _str = url.substr(first + 1, url.length); //截取问号?之后的内容
   let _arr = _str.split("&"); //用&分割字符串
-  // console.log(_arr);
-
   let newObj = {};
   for (let i = 0; i < _arr.length; i++) {
     //将_arr数组中的字符串元素,用=分割成字符串数组,并选择第2个元素
@@ -54,7 +52,6 @@ export default class ExamResult extends Component {
 
   ////下拉列表-点击事件处理
   menuOnclick(e) {
-    console.log(e.key);
     this.setState({
       dropData: e.key,
     });
@@ -64,8 +61,6 @@ export default class ExamResult extends Component {
   onChange(e) {
     objData[e.target.name] = e.target.value;
     this.setState(objData);
-
-    console.log(this.state);
   }
 
   empty() {
@@ -87,10 +82,8 @@ export default class ExamResult extends Component {
     let obj = dealUrl(url);
     pageTag = obj["pageTag"];
     work_id = obj["work_id"];
-    console.log(work_id);
     flag = obj["flag"];
-    console.log(flag);
-
+    
     //log记录的解析显示
     if(objData._log != undefined){
       if (objData._log.length > 0) {
@@ -138,9 +131,7 @@ export default class ExamResult extends Component {
       onChange(info) {
         if (info.file.status !== 'uploading') {
           // console.log(info.file, info.fileList);
-          console.log(info.fileList[0].response);
           filename = info.fileList[0].response.data.filename;
-          console.log(filename);
           _this.setState({
             _file:filename
           });
@@ -218,46 +209,35 @@ export default class ExamResult extends Component {
                                         objData["if_pass"] = if_pass;
                                         //审核时上传的文件
                                         objData["file"] = (filename==undefined)?"":filename;
-                                        console.log(objData);
                                         if(pageTag == "checkin"){
                                             //提交 提测报告审核信息
                                             api.postCheckreportForCheckin(objData).then(data=>{
                                                 if(data.status == 200){
-                                                    console.log("Checkreport For Checkin success");
                                                     alert("success");
                                                     window.location="index.html#/reportList?exam_result=1";
                                                 }else if(data.status == 500){
-                                                    console.log(data.message);
                                                     alert(data.message);
                                                 }
-                                                console.log(data);
                                             });
                                         }else if(pageTag == "online"){
                                             //提交 上线报告审核信息
                                             api.postCheckreportForOnline(objData).then(data=>{
                                                 if(data.status == 200){
-                                                    console.log("Checkreport For Online success");
                                                     alert("success");
                                                     window.location="index.html#/reportList?exam_result=1";
                                                 }else if(data.status == 500){
-                                                    console.log(data.message);
                                                     alert(data.message);
                                                 }
-                                                console.log(data);
                                             });
-                                            console.log("CheckreportForOnline");
                                         }else if(pageTag == "merge"){
                                             //提交 合板报告审核信息
                                             api.postCheckreportForMerge(objData).then(data=>{
                                                 if(data.status == 200){
-                                                    console.log("Checkreport For Merge success");
                                                     alert("success");
                                                     window.location="index.html#/reportList?exam_result=1";
                                                 }else if(data.status == 500){
-                                                    console.log(data.message);
                                                     alert(data.message);
                                                 }
-                                                console.log(data);
                                             });
                                         }
                                     } }
@@ -291,42 +271,29 @@ export default class ExamResult extends Component {
   componentDidMount() {
     //获取项目信息 --  取到测试人员的ctx
     api.getNewProject(work_id).then(data=> {
-      console.log("project info get success");
       console.log(data);
       //取到测试人员的ctx,显示到页面上
       objData["reporter_ctx"] = data.data.tester_ctx;
       objData["work_id"] = work_id;
       this.setState(objData);
-      console.log(this.state);
     });
 
     //log记录日志
     if(pageTag == "checkin"){
       api.getCheckreportForCheckin(work_id).then(data=> {
-        console.log("log记录日志");
-        console.log(data);
+        //console.log(data);
         objData["_log"] = data.data.loglist; //log记录日志
-
         this.setState(objData);
-        console.log(this.state);
       });
     }else if(pageTag == "online"){
       api.getCheckreportForOnline(work_id).then(data=> {
-        console.log("log记录日志");
-        console.log(data);
         objData["_log"] = data.data.loglist; //log记录日志
-
         this.setState(objData);
-        console.log(this.state);
       });
     }else if(pageTag == "merge"){
       api.getCheckreportForMerge(work_id).then(data=> {
-        console.log("log记录日志");
-        console.log(data);
         objData["_log"] = data.data.loglist; //log记录日志
-
         this.setState(objData);
-        console.log(this.state);
       });
     }
   }
