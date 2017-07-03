@@ -261,7 +261,11 @@ export default class ReportList extends Component {
         <Row>
           <Col span={6}></Col>
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
-                                onClick={()=>window.location = 'index.html#/newProject'}>新建项目</Button></Col>
+                                onClick={()=>{
+                                  //保存当前的状态(准入报告页面的查询条件)到localStorage中
+                                  this.saveReportListStateToLocal();
+                                  window.location = 'index.html#/newProject';
+                                }}>新建项目</Button></Col>
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
                                 onClick={
                                   this.clickBtn.bind(this)
