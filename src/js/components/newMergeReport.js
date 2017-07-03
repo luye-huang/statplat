@@ -18,6 +18,7 @@ import {api} from "../api.js";
 import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
+var objData = {};
 var work_id,
     flag; //flag为0 隐藏 ,即display:none
 var safeSta, //安全测试 状态
@@ -336,7 +337,14 @@ export default class NewMergeReport extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
-    flag = obj["flag"];
+    //判断提交按钮是否显示
+    if(objData!=undefined){
+      if(objData.node==5 && objData.check_result==1){
+        flag = 0; //按钮隐藏
+      }else{
+        flag = 1;
+      }
+    }
     
     //下拉菜单 - menu - 相关服务已上线
     const dropData_service = ["未上线", "已上线"];
@@ -782,6 +790,14 @@ export default class NewMergeReport extends Component {
   }
 
   componentDidMount() {
+    //获取项目信息 --  取到节点node 和 审核结果check_result
+    api.getNewProject(work_id).then(data=> {
+      //节点node和审核结果check_result
+      objData["node"] = data.data.node;
+      objData["check_result"] = data.data.check_result;
+      this.setState(objData);
+    });
+
     //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
     api.getConfigOfColorStandard().then(data => {
       console.log(data);

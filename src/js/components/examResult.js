@@ -82,7 +82,15 @@ export default class ExamResult extends Component {
     let obj = dealUrl(url);
     pageTag = obj["pageTag"];
     work_id = obj["work_id"];
-    flag = obj["flag"];
+    if(objData!=undefined){
+      if(objData.node==3 && objData.check_result==1){
+        flag = 0; //按钮隐藏
+      }else if (objData.node==5 && objData.check_result==1){
+        flag = 0; //按钮隐藏
+      }else{
+        flag = 1;
+      }
+    }
     
     //log记录的解析显示
     if(objData._log != undefined){
@@ -275,6 +283,9 @@ export default class ExamResult extends Component {
       //取到测试人员的ctx,显示到页面上
       objData["reporter_ctx"] = data.data.tester_ctx;
       objData["work_id"] = work_id;
+      //节点node和审核结果check_result
+      objData["node"] = data.data.node;
+      objData["check_result"] = data.data.check_result;
       this.setState(objData);
     });
 

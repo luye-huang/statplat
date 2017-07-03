@@ -48,14 +48,12 @@ export default class EvaluationResult extends Component {
   }
 
   render() {
-    //从提测准入报告页面跳转过来后,解析传过来的url中的flag参数
+    //从提测准入报告页面跳转过来后,解析传过来的url中的参数
     let url = window.location.href;
     let obj = dealUrl(url);
     pageTag = obj["pageTag"];
     work_id = obj["work_id"];
     this.state.work_id = work_id;
-    let flag = obj["flag"];
-    let isHide = flag==0?"none":"block";
 
     //评估结论
     //debugger;

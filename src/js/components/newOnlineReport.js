@@ -22,6 +22,7 @@ import {api} from "../api.js";
 import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
+var objData = {};
 let work_id,
   flag; //flag为0 隐藏 ,即display:none
 var safeSta, //安全测试 状态
@@ -346,7 +347,14 @@ export default class NewOnlineReport extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
-    flag = obj["flag"];
+    //判断提交按钮是否显示
+    if(objData!=undefined){
+      if(objData.node==3 && objData.check_result==1){
+        flag = 0; //按钮隐藏
+      }else{
+        flag = 1;
+      }
+    }
 
     //下拉菜单 - menu - #弱网测试总结
     const dropData_weak = ["NA", "通过", "未通过"];
@@ -717,7 +725,7 @@ export default class NewOnlineReport extends Component {
                         api.postOnlineReport(this.state).then(data=>{
                           console.log(data);
                           if(data.status == 200){
-                            window.location.href="index.html#/evaluationResult?flag=1&pageTag=online&work_id="+ work_id
+                            window.location.href="index.html#/evaluationResult?pageTag=online&work_id="+ work_id
                           }else if(data.status == 500){
                             alert(data.message);
                           }
@@ -770,6 +778,14 @@ export default class NewOnlineReport extends Component {
   }
 
   componentDidMount() {
+    //获取项目信息 --  取到节点node 和 审核结果check_result
+    api.getNewProject(work_id).then(data=> {
+      //节点node和审核结果check_result
+      objData["node"] = data.data.node;
+      objData["check_result"] = data.data.check_result;
+      this.setState(objData);
+    });
+
     //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
     api.getConfigOfColorStandard().then(data => {
       if(data.status === 200){
@@ -874,6 +890,7 @@ export default class NewOnlineReport extends Component {
         if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
           this.state.jira_repair_rate_total = "1.00";
         }
+        console.log(1111111);
         if(this.state.cptest_rate!=null){
           cptest_rate_color = this.state.cptest_rate==colorConfigData.cptest_rate.green[1]/100?"green":
             ( ((this.state.cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&

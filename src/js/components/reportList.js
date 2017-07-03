@@ -38,6 +38,7 @@ currDate = new Date();
 currTime = getNowTime(currDate);
 let work_id;
 let check_result; //审核结果
+var reportListState;
 export default class ReportList extends Component {
   //状态初始化 -- input输入框 和 下拉列表dropdown
   constructor(props) {
@@ -109,6 +110,9 @@ export default class ReportList extends Component {
 
   //提测对话框
   checkinModalOK() {
+    //保存当前的状态(准入报告页面的查询条件)到localStorage中
+    this.saveReportListStateToLocal();
+
     //跳转到 -- 新建提测报告页面,并将work_id传过去
     window.location = "index.html#/newCheckInReport?work_id=" + work_id;
     this.setState({
@@ -124,6 +128,9 @@ export default class ReportList extends Component {
 
   //上线对话框
   onlineModalOK() {
+    //保存当前的状态(准入报告页面的查询条件)到localStorage中
+    this.saveReportListStateToLocal();
+
     //跳转到 -- 新建上线报告的页面,传递work_id
     window.location = "index.html#/newOnlineReport?work_id=" + work_id;
     this.setState({
@@ -139,6 +146,9 @@ export default class ReportList extends Component {
 
   //合板对话框
   mergeModalOK() {
+    //保存当前的状态(准入报告页面的查询条件)到localStorage中
+    this.saveReportListStateToLocal();
+
     //跳转到 -- 新建合板报告的页面,传递work_id
     window.location = "index.html#/newMergeReport?work_id=" + work_id;
     this.setState({
@@ -174,6 +184,11 @@ export default class ReportList extends Component {
     else if (layer === '3') {
       this.setState({selected3: depSelected, dep3_id: id});
     }
+  }
+
+  //查 询 -按钮点击事件
+  clickBtn(){
+    this.getTbData();
   }
 
   render() {
@@ -248,9 +263,12 @@ export default class ReportList extends Component {
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
                                 onClick={()=>window.location = 'index.html#/newProject'}>新建项目</Button></Col>
           <Col span={6}><Button style={{marginLeft: 4}} type="primary"
-                                onClick={ ()=> {
+                                onClick={
+                                  this.clickBtn.bind(this)
+                                /*()=> {
                                   this.getTbData();
-                                } }
+                                } */
+                                }
           >查 询</Button></Col>
         </Row>
         <Modal title="提交询问" visible={this.state.checkinModal}
@@ -363,38 +381,27 @@ export default class ReportList extends Component {
           this.setState({checkinModal: true}); //显示提测对话框
         }
         else if (Object.is(e.data.node, 1)) {
-
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/newCheckInReport?work_id=" + work_id;
-          /*// 非App类型,type=1, 且审核结果为1 ,进入上线报告
-           if(Object.is(e.data.type, 1) && Object.is(e.data.check_result, 1)){
-           window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
-           }
-           // App类型,type=0, 且审核结果为1 ,进入合板报告
-           if(Object.is(e.data.type, 0) && Object.is(e.data.check_result, 1)){
-           window.location.href = "index.html#/newMergeReport?work_id=" + work_id;
-           }*/
         }
         //上线报告
         else if (Object.is(e.data.node, 2)) {
           this.setState({onlineModal: true}); //显示上线对话框
         }
         else if (Object.is(e.data.node, 3)) {
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/newOnlineReport?work_id=" + work_id;
-          //若上线审核通过,则隐藏上线报告页面的提交按钮
-          if (Object.is(e.data.check_result, 1)) {
-            window.location.href = "index.html#/newOnlineReport?work_id=" + work_id + "&flag=0";
-          }
         }
         //合板报告
         else if (Object.is(e.data.node, 4)) {
           this.setState({mergeModal: true}); //显示合板对话框
         }
         else if (Object.is(e.data.node, 5)) {
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/newMergeReport?work_id=" + work_id;
-          //若合板审核通过,则隐藏合板报告页面的提交按钮
-          if (Object.is(e.data.check_result, 1)) {
-            window.location.href = "index.html#/newMergeReport?work_id=" + work_id + "&flag=0";
-          }
         }
       }
       //评估结论的跳转  -- 跳转到evaluationResult评估结论页面, pageTag=checkin
@@ -404,21 +411,24 @@ export default class ReportList extends Component {
           this.setState({checkinModal: true}); //显示提测对话框
         }
         else if (Object.is(e.data.node, 1)) { //跳转到提测的评估页面
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=checkin";
         }
         else if (Object.is(e.data.node, 2)) {
           this.setState({onlineModal: true}); //显示上线对话框
         }
         else if (Object.is(e.data.node, 3)) { //跳转到上线的评估页面
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=online";
-          if (Object.is(e.data.check_result, 1)) {
-            window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=online&flag=0";
-          }
         }
         else if (Object.is(e.data.node, 4)) {
           this.setState({mergeModal: true}); //显示合板对话框
         }
         else if (Object.is(e.data.node, 5)) { //跳转到合板的评估页面
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/evaluationResult?work_id=" + work_id + "&pageTag=merge";
         }
       }
@@ -429,28 +439,32 @@ export default class ReportList extends Component {
           this.setState({checkinModal: true}); //显示提测对话框
         }
         else if (Object.is(e.data.node, 1)) { //跳转到提测的审核页面
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=checkin";
         }
         else if (Object.is(e.data.node, 2)) {
           this.setState({onlineModal: true}); //显示上线对话框
         }
         else if (Object.is(e.data.node, 3)) { //跳转到上线的审核页面
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=online";
-          //若上线审核通过,则隐藏 审核页面 的提交按钮
-          if (Object.is(e.data.check_result, 1)) {
-            window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=online" + "&flag=0";
-          }
         }
         else if (Object.is(e.data.node, 4)) {
           this.setState({mergeModal: true}); //显示合板对话框
         }
         else if (Object.is(e.data.node, 5)) { //跳转到合板的审核页面
+          //保存当前的状态(准入报告页面的查询条件)到localStorage中
+          this.saveReportListStateToLocal();
           window.location.href = "index.html#/examResult?work_id=" + work_id + "&pageTag=merge";
         }
       }
       //查看历史报告
       const redirectTo_CheckinReportHistory = (e)=> {
         work_id = e.data.id;
+        //保存当前的状态(准入报告页面的查询条件)到localStorage中
+        this.saveReportListStateToLocal();
         window.location.href = "index.html#/checkinReportHistoryPage?work_id=" + work_id;
 
       }
@@ -459,6 +473,8 @@ export default class ReportList extends Component {
         work_id = e.data.id;
         let node = e.data.node;
         window.location.href = "index.html#/viewReportInfo?work_id=" + work_id + "&node=" + node;
+        //跳转到"查看项目信息页面"时,保存当前的状态(准入报告页面的查询条件)到localStorage中
+        this.saveReportListStateToLocal();
       }
 
       const editRow = function () {
@@ -526,8 +542,49 @@ export default class ReportList extends Component {
     });
   }
 
-  componentDidMount() {
+  //保存当前的状态(准入报告页面的查询条件)到localStorage中
+  saveReportListStateToLocal(){
+    const {name, reporter_ctx, date_begin, date_end, selected1, selected2, selected3, dropData, dep1_id, dep2_id, dep3_id} = this.state;
+    reportListState = {
+      name:name,
+      reporter_ctx:reporter_ctx,
+      date_begin:date_begin,
+      date_end:date_end,
+      selected1:selected1,
+      selected2:selected2,
+      selected3:selected3,
+      dropData:dropData,
+      dep1_id:dep1_id, //部门id
+      dep2_id:dep2_id,
+      dep3_id:dep3_id,
+    }
+    localStorage.setItem("reportListState",JSON.stringify(reportListState));
+  }
 
+  componentDidMount() {
+    //回到本页面时,将保存的状态(准入报告页面的查询条件)显示在页面上,并渲染数据,同时清空localStorage中的reportListState状态
+    if(localStorage.getItem("reportListState")!=""){
+      reportListState = JSON.parse(localStorage.getItem("reportListState"));
+      console.log(reportListState);
+      this.setState(reportListState); //此时this.state的状态还没有改变--
+      //
+      this.state.name = reportListState.name;
+      this.state.reporter_ctx = reportListState.reporter_ctx;
+      this.state.date_begin = reportListState.date_begin;
+      this.state.date_end = reportListState.date_end;
+      this.state.selected1 = reportListState.selected1;
+      this.state.selected2 = reportListState.selected2;
+      this.state.selected3 = reportListState.selected3;
+      this.state.dropData = reportListState.dropData;
+      this.state.dep1_id = reportListState.dep1_id;
+      this.state.dep2_id = reportListState.dep2_id;
+      this.state.dep3_id = reportListState.dep3_id;
+      //
+      this.state.isLoaded = true; // --
+
+      this.clickBtn();
+      localStorage.setItem("reportListState",""); //本地缓存中,准入报告保存的状态 - 置空
+    }
   }
 }
 
