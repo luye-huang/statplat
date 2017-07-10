@@ -28,8 +28,9 @@ import {api} from "../api.js";
 import {domain} from "../api.js";
 import {dealUrl} from "../api.js";
 
-var work_id;
-let if_email; // 提测邮件 int
+var objData = {};
+var work_id,
+  flag; //flag为0 隐藏 ,即display:none
 let email_filename; // string
 var colorConfigData; //储存颜色配置的数据
 export default class NewCheckInReport extends Component {
@@ -47,6 +48,7 @@ export default class NewCheckInReport extends Component {
   menuOnclick(e) {
     this.setState({
       dropData: e.key,
+      email_color: e.key == "已发送"?"green":"yellow",
     });
   }
 
@@ -249,6 +251,14 @@ export default class NewCheckInReport extends Component {
     let url = window.location.href;
     let obj = dealUrl(url);
     work_id = obj["work_id"];
+    //判断提交按钮是否显示 - 在提测报告页面,当node为2或4时,提交按钮隐藏(主要用于从评估结果页面返回时.)
+    if(objData!=undefined){
+      if(objData.node==2 || objData.node==4){
+        flag = 0; //按钮隐藏
+      }else{
+        flag = 1;
+      }
+    }
 
     //下拉菜单 - menu - 提测邮件
     const dropData = ["已发送", "未发送"];
@@ -437,7 +447,7 @@ export default class NewCheckInReport extends Component {
             <Col span={6} className="test-link-css border-right-css">
               提测邮件
             </Col>
-            <Col span={8} style={{ backgroundColor:((this.state.dropData=="已发送")?"green":"red") }}
+            <Col span={8} style={{ backgroundColor: this.state.email_color }}
                  className="test-result-detail dropdown-list-css dropdown-a-css border-right-css">
               <div>
                 <Dropdown overlay={dropMenu} trigger={["click"]}>
@@ -489,7 +499,7 @@ export default class NewCheckInReport extends Component {
             </Col>
           </Row>
         </div>
-        <div>
+        <div style={{ display:(flag==0?"none":"block") }}>
           <Row className="jira-css row-btn-css">
             <Col span={12} className="look-result-btn">
               <Button style={{ display:"none"}}
@@ -528,6 +538,14 @@ export default class NewCheckInReport extends Component {
   }
 
   componentDidMount() {
+    //获取项目信息 --  取到节点node 和 审核结果check_result
+    api.getNewProject(work_id).then(data=> {
+      //节点node和审核结果check_result
+      console.log(data);
+      objData["node"] = data.data.node; // 在提测报告页面,当node为2时,提交按钮隐藏(主要用于从评估结果页面返回时.)
+      this.setState(objData);
+    });
+
     //获取平台的计算 “红、绿、黄、蓝” 颜色指标的配置
     api.getConfigOfColorStandard().then(data => {
       if(data.status === 200){
@@ -543,7 +561,7 @@ export default class NewCheckInReport extends Component {
       //将获取到的数据显示到页面上
       this.state = data.data;
       //pass_rate_color
-      let pass_rate_color="",test_norunrate_color="",block_repairrate="";
+      let pass_rate_color="",test_norunrate_color="",block_repairrate="", email_color="";
       if(colorConfigData!=undefined){
         if(this.state.tl_rate_1!=null){
           pass_rate_color = ((this.state.tl_rate_1==colorConfigData.smoketest_passrate.blue[1]/100)?"blue":
@@ -575,24 +593,28 @@ export default class NewCheckInReport extends Component {
             }
           }
         }
+        if(colorConfigData.email.green!=undefined && colorConfigData.email.yellow!=undefined){
+          email_color = this.state.if_email == colorConfigData.email.green?"green":
+                      (this.state.if_email == colorConfigData.email.yellow?"yellow":"yellow");
+        }
         if(this.state.jira_num_2!=null){
           if(this.state.jira_num_2==0 && this.state.jira_close_num_2==0){
-            this.state.jira_repair_rate_2=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+            this.state.jira_repair_rate_2=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为1.
           }
         }
         if(this.state.jira_num_3!=null){
           if(this.state.jira_num_3==0 && this.state.jira_close_num_3==0){
-            this.state.jira_repair_rate_3=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+            this.state.jira_repair_rate_3=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为1.
           }
         }
         if(this.state.jira_num_4!=null){
           if(this.state.jira_num_4==0 && this.state.jira_close_num_4==0){
-            this.state.jira_repair_rate_4=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+            this.state.jira_repair_rate_4=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为1.
           }
         }
         if(this.state.jira_num_total!=null){
           if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
-            this.state.jira_repair_rate_total=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为空.
+            this.state.jira_repair_rate_total=1.00; //初始加在本页面时,当数量和关闭数量都为0时,将修复比率置为1.
           }
         }
       }else{
@@ -601,7 +623,7 @@ export default class NewCheckInReport extends Component {
 
       this.setState({
         //颜色显示
-        pass_rate_color,test_norunrate_color,block_repairrate,
+        pass_rate_color,test_norunrate_color,block_repairrate,email_color,
         //提测邮件
         dropData:(data.data.if_email==1)?"已发送":"未发送",
         work_id:work_id,

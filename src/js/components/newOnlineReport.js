@@ -781,6 +781,7 @@ export default class NewOnlineReport extends Component {
     //获取项目信息 --  取到节点node 和 审核结果check_result
     api.getNewProject(work_id).then(data=> {
       //节点node和审核结果check_result
+      console.log(data);
       objData["node"] = data.data.node;
       objData["check_result"] = data.data.check_result;
       this.setState(objData);

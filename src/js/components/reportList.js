@@ -567,7 +567,7 @@ export default class ReportList extends Component {
 
   componentDidMount() {
     //回到本页面时,将保存的状态(准入报告页面的查询条件)显示在页面上,并渲染数据,同时清空localStorage中的reportListState状态
-    if(localStorage.getItem("reportListState")!=""){
+    if(localStorage.getItem("reportListState")!=null && localStorage.getItem("reportListState")!=""){
       reportListState = JSON.parse(localStorage.getItem("reportListState"));
       console.log(reportListState);
       this.setState(reportListState); //此时this.state的状态还没有改变--
