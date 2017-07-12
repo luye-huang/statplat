@@ -316,8 +316,20 @@ export default class NewOnlineReport extends Component {
       && this.state.jira_notfinish_num_1 != undefined && this.state.jira_notfinish_num_2 != undefined && this.state.jira_notfinish_num_3 != undefined && this.state.jira_notfinish_num_4 != undefined
     ){
       const {jira_notfinish_num_1, jira_notfinish_num_2, jira_notfinish_num_3, jira_notfinish_num_4} = this.state;
+      //未有解决方案颜色判断显示
+      let no_solution_color1, no_solution_color2, no_solution_color3, no_solution_color4;
+      no_solution_color1 = jira_notfinish_num_1==colorConfigData.no_solution.green[1]?"green":
+        ((jira_notfinish_num_1>colorConfigData.no_solution.yellow[0] || jira_notfinish_num_1==colorConfigData.no_solution.yellow[0])?"yellow":"");
+      no_solution_color2 = jira_notfinish_num_2==colorConfigData.no_solution.green[1]?"green":
+        ((jira_notfinish_num_2>colorConfigData.no_solution.yellow[0] || jira_notfinish_num_2==colorConfigData.no_solution.yellow[0])?"yellow":"");
+      no_solution_color3 = jira_notfinish_num_3==colorConfigData.no_solution.green[1]?"green":
+        ((jira_notfinish_num_3>colorConfigData.no_solution.yellow[0] || jira_notfinish_num_3==colorConfigData.no_solution.yellow[0])?"yellow":"");
+      no_solution_color4 = jira_notfinish_num_4==colorConfigData.no_solution.green[1]?"green":
+        ((jira_notfinish_num_4>colorConfigData.no_solution.yellow[0] || jira_notfinish_num_4==colorConfigData.no_solution.yellow[0])?"yellow":"");
+
       let jira_notfinish_num_total = Number.parseInt(jira_notfinish_num_1) + Number.parseInt(jira_notfinish_num_2) + Number.parseInt(jira_notfinish_num_3) + Number.parseInt(jira_notfinish_num_4);
-      this.setState({jira_notfinish_num_total});
+      this.setState({jira_notfinish_num_total,
+        no_solution_color1,no_solution_color2, no_solution_color3, no_solution_color4});
     }
     //兼容性测试结果
     // cptest_need cptest_final cptest_rate
@@ -331,11 +343,24 @@ export default class NewOnlineReport extends Component {
       }else{
         cptest_rate = parseFloat( parseInt(cptest_final)/parseInt(cptest_need) ).toFixed(2);
       }
-      let cptest_rate_color = cptest_rate==colorConfigData.cptest_rate.green[1]/100?"green":
+      //兼容性测试结果 - 颜色的判断
+      let cptest_rate_color;
+      if(colorConfigData.cptest_rate.blue){ //有蓝灯
+        cptest_rate_color = cptest_rate==colorConfigData.cptest_rate.blue[1]/100?"blue":
+          ((cptest_rate>colorConfigData.cptest_rate.green[0]/100|| cptest_rate==colorConfigData.cptest_rate.green[0]/100)&&
+          cptest_rate<colorConfigData.cptest_rate.green[1]/100)?"green":
             ( ((cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
               cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
                 (cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
             ) ;
+      }else{ //没有蓝灯
+        cptest_rate_color = ((cptest_rate>colorConfigData.cptest_rate.green[0]/100|| cptest_rate==colorConfigData.cptest_rate.green[0]/100)&&
+          cptest_rate<colorConfigData.cptest_rate.green[1]/100)?"green":
+            ( ((cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
+              cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
+                (cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
+            ) ;
+      }
       this.setState({cptest_rate,
             cptest_rate_color
       });
@@ -573,13 +598,13 @@ export default class NewOnlineReport extends Component {
               <Row>
                 <Col span={4} className="test-result-detail border-right-css"><span>未有解决方案</span></Col>
                 <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3} onChange={this.handleChange.bind(this)}/></Col>
-                <Col span={4} className="test-result-detail border-right-css">
-                  <Input type="number" placeholder="*填入数量" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4} onChange={this.handleChange.bind(this)}/></Col>
+                  <Input style={{ backgroundColor: this.state.no_solution_color1 }} type="number" placeholder="*填入数量" name="jira_notfinish_num_1" value={this.state.jira_notfinish_num_1} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4}  className="test-result-detail border-right-css">
+                  <Input style={{ backgroundColor: this.state.no_solution_color2 }} type="number" placeholder="*填入数量" name="jira_notfinish_num_2" value={this.state.jira_notfinish_num_2} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4}  className="test-result-detail border-right-css">
+                  <Input style={{ backgroundColor: this.state.no_solution_color3 }} type="number" placeholder="*填入数量" name="jira_notfinish_num_3" value={this.state.jira_notfinish_num_3} onChange={this.handleChange.bind(this)}/></Col>
+                <Col span={4}  className="test-result-detail border-right-css">
+                  <Input style={{ backgroundColor: this.state.no_solution_color4 }} type="number" placeholder="*填入数量" name="jira_notfinish_num_4" value={this.state.jira_notfinish_num_4} onChange={this.handleChange.bind(this)}/></Col>
                 <Col span={4} className="test-result-detail">
                   <Input type="number" placeholder="" name="jira_notfinish_num_total" value={this.state.jira_notfinish_num_total} onChange={this.handleChange.bind(this)}/></Col>
               </Row>
@@ -798,11 +823,13 @@ export default class NewOnlineReport extends Component {
 
     //新建上线报告前,获取上线的jira数据
     api.getOnlineReport_Jira(work_id).then(data=> {
+      console.log(data);
       //将数据显示在页面上
       this.state = data.data;
       //pass_rate_color
       let pass_rate_color="",test_norunrate_color="",b_repairrate_color="",c_repairrate_color="",
-        major_repairrate_color,minor_repairrate_color,cptest_rate_color;
+        major_repairrate_color,minor_repairrate_color,cptest_rate_color,
+        no_solution_color1, no_solution_color2, no_solution_color3, no_solution_color4;
       if(colorConfigData!=undefined){
         if(this.state.tl_rate_1!=null){
           pass_rate_color = ((this.state.tl_rate_1==colorConfigData.pass_rate.blue[1]/100)?"blue":
@@ -891,13 +918,43 @@ export default class NewOnlineReport extends Component {
         if(this.state.jira_num_total==0 && this.state.jira_close_num_total==0){
           this.state.jira_repair_rate_total = "1.00";
         }
-        console.log(1111111);
         if(this.state.cptest_rate!=null){
-          cptest_rate_color = this.state.cptest_rate==colorConfigData.cptest_rate.green[1]/100?"green":
-            ( ((this.state.cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
-              this.state.cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
-                (this.state.cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
-            ) ;
+          console.log(11123444444);
+          if(colorConfigData.cptest_rate.blue){ //有蓝灯
+            cptest_rate_color = this.state.cptest_rate==colorConfigData.cptest_rate.blue[1]/100?"blue":
+              ((this.state.cptest_rate>colorConfigData.cptest_rate.green[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.green[0]/100)&&
+              this.state.cptest_rate<colorConfigData.cptest_rate.green[1]/100)?"green":
+                ( ((this.state.cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
+                  this.state.cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
+                    (this.state.cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
+                ) ;
+          }else{
+            cptest_rate_color = ((this.state.cptest_rate>colorConfigData.cptest_rate.green[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.green[0]/100)&&
+              this.state.cptest_rate<colorConfigData.cptest_rate.green[1]/100)?"green":
+                ( ((this.state.cptest_rate>colorConfigData.cptest_rate.yellow[0]/100|| this.state.cptest_rate==colorConfigData.cptest_rate.yellow[0]/100)&&
+                  this.state.cptest_rate<colorConfigData.cptest_rate.yellow[1]/100)?"yellow":
+                    (this.state.cptest_rate<colorConfigData.cptest_rate.red[1]/100?"red":"")
+                ) ;
+          }
+
+        }
+
+        //未有解决方案 - 颜色值的显示
+        if(this.state.jira_notfinish_num_1!=null){
+          no_solution_color1 = this.state.jira_notfinish_num_1==colorConfigData.no_solution.green[1]?"green":
+            ((this.state.jira_notfinish_num_1>colorConfigData.no_solution.yellow[0] || this.state.jira_notfinish_num_1==colorConfigData.no_solution.yellow[0])?"yellow":"");
+        }
+        if(this.state.jira_notfinish_num_2!=null){
+          no_solution_color2 = this.state.jira_notfinish_num_2==colorConfigData.no_solution.green[1]?"green":
+            ((this.state.jira_notfinish_num_2>colorConfigData.no_solution.yellow[0] || this.state.jira_notfinish_num_2==colorConfigData.no_solution.yellow[0])?"yellow":"");
+        }
+        if(this.state.jira_notfinish_num_3!=null){
+          no_solution_color3 = this.state.jira_notfinish_num_3==colorConfigData.no_solution.green[1]?"green":
+            ((this.state.jira_notfinish_num_3>colorConfigData.no_solution.yellow[0] || this.state.jira_notfinish_num_3==colorConfigData.no_solution.yellow[0])?"yellow":"");
+        }
+        if(this.state.jira_notfinish_num_4!=null){
+          no_solution_color4 = this.state.jira_notfinish_num_4==colorConfigData.no_solution.green[1]?"green":
+            ((this.state.jira_notfinish_num_4>colorConfigData.no_solution.yellow[0] || this.state.jira_notfinish_num_4==colorConfigData.no_solution.yellow[0])?"yellow":"");
         }
       }else{
         alert("获取颜色配置数据失败");
@@ -937,6 +994,7 @@ export default class NewOnlineReport extends Component {
         //颜色显示
         pass_rate_color,test_norunrate_color,
         b_repairrate_color,c_repairrate_color,major_repairrate_color,minor_repairrate_color,cptest_rate_color,
+        no_solution_color1, no_solution_color2, no_solution_color3, no_solution_color4,
         dropData_test:(testSta == 1)?"通过":"未通过" ,
         dropData_UAT:(UATSta == 1)?"通过":"未通过",
         work_id:work_id,
