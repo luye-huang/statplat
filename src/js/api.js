@@ -9,8 +9,8 @@ import 'whatwg-fetch';
 /*
 
  */
-export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
-// export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
+// export const domain = 'http://aeplat.intra.sit.ffan.com/'; // 测试环境
+export const domain = 'http://aeplat.intra.ffan.com/'; //正式环境
 
 export const api = {
   //login

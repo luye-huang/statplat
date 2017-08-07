@@ -4,6 +4,12 @@
 import React from 'react';
 import {api} from "../api.js";
 import '../../less/login.less'
+
+const $ = require('jquery');
+
+//二维码
+import {Href} from "./QrCode/yanuePop.js";
+import {Img} from "./QrCode/yanuePop.js";
 export default class Login extends React.Component {
   constructor() {
     super();
@@ -60,15 +66,32 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <div class="login">
-        用户名:<br/>
-        <input type="text"/>
-        <br/>
-        密码:<br/>
-        <input type="password" onKeyDown={this.login}/>
-        <br></br>
-        <button onClick={this.login}>提交</button>
+      <div>
+        <div class="login">
+          用户名:<br/>
+          <input type="text"/>
+          <br/>
+          密码:<br/>
+          <input type="password" onKeyDown={this.login}/>
+          <br></br>
+          <button onClick={this.login}>提交</button>
+        </div>
+        <div id="pop" style={{ display:"none" }} >
+          <div id="popHead"> <a id="popClose" title="关闭">关闭</a>
+            <h2>满意度调研</h2>
+          </div>
+          <div id="popContent">
+            <img src={Img} style={{ width:100, height:100 }}/>
+          </div>
+          <p id="popMore"><a href={Href} target="_blank">点击参与调研</a></p>
+        </div>
       </div>
     )
   }
+  
+  componentDidMount(){
+    var pop = $("#pop");
+    pop = new Pop();
+  }
+  
 }
