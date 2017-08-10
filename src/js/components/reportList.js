@@ -21,6 +21,11 @@ import $ from "jquery";
 import DptList from './dptList';
 import LuyeTable from "./luyeTable/luyeTable.js";
 
+// const $ = require('jquery');
+//二维码
+import {Href} from "./QrCode/yanuePop.js";
+import {Img} from "./QrCode/yanuePop.js";
+
 //时间日期选择
 const {MonthPicker, RangePicker} = DatePicker;
 
@@ -174,7 +179,8 @@ export default class ReportList extends Component {
         selected1: depSelected,
         selected2: '',
         selected3: '',
-        dep1_id: id
+        dep1_id: id,
+        IsDisplay:true
       });
     }
     else if (layer === '2') {
@@ -213,88 +219,101 @@ export default class ReportList extends Component {
 
     return this.state.isLoaded ? (
       <div>
-        <Row gutter={16} style={{marginBottom: 16}}>
-          <Col span={6}>
-            <Input addonBefore="需求名称" defaultValue={this.state.name} name="name"
-                   onChange={this.handleChange.bind(this)}/>
-          </Col>
-          <Col span={6}>
-            <Input addonBefore="报告人ctx" defaultValue={this.state.reporter_ctx} name="reporter_ctx"
-                   onChange={this.handleChange.bind(this)}/>
-          </Col>
-          <Col span={12}>
-            <span className="date-submit0">提交时间</span>
-            <div className="div-date-submit0">
-              <RangePicker defaultValue={[moment(this.state.date_begin), moment(this.state.date_end)]}
-                           onChange={this.onChange.bind(this)}/>
-            </div>
-          </Col>
-        </Row>
-        <Row gutter={16} style={{marginBottom: 16}}>
-          <Col span={6} className="exam-result">
-            <span>一级部门</span>
-            <DptList list={this.state.dep1_list} changeSubDep={this.changeSubDep.bind(this)} layer={1}
-                     selected={this.state.selected1}/>
-          </Col>
-          <Col span={6} className="exam-result">
-            <span>二级部门</span>
-            <DptList list={this.state.dep2_list} changeSubDep={this.changeSubDep.bind(this)} layer={2}
-                     selected={this.state.selected2}/>
-          </Col>
-          <Col span={6} className="exam-result">
-            <span>三级部门</span>
-            <DptList list={this.state.dep3_list} changeSubDep={this.changeSubDep.bind(this)} layer={3}
-                     selected={this.state.selected3}/>
-          </Col>
-          <Col span={6} className="exam-result">
-            <span>审核结果</span>
-            <div>
-              <Dropdown overlay={dropMenu} trigger={["click"]}>
-                <a className="ant-dropdown-link" href="#">
-                  {this.state.dropData}
-                  <Icon type="down"/>
-                </a>
-              </Dropdown>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={6}></Col>
-          <Col span={6}><Button style={{marginLeft: 4}} type="primary"
-                                onClick={()=>{
+        <div>
+          <Row gutter={16} style={{marginBottom: 16}}>
+            <Col span={6}>
+              <Input addonBefore="需求名称" defaultValue={this.state.name} name="name"
+                     onChange={this.handleChange.bind(this)}/>
+            </Col>
+            <Col span={6}>
+              <Input addonBefore="报告人ctx" defaultValue={this.state.reporter_ctx} name="reporter_ctx"
+                     onChange={this.handleChange.bind(this)}/>
+            </Col>
+            <Col span={12}>
+              <span className="date-submit0">提交时间</span>
+              <div className="div-date-submit0">
+                <RangePicker defaultValue={[moment(this.state.date_begin), moment(this.state.date_end)]}
+                             onChange={this.onChange.bind(this)}/>
+              </div>
+            </Col>
+          </Row>
+          <Row gutter={16} style={{marginBottom: 16}}>
+            <Col span={6} className="exam-result">
+              <span>一级部门</span>
+              <DptList list={this.state.dep1_list} changeSubDep={this.changeSubDep.bind(this)} layer={1}
+                       selected={this.state.selected1}/>
+            </Col>
+            <Col span={6} className="exam-result">
+              <span>二级部门</span>
+              <DptList list={this.state.dep2_list} changeSubDep={this.changeSubDep.bind(this)} layer={2}
+                       selected={this.state.selected2}/>
+            </Col>
+            <Col span={6} className="exam-result">
+              <span>三级部门</span>
+              <DptList list={this.state.dep3_list} changeSubDep={this.changeSubDep.bind(this)} layer={3}
+                       selected={this.state.selected3}/>
+            </Col>
+            <Col span={6} className="exam-result">
+              <span>审核结果</span>
+              <div>
+                <Dropdown overlay={dropMenu} trigger={["click"]}>
+                  <a className="ant-dropdown-link" href="#">
+                    {this.state.dropData}
+                    <Icon type="down"/>
+                  </a>
+                </Dropdown>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6}></Col>
+            <Col span={6}><Button style={{marginLeft: 4}} type="primary"
+                                  onClick={()=>{
                                   //保存当前的状态(准入报告页面的查询条件)到localStorage中
                                   this.saveReportListStateToLocal();
                                   window.location = 'index.html#/newProject';
                                 }}>新建项目</Button></Col>
-          <Col span={6}><Button style={{marginLeft: 4}} type="primary"
-                                onClick={
+            <Col span={6}><Button style={{marginLeft: 4}} type="primary"
+                                  onClick={
                                   this.clickBtn.bind(this)
                                 /*()=> {
                                   this.getTbData();
                                 } */
                                 }
-          >查 询</Button></Col>
-        </Row>
-        <Modal title="提交询问" visible={this.state.checkinModal}
-               onOk={this.checkinModalOK.bind(this)} onCancel={this.checkinModalCancel.bind(this)}
-               okText="是" cancelText="否"
-        >
-          <p>尚未提交提测报告,是否立即提交提测报告?</p>
-        </Modal>
-        <Modal title="提交询问" visible={this.state.onlineModal}
-               onOk={this.onlineModalOK.bind(this)} onCancel={this.onlineModalCancel.bind(this)}
-               okText="是" cancelText="否"
-        >
-          <p>尚未提交上线报告,是否立即提交上线报告?</p>
-        </Modal>
-        <Modal title="提交询问" visible={this.state.mergeModal}
-               onOk={this.mergeModalOK.bind(this)} onCancel={this.mergeModalCancel.bind(this)}
-               okText="是" cancelText="否"
-        >
-          <p>尚未提交合板报告,是否立即提交合板报告?</p>
-        </Modal>
-        <div id="tb-div"></div>
+            >查 询</Button></Col>
+          </Row>
+          <Modal title="提交询问" visible={this.state.checkinModal}
+                 onOk={this.checkinModalOK.bind(this)} onCancel={this.checkinModalCancel.bind(this)}
+                 okText="是" cancelText="否"
+          >
+            <p>尚未提交提测报告,是否立即提交提测报告?</p>
+          </Modal>
+          <Modal title="提交询问" visible={this.state.onlineModal}
+                 onOk={this.onlineModalOK.bind(this)} onCancel={this.onlineModalCancel.bind(this)}
+                 okText="是" cancelText="否"
+          >
+            <p>尚未提交上线报告,是否立即提交上线报告?</p>
+          </Modal>
+          <Modal title="提交询问" visible={this.state.mergeModal}
+                 onOk={this.mergeModalOK.bind(this)} onCancel={this.mergeModalCancel.bind(this)}
+                 okText="是" cancelText="否"
+          >
+            <p>尚未提交合板报告,是否立即提交合板报告?</p>
+          </Modal>
+          <div id="tb-div"></div>
+        </div>
+
+        <div id="pop0" style={{display:(this.state.IsDisplay==false?"none":"block")}}>
+          <div id="popHead"> <a id="popClose" title="关闭" onClick={this.closeQrCode.bind(this)}>关闭</a>
+            <h2>满意度调研</h2>
+          </div>
+          <div id="popContent">
+            <img src={Img} style={{ width:100, height:100 }}/>
+          </div>
+          <p id="popMore"><a href={Href} target="_blank">点击参与调研</a></p>
+        </div>
       </div>
+
     ) : null;
   }
 
@@ -565,7 +584,28 @@ export default class ReportList extends Component {
     localStorage.setItem("reportListState",JSON.stringify(reportListState));
   }
 
+  QrCodeFn(){
+
+  }
+
+  //点击关闭二维码事件
+  closeQrCode(){
+    // $('#pop').hide();
+    this.setState({IsDisplay:false});
+  }
+
   componentDidMount() {
+    //二维码
+    var pop = $("#pop0");
+    // console.log(pop);
+    pop = new Pop();
+    this.timer = setTimeout(
+      () => {
+        this.setState({IsDisplay:false});
+      },
+      10000
+    );
+
     //回到本页面时,将保存的状态(准入报告页面的查询条件)显示在页面上,并渲染数据,同时清空localStorage中的reportListState状态
     if(localStorage.getItem("reportListState")!=null && localStorage.getItem("reportListState")!=""){
       reportListState = JSON.parse(localStorage.getItem("reportListState"));
@@ -590,5 +630,11 @@ export default class ReportList extends Component {
       localStorage.setItem("reportListState",""); //本地缓存中,准入报告保存的状态 - 置空
     }
   }
+
+  componentWillUnmount() {
+    // 如果存在this.timer，则使用clearTimeout清空。
+    this.timer && clearTimeout(this.timer);
+  }
+
 }
 
