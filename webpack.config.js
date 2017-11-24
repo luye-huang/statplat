@@ -1,6 +1,8 @@
+// https://segmentfault.com/a/1190000008671104  webpack upgrade
 var htmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: "./src/js/main.js",
@@ -9,50 +11,48 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js?$/,
-        exclude: path.resolve(__dirname, 'node_modules'),
+        test: /\.(js|jsx)?$/,
         include: path.resolve(__dirname, 'src'),
-        loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015'],
-          plugins: ['react-html-attrs', ['import', {'libraryName': 'antd', 'style': true}]], //添加组件的插件配置
-        }
+        use: ['babel-loader']
       },
       {
         test: /\.css$/,
         include: path.resolve(__dirname, 'src'),
-        // loader: 'style-loader!css-loader?modules'
-        // loader: 'style!css?modules&localIdentName=[name]__[local]___[hash:base64:5]'
-        loader: "style!css?importLoaders=1!postcss",
+        use: ["style-loader", "css-loader"]
       },
       {
         test: /\.less$/,
-        // include: path.resolve(__dirname, 'src'),
-        loader: "style!css!postcss!less",
+        include: path.resolve(__dirname, 'src'),
+        use: [
+          {loader: "style-loader"},
+          {loader: "css-loader"},
+          {loader: "less-loader"}
+          ]
       },
-      {test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=50000&name=[path][name].[ext]'}
+      {
+        test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+        use: 'url-loader?limit=50000&name=[path][name].[ext]'
+      }
     ]
   },
-  postcss: [
-    require('autoprefixer')({
-      broswers: ['last 5 versions']
-    })
-  ],
+  // postcss: [
+  //   require('autoprefixer')({
+  //     broswers: ['last 5 versions']
+  //   })
+  // ],
   node: {
     fs: "empty"
   },
   plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new htmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
       inject: 'body',
-      minify:{
-         removeComments: true,
-         //collapseWhitespace: true
+      minify: {
+        removeComments: true,
+        //collapseWhitespace: true
       }
     })
   ]
